@@ -118,6 +118,3 @@ Disallow: /
 # Block all other bots
 User-agent: *
 Disallow: /
-
-# Sitemap (optional - remove if you don't want any indexing)
-# Sitemap: https://yourdomain.com/sitemap.xml 
