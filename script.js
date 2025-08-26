@@ -299,9 +299,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }, observerOptions);
 
-    // Observe sections for scroll animations
-    const sections = document.querySelectorAll('.section, .publication, .interest-item');
-    sections.forEach(section => {
+    // Observe sections for scroll animations (excluding publications section for immediate visibility)
+    const allSections = document.querySelectorAll('.section, .interest-item');
+    allSections.forEach(section => {
+        // Skip the publications section
+        if (section.querySelector('.publications')) {
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0)';
+            return;
+        }
+        
         section.style.opacity = '0';
         section.style.transform = 'translateY(20px)';
         section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
