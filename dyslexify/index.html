@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dyslexify: A Mechanistic Defense Against Typographic Attacks in CLIP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    body {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        color: #333;
+    }
+
+    h1, h2, h3 {
+        font-weight: normal;
+        text-align: center;
+        margin: 0 0 10px;
+    }
+
+    #authors {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    #authors a {
+        color: #3366cc;
+        text-decoration: none;
+    }
+
+    .links {
+        text-align: center;
+        margin: 20px 0 30px;
+    }
+
+    .links a {
+        margin: 0 10px;
+        background: #eee;
+        padding: 8px 14px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #ccc;
+    }
+
+    .links a:hover {
+        background: #ddd;
+    }
+
+    .section {
+        margin-top: 40px;
+    }
+
+    /* BibTeX layout */
+    .bibtex-container {
+        text-align: center;
+    }
+
+    .bibtex-box {
+        position: relative;
+        display: inline-block; /* shrink-to-content */
+        max-width: 100%;
+    }
+
+    .bibtex-box pre {
+        background: #f6f6f6;
+        padding: 12px 44px 12px 12px; /* space for button */
+        border: 1px solid #ddd;
+        font-size: 14px;
+
+        display: inline-block;
+        text-align: left;
+
+        white-space: pre-wrap;
+        word-break: break-word;
+
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    .copy-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+
+        width: 28px;
+        height: 28px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background: #eee;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .copy-btn:hover {
+        background: #ddd;
+    }
+
+    .copy-btn:active {
+        transform: translateY(1px);
+    }
+
+    .copy-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .copy-status {
+        font-size: 12px;
+        color: #666;
+        margin-top: 6px;
+        text-align: center;
+        min-height: 1.2em;
+    }
+	
+	.teaser {
+		text-align: center;
+		margin: 30px 0 10px;
+	}
+
+	.teaser img {
+		max-width: 100%;
+		height: auto;
+		border-radius: 4px;
+	}
+
+</style>
+
+</head>
+<body>
+<h2>Dyslexify - A Mechanistic Defense Against Typographic Attacks in CLIP</h2>
+
+<div id="authors">
+    Lorenz Hufe<sup>1</sup>,
+    Constantin Venhoff<sup>2</sup>,
+    Maximilian Dreyer<sup>3</sup>,
+    Erblina Purelku<sup>1</sup><br>
+    Sebastian Lapuschkin<sup>1</sup>,
+    Wojciech Samek<sup>1</sup>,
+    Christian Schröder de Witt<sup>4</sup>
+    <br>
+    <sup>1</sup>Fraunhofer HHI,
+    <sup>2</sup>University of Oxford,
+    <sup>3</sup>Meta,
+    <sup>4</sup>University of Oxford
+</div>
+
+<div class="links">
+    <a href="https://openreview.net/pdf?id=HNGEzXwbJw" target="_blank">Paper</a>
+    <a href="https://github.com/lowlorenz/dyslexify" target="_blank">Code</a>
+</div>
+
+<div class="teaser">
+    <img src="figures/intro.png" alt="Overview of Dyslexify and typographic attacks">
+</div>
+
+
+<div class="section">
+    <h2>Abstract</h2>
+    <p>
+        Typographic attacks exploit multi-modal systems by injecting text into images, leading to targeted misclassifications, malicious content generation and even Vision-Language Model jailbreaks. In this work, we analyze how CLIP vision encoders behave under typographic attacks, locating specialized attention heads in the latter half of the model's layers that causally extract and transmit typographic information to the cls token. Building on these insights, we introduce Dyslexify - a method to defend CLIP models against typographic attacks by selectively ablating a typographic circuit, consisting of attention heads. Without requiring finetuning, Dyslexify improves performance by up to 22.06% on a typographic variant of ImageNet-100, while reducing standard ImageNet-100 accuracy by less than 1%, and demonstrate its utility in a medical foundation model for skin lesion diagnosis. Notably, our training-free approach remains competitive with current state-of-the-art typographic defenses that rely on finetuning. To this end, we release a family of dyslexic CLIP models which are significantly more robust against typographic attacks. These models serve as suitable drop-in replacements for a broad range of safety-critical applications, where the risks of text-based manipulation outweigh the utility of text recognition.
+    </p>
+</div>
+
+<div class="section">
+    <h2>BibTeX</h2>
+
+    <div class="bibtex-container">
+        <div class="bibtex-box">
+            <button class="copy-btn" type="button" aria-label="Copy BibTeX"
+                    onclick="copyBibtex()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            </button>
+
+            <pre id="bibtex">@inproceedings{hufe2025dyslexify,
+    title={Dyslexify: A Mechanistic Defense Against Typographic Attacks in CLIP},
+    author={Hufe, Lorenz and Venhoff, Constantin and Dreyer, Maximilian
+            and Purelku, Erblina and Lapuschkin, Sebastian and Samek,
+            Wojciech and Schr{\"o}der de Witt, Christian},
+    booktitle={Mechanistic Interpretability Workshop NeurIPS 2025},
+    year={2025},
+    url={https://openreview.net/forum?id=HNGEzXwbJw}
+}</pre>
+        </div>
+
+        <div id="copy-status" class="copy-status"></div>
+    </div>
+</div>
+
+<script>
+    function copyBibtex() {
+        const el = document.getElementById("bibtex");
+        const status = document.getElementById("copy-status");
+        const text = el.innerText.trim();
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                status.textContent = "Copied!";
+                setTimeout(() => status.textContent = "", 1200);
+            }).catch(() => {
+                fallbackCopy(text, status);
+            });
+        } else {
+            fallbackCopy(text, status);
+        }
+    }
+
+    function fallbackCopy(text, status) {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        ta.style.top = "0";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+
+        try {
+            document.execCommand("copy");
+            status.textContent = "Copied!";
+        } catch (e) {
+            status.textContent = "Copy failed - select manually.";
+        }
+
+        document.body.removeChild(ta);
+        window.getSelection().removeAllRanges();
+        setTimeout(() => status.textContent = "", 1200);
+    }
+</script>
+
+</body>
+</html>
