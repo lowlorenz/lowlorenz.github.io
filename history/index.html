@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historymind</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%8F%B3%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #f0ece2;
+            --bg-card: #f6f3ec;
+            --ink: #1a1a1a;
+            --ink-soft: #4a453d;
+            --ink-muted: #8a8478;
+            --accent: #8b4513;
+            --accent-hover: #a0522d;
+            --rule: #c8c1b4;
+            --mono: 'IBM Plex Mono', 'Courier New', monospace;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg);
+            font-family: var(--mono);
+            color: var(--ink);
+            padding: 2rem 1rem;
+            background-image: 
+                radial-gradient(ellipse at 20% 50%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(107, 91, 67, 0.04) 0%, transparent 40%);
+        }
+
+        .card {
+            max-width: 640px;
+            width: 100%;
+            padding: 3rem 2.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--rule);
+            box-shadow: 
+                0 1px 3px rgba(0,0,0,0.04),
+                0 8px 30px rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--ink-muted));
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card > * {
+            opacity: 0;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        .card > *:nth-child(1) { animation-delay: 0.1s; }
+        .card > *:nth-child(2) { animation-delay: 0.2s; }
+        .card > *:nth-child(3) { animation-delay: 0.3s; }
+        .card > *:nth-child(4) { animation-delay: 0.4s; }
+        .card > *:nth-child(5) { animation-delay: 0.5s; }
+        .card > *:nth-child(6) { animation-delay: 0.6s; }
+        .card > *:nth-child(7) { animation-delay: 0.7s; }
+        .card > *:nth-child(8) { animation-delay: 0.8s; }
+
+        /* --- Header --- */
+        .brand {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            margin-bottom: 0.25rem;
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--ink-soft);
+            margin-bottom: 1.75rem;
+        }
+
+        .tagline em {
+            font-style: normal;
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        /* --- Divider --- */
+        .rule {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 1.75rem 0;
+        }
+
+        /* --- Mission blurb --- */
+        .mission {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--ink-soft);
+            margin-bottom: 1.75rem;
+        }
+
+        /* --- Research areas --- */
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--ink-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .topics {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.75rem;
+        }
+
+        .topics li {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            padding: 0.3rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+            color: var(--ink-soft);
+        }
+
+        .topics li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* --- CTA --- */
+        .cta {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--ink-soft);
+            margin-bottom: 1.25rem;
+        }
+
+        /* --- People --- */
+        .people {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem 1.5rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .person {
+            display: flex;
+            flex-direction: column;
+            padding: 0.6rem 0;
+        }
+
+        .person-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        .person-role {
+            font-size: 0.75rem;
+            color: var(--ink-muted);
+            margin-top: 0.15rem;
+        }
+
+        .person-link {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-decoration: none;
+            margin-top: 0.2rem;
+            transition: color 0.2s;
+        }
+
+        .person-link:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        /* --- Footer --- */
+        .footer {
+            font-size: 0.75rem;
+            color: var(--ink-muted);
+            padding-top: 1rem;
+            border-top: 1px solid var(--rule);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 480px) {
+            .card {
+                padding: 2rem 1.5rem;
+            }
+
+            .brand {
+                font-size: 1.6rem;
+            }
+
+            .people {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="brand">Historymind</h1>
+
+        <p class="tagline">Building an <em>AI scientist</em> for history — Oxford, UK.</p>
+
+        <p class="mission">
+            We're building autonomous agents to extract, structure, and reason over centuries of historical sources — turning archives into living knowledge.
+        </p>
+
+        <hr class="rule">
+
+        <p class="section-label">We're looking for collaborators in</p>
+        <ul class="topics">
+            <li>Agentic AI systems</li>
+            <li>Structured data extraction</li>
+            <li>Data-driven history</li>
+            <li>Archives </li>
+        </ul>
+
+        <p class="cta">If you want to revolutionize how we understand history, reach out:</p>
+
+        <div class="people">
+            <div class="person">
+                <span class="person-name">Niclas Griesshaber</span>
+                <span class="person-role">DPhil student, University of Oxford</span>
+                <a class="person-link" href="mailto:niclas.griesshaber@linacre.ox.ac.uk">niclas.griesshaber@linacre.ox.ac.uk</a>
+            </div>
+            <div class="person">
+                <span class="person-name">Lorenz Hufe</span>
+                <span class="person-role">ELLIS PhD, Oxford & Fraunhofer HHI</span>
+                <a class="person-link" href="mailto:lorenz.hufe@hhi.fraunhofer.de">lorenz.hufe@hhi.fraunhofer.de</a>
+            </div>
+            <div class="person">
+                <span class="person-name">Philip Torr</span>
+                <span class="person-role">Professor, University of Oxford</span>
+                <a class="person-link" href="mailto:philip.torr@eng.ox.ac.uk">philip.torr@eng.ox.ac.uk</a>
+            </div>
+            <div class="person">
+                <span class="person-name">Gavin Greif</span>
+                <span class="person-role">DPhil student, University of Oxford</span>
+                <a class="person-link" href="mailto:gavin.greif@history.ox.ac.uk">gavin.greif@history.ox.ac.uk</a>
+            </div>
+        </div>
+
+        <footer class="footer">
+            Historymind · Oxford
+        </footer>
+    </div>
+</body>
+</html>
