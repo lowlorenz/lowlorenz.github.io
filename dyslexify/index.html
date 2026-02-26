@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dyslexify</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+        ]
+    });"></script>
+
+<style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        font-size: 17px;
+        line-height: 1.6;
+        color: #24292e;
+        background: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* ---- Hero band ---- */
+    .hero {
+        background: #E5D9EC;
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 48px 24px;
+    }
+
+    .hero-inner {
+        max-width: 920px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    /* ---- Page container ---- */
+    .container {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 36px 24px 60px;
+    }
+
+    /* ---- Header ---- */
+    header {
+        text-align: center;
+        margin-bottom: 36px;
+    }
+
+    header h1 {
+        font-size: 2em;
+        font-weight: 600;
+        line-height: 1.3;
+        margin: 0 0 28px;
+        color: #2d1b4e;
+    }
+
+    .authors {
+        font-size: 1em;
+        font-weight: 600;
+        color: #4a3660;
+        margin-bottom: 10px;
+    }
+
+    .affiliations {
+        font-size: 0.88em;
+        color: #6b5280;
+        margin-bottom: 28px;
+        line-height: 1.8;
+    }
+
+    .affiliations a {
+        color: #6b5280;
+        text-decoration: none;
+        font-family: 'Fira Code', 'Consolas', monospace;
+        font-size: 0.95em;
+    }
+
+    .affiliations a:hover {
+        color: #4a2d5c;
+        text-decoration: underline;
+    }
+
+    .email-row {
+        position: relative;
+        display: inline-block;
+    }
+
+    .speech-bubble {
+        position: absolute;
+        left: calc(100% + 14px);
+        top: 50%;
+        transform: translateY(-50%);
+        background: #fff;
+        border: 1.5px solid #b89ec9;
+        border-radius: 10px;
+        padding: 7px 13px;
+        font-size: 0.78em;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 400;
+        color: #4a3660;
+        width: 260px;
+        line-height: 1.45;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .speech-bubble::before {
+        content: '';
+        position: absolute;
+        left: -9px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-width: 7px 9px 7px 0;
+        border-style: solid;
+        border-color: transparent #b89ec9 transparent transparent;
+    }
+
+    .speech-bubble::after {
+        content: '';
+        position: absolute;
+        left: -7px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-width: 6px 8px 6px 0;
+        border-style: solid;
+        border-color: transparent #fff transparent transparent;
+    }
+
+    /* ---- Nav links (hero variant) ---- */
+    nav.links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+        margin-bottom: 0;
+    }
+
+    nav.links a {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 20px;
+        background: rgba(255,255,255,0.5);
+        border: 2px solid #b89ec9;
+        border-radius: 6px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.88em;
+        font-weight: 500;
+        color: #2d1b4e;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    nav.links a:hover {
+        background: rgba(255,255,255,0.8);
+        border-color: #CDB4DB;
+        color: #4a2d5c;
+    }
+
+    nav.links a svg {
+        width: 15px;
+        height: 15px;
+        flex-shrink: 0;
+    }
+
+    /* ---- TOC (hero variant) ---- */
+    .toc {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 16px;
+        justify-content: center;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid #334155;
+        border-radius: 6px;
+        padding: 10px 16px;
+        margin: 20px 0 0;
+        font-size: 0.82em;
+    }
+
+    .toc a {
+        color: #e8d5f0;
+        text-decoration: none;
+        white-space: nowrap;
+        font-weight: 500;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    /* ---- TL;DR ---- */
+    .tldr {
+        background: rgba(255,255,255,0.4);
+        border: 1px solid rgba(180, 140, 200, 0.5);
+        border-radius: 6px;
+        padding: 14px 20px;
+        margin: 32px auto 0;
+        max-width: 560px;
+        font-size: 0.93em;
+        color: #3b2050;
+        line-height: 1.5;
+    }
+
+    .tldr-label {
+        font-weight: 600;
+        color: #7b3f9e;
+        margin-right: 8px;
+    }
+
+    /* ---- Abstract in hero ---- */
+    .hero-abstract {
+        margin-top: 32px;
+    }
+
+    .hero-abstract h2.section-heading {
+        color: #2d1b4e;
+        border-color: #CDB4DB;
+    }
+
+    .hero-abstract p {
+        color: #3b2050;
+    }
+
+    .hero-abstract hr.section-divider {
+        border-color: #c4a8d4;
+    }
+
+    /* ---- Teaser ---- */
+    .teaser {
+        text-align: center;
+        margin: 24px 0 0;
+    }
+
+    .teaser img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        border: 1px solid #e1e4e8;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+        margin-top: 36px;
+    }
+
+    hr.section-divider {
+        border: none;
+        border-top: 1px solid #e1e4e8;
+        margin: 36px 0 0;
+    }
+
+    h2.section-heading {
+        font-size: 1.15em;
+        font-weight: 600;
+        color: #1a1a2e;
+        margin: 0 0 10px;
+        padding-bottom: 6px;
+        border-bottom: 2px solid #CDB4DB;
+        display: inline-block;
+    }
+
+    p { margin: 8px 0; }
+
+    /* ---- Callout boxes ---- */
+    .callout {
+        background: #f5eef8;
+        border-left: 3px solid #CDB4DB;
+        border-radius: 0 4px 4px 0;
+        padding: 10px 16px;
+        margin: 12px 0;
+        font-size: 1em;
+        font-weight: 500;
+        color: #4a2d5c;
+    }
+
+    /* ---- Steps ---- */
+    .steps {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0;
+    }
+
+    .steps li {
+        padding: 4px 0;
+        padding-left: 4px;
+    }
+
+    /* ---- Media ---- */
+    .media-container {
+        text-align: center;
+        margin: 16px 0 28px;
+    }
+
+    .media-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        border: 1px solid #e1e4e8;
+    }
+
+    .media-caption {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 6px;
+        max-width: 560px;
+        margin-left: auto;
+        margin-right: auto;
+        font-style: italic;
+    }
+
+    /* ---- Video wrap & expand button ---- */
+    .video-wrap {
+        position: relative;
+        display: inline-block;
+        max-width: 560px;
+        width: 100%;
+    }
+
+    .video-wrap video {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 6px;
+        border: 1px solid #e1e4e8;
+    }
+
+    .video-expand-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 30px;
+        height: 30px;
+        background: rgba(0, 0, 0, 0.45);
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.15s;
+        padding: 0;
+    }
+
+    .video-wrap:hover .video-expand-btn { opacity: 1; }
+    .video-expand-btn svg { width: 15px; height: 15px; }
+
+    /* ---- Side-by-side layout ---- */
+    .side-by-side {
+        display: flex;
+        gap: 28px;
+        align-items: flex-start;
+        margin: 10px 0;
+    }
+
+    .side-by-side .text-col { flex: 1; min-width: 0; }
+
+    .side-by-side .image-col {
+        flex: 0 0 44%;
+        text-align: center;
+    }
+
+    .side-by-side .image-col img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+        border: 1px solid #e1e4e8;
+    }
+
+    .side-by-side .media-caption {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 6px;
+        font-style: italic;
+    }
+
+    @media (max-width: 600px) {
+        .side-by-side { flex-direction: column; }
+        .side-by-side .image-col { flex: none; width: 100%; }
+    }
+
+    /* ---- BibTeX ---- */
+    .bibtex-container { text-align: center; }
+
+    .bibtex-box {
+        position: relative;
+        display: inline-block;
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .bibtex-box pre {
+        background: #faf7fc;
+        padding: 14px 48px 14px 16px;
+        border: 1px solid #e1e4e8;
+        border-radius: 6px;
+        font-size: 13px;
+        font-family: 'Fira Code', 'Consolas', monospace;
+        white-space: pre-wrap;
+        word-break: break-word;
+        margin: 0;
+        color: #24292e;
+    }
+
+    .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        border: 1px solid #e1e4e8;
+        background: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.15s;
+    }
+
+    .copy-btn:hover { background: #f6f8fa; border-color: #CDB4DB; }
+    .copy-btn:active { transform: translateY(1px); }
+    .copy-btn svg { width: 14px; height: 14px; }
+
+    .copy-status {
+        font-size: 12px;
+        color: #666;
+        margin-top: 6px;
+        text-align: center;
+        min-height: 1.2em;
+    }
+
+    /* ---- Footer ---- */
+    footer {
+        text-align: center;
+        padding: 20px 24px;
+        border-top: 1px solid #e1e4e8;
+        font-size: 0.8em;
+        color: #666;
+    }
+
+    .section p a {
+        color: #7b3f9e;
+        text-decoration: none;
+    }
+
+    .section p a:hover { text-decoration: underline; }
+
+    footer a {
+        color: #7b3f9e;
+        text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    /* ---- Zoomable images ---- */
+    img.zoomable { cursor: zoom-in; }
+
+    /* ---- Thank you overlay ---- */
+    #thankyou-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: #2d1b4e;
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+
+    #thankyou-overlay.show {
+        display: flex;
+        animation: thankyou-fade 1.8s ease forwards;
+    }
+
+    #thankyou-overlay span {
+        font-family: 'Poppins', sans-serif;
+        font-size: clamp(60px, 15vw, 160px);
+        font-weight: 600;
+        color: #CDB4DB;
+        letter-spacing: 0.05em;
+        user-select: none;
+    }
+
+    @keyframes thankyou-fade {
+        0%   { opacity: 1; }
+        100% { opacity: 0; }
+    }
+
+    /* ---- Lightbox ---- */
+    #lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    #lightbox.open { display: flex; }
+
+    #lightbox img, #lightbox video {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 4px;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    }
+
+    #lightbox img { cursor: zoom-out; }
+    #lightbox-video { display: none; }
+
+    #lightbox-close {
+        position: fixed;
+        top: 16px;
+        right: 20px;
+        color: #fff;
+        font-size: 28px;
+        line-height: 1;
+        cursor: pointer;
+        opacity: 0.75;
+        background: none;
+        border: none;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    #lightbox-close:hover { opacity: 1; }
+</style>
+
+</head>
+<body>
+
+<div class="hero">
+<div class="hero-inner">
+
+<header>
+    <h1>Dyslexify &mdash; A Mechanistic Defense <br> Against Typographic Attacks in CLIP</h1>
+
+    <div class="authors">
+        Lorenz Hufe<sup>1,2</sup>,
+        Constantin Venhoff<sup>2</sup>,
+        Erblina Purelku<sup>1</sup>,<br>
+        <strong>Maximilian Dreyer</strong><sup>1</sup>,
+        <strong>Sebastian Lapuschkin</strong><sup>1,3</sup>,
+        <strong>Wojciech Samek</strong><sup>1,4</sup>
+    </div>
+
+    <div class="affiliations">
+        <sup>1</sup>Fraunhofer Heinrich Hertz Institute &nbsp;&bull;&nbsp;
+        <sup>2</sup>University of Oxford<br>
+        <sup>3</sup>Technological University Dublin &nbsp;&bull;&nbsp;
+        <sup>4</sup>Technische Universität Berlin<br><br>
+        <span class="email-row">
+            <a href="mailto:lorenz.hufe@hhi.fraunhofer.de">lorenz.hufe@hhi.fraunhofer.de</a>
+            <span class="speech-bubble">I am always happy to chat! Send me an email if you are interested!</span>
+        </span>
+    </div>
+
+    <nav class="links">
+        <a href="https://openreview.net/pdf?id=HNGEzXwbJw" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            Paper
+        </a>
+        <a href="https://github.com/lowlorenz/dyslexify" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            Code
+        </a>
+        <a href="https://arxiv.org/pdf/2508.20570" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            arXiv
+        </a>
+    </nav>
+
+</header>
+
+<div class="tldr">
+    <span class="tldr-label">TL;DR</span>
+    We analyze how Vision Transformers process text in images. We utilize these insights to make Vision Transformers robust against text-based attacks.
+</div>
+
+<div class="hero-abstract section" id="abstract">
+    <h2 class="section-heading">Abstract</h2>
+    <p>
+        Typographic attacks exploit multi-modal systems by injecting text into images, leading to <strong>targeted misclassifications</strong>, malicious content generation and even Vision-Language Model jailbreaks. In this work, we analyze how CLIP vision encoders behave under typographic attacks, locating <strong>specialized attention heads</strong> in the latter half of the model&rsquo;s layers that causally extract and transmit typographic information to the cls token. Building on these insights, we introduce <strong>Dyslexify</strong> &mdash; a method to defend CLIP models against typographic attacks by selectively ablating a <strong>typographic circuit</strong> consisting of attention heads. Without requiring finetuning, Dyslexify improves performance by up to <strong>22.06%</strong> on a typographic variant of ImageNet-100, while reducing standard ImageNet-100 accuracy by less than <strong>1%</strong>, and demonstrates its utility in a medical foundation model for skin lesion diagnosis. Notably, our <strong>training-free approach</strong> remains competitive with current state-of-the-art typographic defenses that rely on finetuning. We release a family of <em>dyslexic</em> CLIP models that are significantly more robust against typographic attacks and serve as drop-in replacements for safety-critical applications.
+    </p>
+</div>
+
+</div><!-- /hero-inner -->
+</div><!-- /hero -->
+
+<div class="container">
+
+<!-- <div class="teaser">
+    <img src="figures/intro.png" alt="Overview of Dyslexify and typographic attacks">
+</div> -->
+
+
+<!-- ===== SECTION 1 ===== -->
+<div class="section" id="attacks">
+    <h2 class="section-heading">What Are Typographic Attacks?</h2>
+    <p>
+        Typographic attacks inject misleading text into images to manipulate multi-modal models into targeted misclassifications. An example: a photo of Elon Musk labeled &ldquo;US President&rdquo; is enough to trick CLIP into believing it shows the U.S. president. A scenario we clearly want to avoid.
+        <br><br>
+        The attack is effective across many scenarios &mdash; from misidentifying people to misclassifying objects, with potentially serious consequences in safety-critical applications such as medical imaging and content moderation.
+        <br><br>
+        <strong>Dyslexify</strong> allows us to manipulate the models's typographic understanding to make it more robust against typographic attacks.
+    </p>
+
+    <div class="media-container">
+        <video autoplay loop muted playsinline>
+            <source src="figures/post1.mp4" type="video/mp4">
+            <img src="figures/post1.gif" alt="Typographic attack example: Musk labeled as US President">
+        </video>
+        <div class="media-caption">
+            Typographic attacks work by overlaying text that conflicts with the true image content, causing CLIP to attend to the text rather than the visual features.
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== SECTION 2 ===== -->
+<hr class="section-divider">
+<div class="section" id="layers">
+    <h2 class="section-heading">Where Does Typographic Understanding Emerge?</h2>
+    <p>
+        To understand the attack, we first ask: <em>at which layers does CLIP start to process the injected text?</em>
+        Using linear probes across all layers of the model, we reveal a striking pattern:
+    </p>
+
+    <div class="callout">
+        <strong>Visual understanding</strong> of the image content builds gradually across layers,<br>
+        while <strong>typographic understanding</strong> suddenly emerges only in the latter layers.
+    </div>
+
+    <p>
+        This localization is key: the attack does not affect the entire model uniformly. It is limited to a specific subset of later-layer components &mdash; which enables our targeted defense.
+    </p>
+
+    <div class="media-container">
+        <video autoplay loop muted playsinline>
+            <source src="figures/post2.mp4" type="video/mp4">
+            <img src="figures/post2.gif" alt="Linear probes showing visual vs typographic understanding by layer">
+        </video>
+        <div class="media-caption">
+            Linear probe accuracy across CLIP layers. Visual understanding (image class) accumulates gradually, while typographic understanding (text label) spikes sharply in later layers.
+        </div>
+    </div>
+
+
+</div>
+
+
+<!-- ===== SECTION 3 ===== -->
+<hr class="section-divider">
+<div class="section" id="scores">
+    <h2 class="section-heading">Typographic Attention Scores (T<sub>i</sub>)</h2>
+    <p>
+        To pinpoint which attention heads are responsible for transmitting typographic information, we introduce the <strong>Typographic Attention Score T<sub>i</sub></strong>. It measures how strongly the CLS token attends to the text region in the image for a given attention head.
+        <br><br>
+        The higher T<sub>i</sub>, the stronger the head&rsquo;s attention bias towards the injected text.
+    </p>
+
+    <div class="media-container">
+        <video autoplay loop muted playsinline>
+            <source src="figures/post3.mp4" type="video/mp4">
+            <img src="figures/post3.gif" alt="Typographic Attention Score visualization">
+        </video>
+        <div class="media-caption">
+            Typographic Attention Scores (T<sub>i</sub>) per attention head across layers. Heads with high T<sub>i</sub> concentrate their CLS attention on text patches rather than semantic image content.
+        </div>
+    </div>
+
+    <p>
+        By overlaying the locations of <strong>high-T<sub>i</sub> heads</strong> with the layer-wise <strong>typographic probe accuracy</strong>, a clear picture emerges:
+        Only once the high-T<sub>i</sub> heads appear in a layer does the typographic probe accuracy take off. These heads are the causal mechanism behind the attack.
+    </p>
+
+    <div class="media-container">
+        <img src="figures/post4.png" alt="High-Ti heads aligned with typographic probe accuracy lift-off">
+        <div class="media-caption">
+            Heads with T<sub>i</sub> &gt; 50 (blue) and typographic probe accuracy (purple) across layers. The attack only becomes effective once the high-T<sub>i</sub> heads are active.
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== SECTION 5 ===== -->
+<hr class="section-divider">
+<div class="section" id="defense">
+    <h2 class="section-heading">The Defense: Circuit Ablation</h2>
+    <p>
+        Given that a small set of attention heads enables the typographic attack, the natural defense is to turn them off. But naively disabling all high-T<sub>i</sub> heads degrades general model performance. The right approach:
+    </p>
+
+    <ul class="steps">
+        <li><strong>1.</strong> Construct a sparse <em>typographic circuit C</em> &mdash; the minimal set of heads responsible for the attack.</li>
+        <li><strong>2.</strong> Demonstrate the circuit&rsquo;s causality via targeted interventions.</li>
+        <li><strong>3.</strong> Ablate the circuit to shut down typographic processing while preserving visual understanding.</li>
+    </ul>
+
+    <div class="media-container">
+        <video autoplay loop muted playsinline>
+            <source src="figures/post6.mp4" type="video/mp4">
+            <img src="figures/post6.gif" alt="Typographic circuit construction and ablation">
+        </video>
+        <div class="media-caption">
+            The sparse typographic circuit C (highlighted heads) identified through T<sub>i</sub> scores and causal analysis. Ablating only this circuit is sufficient to remove typographic vulnerability.
+        </div>
+    </div>
+
+    <p>
+        To confirm that the circuit is <em>causal</em> for the attack success, we manipulate the CLS-to-CLS self-attention &mdash; the attention the CLS token pays to itself. This acts as a control knob for how much the CLS token focuses on text patches:
+    </p>
+    <div class="callout">
+        <strong>High self-attention &rarr; less attention on text &rarr; correct classification</strong><br>
+        <strong>Low self-attention &rarr; more attention on text &rarr; misclassification</strong>
+    </div>
+
+    <div class="media-container">
+        <img src="figures/post7.png" alt="CLS-to-CLS attention intervention diagram">
+        <div class="media-caption">
+            Schematic of the causality intervention. Modulating the CLS-to-CLS self-attention deterministically steers the model toward or away from typographic misclassification.
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== SECTION 7 ===== -->
+<hr class="section-divider">
+<div class="section" id="results">
+    <h2 class="section-heading">Applications of Dyslexify</h2>
+    <p>
+        The intervention results are unambiguous. Tuning the CLS-to-CLS self-attention produces a smooth, monotone transition from misclassification to correct classification:
+    </p>
+
+    <div class="media-container">
+        <video autoplay loop muted playsinline>
+            <source src="figures/post8.mp4" type="video/mp4">
+            <img src="figures/post8.gif" alt="Classification probabilities vs CLS self-attention level">
+        </video>
+        <div class="media-caption">
+            Classification confidence as a function of CLS-to-CLS self-attention. As self-attention increases, the model transitions from typographically-induced misclassification back to correct visual classification.
+        </div>
+    </div>
+
+    <p>
+        The same principle applies to safety-relevant scenarios. We use Dyslexify to successfully defend against typographic attacks on the skin-lesion foundation model <a href="https://huggingface.co/yyupenn/whylesionclip" target="_blank">WhyLesionCLIP</a>. </p>
+
+    <div class="media-container">
+        <img src="figures/medical-1.png" alt="Medical foundation model results: skin lesion diagnosis under typographic attacks">
+        <div class="media-caption">
+            Dyslexify applied to a medical foundation model for skin lesion diagnosis. Circuit ablation reduces susceptibility to typographic manipulation in safety-critical clinical settings.
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== SECTION 7 ===== -->
+<hr class="section-divider">
+<div class="section" id="Conclusion">
+    <h2 class="section-heading">Conclusion</h2>
+    <p>
+        We have shown that interpretability can be useful for AI security. In fact we understood so well how Vision Transformers read text in images, that we were able to defend against typographic attacks. Throughout the project we did not calculate a single backward making Dyslexify cheap and scalable.
+        <br><br>
+        While we focused on typographic attacks in this work, our work build on a key insight of how Vision Transformers read text in images. They do not entangle the capabilties for text understanding and object understanding. This was not clear before. We hope that this work will enable more research on text understanding of multi-modal models.
+    </p>
+</div>
+
+
+<!-- ===== BIBTEX ===== -->
+<hr class="section-divider">
+<div class="section" id="citation">
+    <h2 class="section-heading">BibTeX</h2>
+
+    <div class="bibtex-container">
+        <div class="bibtex-box">
+            <button class="copy-btn" type="button" aria-label="Copy BibTeX" onclick="copyBibtex()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            </button>
+            <pre id="bibtex">@inproceedings{hufe2025dyslexify,
+    title={Dyslexify: A Mechanistic Defense Against Typographic Attacks in CLIP},
+    author={Hufe, Lorenz and Venhoff, Constantin and Dreyer, Maximilian
+            and Purelku, Erblina and Lapuschkin, Sebastian and Samek,
+            Wojciech},
+    booktitle={Mechanistic Interpretability Workshop NeurIPS 2025},
+    year={2025},
+    url={https://openreview.net/forum?id=HNGEzXwbJw}
+}</pre>
+        </div>
+        <div id="copy-status" class="copy-status"></div>
+    </div>
+</div>
+
+</div><!-- /container -->
+
+<footer>
+    <p>
+        This website is built on the <a href="https://shikun.io/projects/clarity">Clarity Template</a>, designed by <a href="https://shikun.io/">Shikun Liu</a>.
+    </p>
+</footer>
+
+<!-- Thank you overlay -->
+<div id="thankyou-overlay">
+    <span>THANK YOU</span>
+</div>
+
+<!-- Lightbox overlay -->
+<div id="lightbox" role="dialog" aria-modal="true">
+    <button id="lightbox-close" aria-label="Close">&times;</button>
+    <img id="lightbox-img" src="" alt="">
+    <video id="lightbox-video" controls></video>
+</div>
+
+<script>
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lbImg    = document.getElementById('lightbox-img');
+    const lbVideo  = document.getElementById('lightbox-video');
+
+    document.querySelectorAll('.media-container img, .image-col img, .teaser img').forEach(img => {
+        img.classList.add('zoomable');
+        img.addEventListener('click', () => {
+            lbImg.src = img.src;
+            lbImg.alt = img.alt;
+            lbImg.style.display = '';
+            lbVideo.style.display = 'none';
+            lightbox.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    document.querySelectorAll('.media-container video').forEach(vid => {
+        const wrap = document.createElement('div');
+        wrap.className = 'video-wrap';
+        vid.parentNode.insertBefore(wrap, vid);
+        wrap.appendChild(vid);
+
+        const btn = document.createElement('button');
+        btn.className = 'video-expand-btn';
+        btn.setAttribute('aria-label', 'Expand video');
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+            <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg>`;
+        wrap.appendChild(btn);
+
+        btn.addEventListener('click', () => {
+            const src = vid.querySelector('source')?.src || vid.src || '';
+            lbVideo.src = src;
+            lbVideo.style.display = '';
+            lbImg.style.display = 'none';
+            lightbox.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            lbVideo.play();
+        });
+    });
+
+    function closeLightbox() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+        lbVideo.pause();
+        lbVideo.src = '';
+    }
+
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    function showThankyou() {
+        const overlay = document.getElementById("thankyou-overlay");
+        overlay.classList.remove("show");
+        void overlay.offsetWidth; // force reflow to restart animation
+        overlay.classList.add("show");
+        setTimeout(() => overlay.classList.remove("show"), 1800);
+    }
+
+    function copyBibtex() {
+        const el = document.getElementById("bibtex");
+        const status = document.getElementById("copy-status");
+        const text = el.innerText.trim();
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                status.textContent = "Copied!";
+                setTimeout(() => status.textContent = "", 1200);
+                showThankyou();
+            }).catch(() => fallbackCopy(text, status));
+        } else {
+            fallbackCopy(text, status);
+        }
+    }
+
+    function fallbackCopy(text, status) {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        ta.style.top = "0";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+
+        try {
+            document.execCommand("copy");
+            status.textContent = "Copied!";
+            showThankyou();
+        } catch (e) {
+            status.textContent = "Copy failed - select manually.";
+        }
+
+        document.body.removeChild(ta);
+        window.getSelection().removeAllRanges();
+        setTimeout(() => status.textContent = "", 1200);
+    }
+</script>
+
+</body>
+</html>
