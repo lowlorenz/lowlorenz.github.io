@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historymind</title>
+    <title>AI Historian</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%8F%B3%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,14 +16,14 @@
         }
 
         :root {
-            --bg: #f0ece2;
-            --bg-card: #f6f3ec;
-            --ink: #1a1a1a;
-            --ink-soft: #4a453d;
-            --ink-muted: #8a8478;
-            --accent: #8b4513;
-            --accent-hover: #a0522d;
-            --rule: #c8c1b4;
+            --bg: #000000;
+            --bg-card: #0d0d0d;
+            --ink: #ffffff;
+            --ink-soft: #cccccc;
+            --ink-muted: #888888;
+            --accent: #ff0000;
+            --accent-hover: #cc0000;
+            --rule: #2a2a2a;
             --mono: 'IBM Plex Mono', 'Courier New', monospace;
         }
 
@@ -36,9 +36,6 @@
             font-family: var(--mono);
             color: var(--ink);
             padding: 2rem 1rem;
-            background-image: 
-                radial-gradient(ellipse at 20% 50%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(107, 91, 67, 0.04) 0%, transparent 40%);
         }
 
         .card {
@@ -239,7 +236,7 @@
 </head>
 <body>
     <div class="card">
-        <h1 class="brand">Historymind</h1>
+        <h1 class="brand">AI Historian</h1>
 
         <p class="tagline">Building an <em>AI scientist</em> for history — Oxford, UK.</p>
 
@@ -280,10 +277,20 @@
                 <span class="person-role">DPhil student, University of Oxford</span>
                 <a class="person-link" href="mailto:gavin.greif@history.ox.ac.uk">gavin.greif@history.ox.ac.uk</a>
             </div>
+            <div class="person">
+                <span class="person-name">Zhenfei (Jeremy) Yin</span>
+                <span class="person-role">Postdoc, University of Oxford</span>
+                <a class="person-link" href="mailto:henfei.yin@sydney.edu.au">henfei.yin@sydney.edu.au</a>
+            </div>
+            <div class="person">
+                <span class="person-name">Pieter Francois</span>
+                <span class="person-role">Professor, University of Oxford</span>
+                <a class="person-link" href="mailto:pieter.francois@anthro.ox.ac.uk">pieter.francois@anthro.ox.ac.uk</a>
+            </div>
         </div>
 
         <footer class="footer">
-            Historymind · Oxford
+            AI Historian · Oxford
         </footer>
     </div>
 </body>
