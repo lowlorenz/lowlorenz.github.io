@@ -1,0 +1,138 @@
+
+Typographic attacks inject text into images, leading to targeted misclassifications.
+
+ 
+
+Example: A photo of Elon Musk labeled "US President" tricks CLIP into thinking this is the U.S. president.
+
+
+
+We studied the behavior of CLIP under typographic attacks and found a defense.🧵(1/11)
+
+First let's understand at which layers the attack becomes effective.
+
+We use linear probes to show that
+
+🖼️ Visual understanding builds gradually
+
+💬 Typographic understanding suddenly emerges in later layer
+
+🧵(2/11)
+
+To detect which attention heads are causal for typographic understanding, we introduce a Typographic Attention Scores (T_i). It measures how much the CLS token attends to the text region in the image.
+
+
+
+💡The higher T_i, the stronger the heads attention bias towards text.
+
+🧵(3/11)
+
+Let's connect the dots...
+
+🟦 Heads with T_i > 50
+
+🟪 Probe accuracy of typographic probe
+
+Only once the high T_i heads are present the typographic probe accuracy lifts off.
+
+🧵(4/11)
+
+
+Tag People
+
+Descriptions
+So a small set of heads enable typographic attack? Let's defend against attacks by turning them off.
+
+❌ Disable all of them → hurt overall non-typographic performance
+
+❌ Leave all of them → security risk is not addressed
+
+✅ Construct a sparse typographic circuit and ablate it
+
+So a small set of heads enable typographic attack?
+
+
+
+✅ Let's defend against typographic attacks by turning them off.
+
+1️⃣ Construct a sparse typographic circuit C
+
+2️⃣ show it's causality 
+
+3️⃣ ablate it.
+
+🧵(6/11)
+
+2️⃣ To demonstrate the C's causality we manipulate the attention pattern of the cls-to-cls attention. 
+
+
+
+⬆️ High self attention → less attention on text  
+
+⬇️ Low self attention → more attention on text
+
+
+
+This diagram demonstrates our intervention👇
+
+🧵(7/11)
+
+The results are crystal clear 💎 Our circuit is causal.
+
+
+
+⬆️ High self attention → less attention on text  → correct classification
+
+⬇️ Low self attention → more attention on text → misclassification
+
+
+
+🧵(8/11)
+
+
+Tag People
+
+Descriptions
+Here are some examples of safety relevant typographic attacks and how their (mis)classifications are affected by tuning the cls-to-cls self attention:
+
+ 
+
+🧵(9/11)
+
+🧠 In summary: we create a defense against typographic attacks by utilizing mechanistic interpretability methods. By circuit ablating attention heads with high Typographic Attention Scores (T_i). 
+
+
+
+Link to the paper: https://arxiv.org/pdf/2508.20570
+
+
+
+🧵(10/11)
+
+Cheers to @cvenhoff00 and all the others involved in this project.
+
+
+
+🧵(11/11)
+
+Tips to get started
+
+Press 
+ctrl
+⏎
+ or add 2 empty lines to continue your thread
+Drop videos, images & GIFs in the editor
+Tag your drafts by clicking the  button in the top right corner
+Share your drafts to get feedback 
+
+Lorenz's Writing Assistant
+AI that writes like you
+
+Learns from your writing
+
+Understands social media
+
+Turns ideas into posts that land
+
+BETA
+
