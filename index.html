@@ -5,6 +5,47 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lorenz Hufe</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="canonical" href="https://hufe.info/">
+
+<meta name="description" content="ELLIS PhD candidate at Fraunhofer Heinrich Hertz Institute and the University of Oxford, working on AI for history: machine-learning systems that help historians read, connect, and reason about historical sources at scale.">
+<meta name="author" content="Lorenz Hufe">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lorenz Hufe">
+<meta property="og:description" content="ELLIS PhD candidate at Fraunhofer HHI and the University of Oxford, working on AI for history: machine-learning systems that help historians read, connect, and reason about historical sources at scale.">
+<meta property="og:url" content="https://hufe.info/">
+<meta property="og:image" content="https://hufe.info/profile.jpg">
+<meta property="og:image:width" content="640">
+<meta property="og:image:height" content="640">
+<meta property="og:site_name" content="Lorenz Hufe">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lorenz Hufe">
+<meta name="twitter:description" content="ELLIS PhD candidate at Fraunhofer HHI and Oxford, working on AI for history.">
+<meta name="twitter:image" content="https://hufe.info/profile.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Lorenz Hufe",
+  "url": "https://hufe.info/",
+  "image": "https://hufe.info/profile.jpg",
+  "jobTitle": "ELLIS PhD Candidate",
+  "affiliation": [
+    { "@type": "Organization", "name": "Fraunhofer Heinrich Hertz Institute" },
+    { "@type": "Organization", "name": "University of Oxford" }
+  ],
+  "email": "mailto:lorenz.hufe@bliss.berlin",
+  "sameAs": [
+    "https://github.com/lowlorenz",
+    "https://scholar.google.com/citations?user=BlI-rmsAAAAJ",
+    "https://linkedin.com/in/lorenz-hufe"
+  ]
+}
+</script>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-EC34MK1LKB"></script>
@@ -17,7 +58,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -32,6 +73,7 @@
     --faint:     #9a9a9a;
     --border:    #ecece6;            /* warm off-white border */
     --mono:      'IBM Plex Mono', ui-monospace, 'Courier New', monospace;
+    --serif:     'Spectral', Georgia, 'Times New Roman', serif;
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,6 +96,11 @@
     transition: color .12s, border-color .12s;
   }
   a:hover { color: var(--blue-mid); border-color: var(--blue-mid); }
+  a:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
 
   body {
     min-height: 100vh;
@@ -109,10 +156,11 @@
   }
 
   .hero-title {
-    font-weight: 600;
+    font-family: 'Bricolage Grotesque', var(--serif);
+    font-weight: 800;
     font-size: clamp(48px, 11.2vw, 168px);
-    line-height: 0.86;
-    letter-spacing: -0.045em;
+    line-height: 0.9;
+    letter-spacing: -0.025em;
     color: var(--ink);
     text-transform: uppercase;
   }
@@ -162,9 +210,16 @@
   .grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 48px;
+    grid-template-areas:
+      "about aside"
+      "pubs  aside";
+    column-gap: 48px;
+    align-items: start;
     margin-top: 44px;
   }
+  .col-main   { grid-area: about; }
+  .col-image  { grid-area: aside; }
+  .pubs-block { grid-area: pubs; }
 
   /* section heading style */
   .sec-head {
@@ -201,12 +256,13 @@
   /* main column */
   .col-main { min-width: 0; }
   .col-main p {
-    font-size: 13px;
-    line-height: 1.85;
-    margin-bottom: 14px;
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.68;
+    margin-bottom: 15px;
     color: var(--ink-soft);
   }
-  .col-main p strong { color: var(--ink); font-weight: 500; }
+  .col-main p strong { color: var(--ink); font-weight: 600; }
   .col-main p em {
     color: var(--ink);
     font-style: normal;
@@ -226,48 +282,36 @@
   .pubs { list-style: none; margin-top: 8px; }
   .pubs li {
     display: grid;
-    grid-template-columns: 36px 1fr;
-    gap: 18px;
-    padding: 18px 0;
+    grid-template-columns: 46px 1fr;
+    gap: 22px;
+    padding: 17px 0;
     border-bottom: 1px solid var(--border);
-    position: relative;
   }
-  .pubs li::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 18px; bottom: 18px;
-    width: 2px;
-    background: var(--blue);
-  }
-  .pubs .idx {
+  .pubs .yr {
     color: var(--blue);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
-    padding-left: 12px;
-    padding-top: 2px;
-    letter-spacing: 0.06em;
+    padding-top: 3px;
+    letter-spacing: 0.02em;
   }
   .pubs .body { min-width: 0; }
   .pubs .meta-line {
     color: var(--muted);
-    font-size: 11.5px;
+    font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
   }
-  .pubs .meta-line b { color: var(--ink); font-weight: 500; }
-  .pubs .meta-line .sep { color: var(--blue); margin: 0 7px; }
-  .pubs .meta-line .oral {
-    color: var(--blue);
-    font-variant: small-caps;
-    letter-spacing: 0.14em;
-    font-weight: 500;
-  }
+  .pubs .meta-line .sep { color: var(--faint); margin: 0 8px; }
+  .pubs .meta-line .oral { color: var(--blue); font-weight: 600; }
+  .pubs .meta-line a { color: var(--muted); border-bottom: none; }
+  .pubs .meta-line a:hover { color: var(--blue-mid); }
   .pubs .body a.title {
+    font-family: var(--serif);
     color: var(--ink);
-    font-size: 15.5px;
-    font-weight: 500;
-    line-height: 1.4;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.32;
     border-bottom: none;
     display: inline-block;
     margin-bottom: 6px;
@@ -288,8 +332,80 @@
     border: 1px solid var(--border);
     padding: 6px;
     background: var(--bg-alt);
+    border-radius: 14px;
     margin-bottom: 20px;
-    filter: grayscale(1) contrast(1.03) brightness(1.02);
+  }
+
+  /* events — distorted timeline (node spacing ∝ real date gaps) */
+  .events-block { margin-top: 36px; }
+  .timeline {
+    list-style: none;
+    position: relative;
+    margin-top: 16px;
+    padding-left: 26px;
+  }
+  .timeline::before {                 /* the spine */
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    bottom: 8px;
+    width: 1.5px;
+    background: var(--blue);
+    opacity: 0.85;
+  }
+  .tl-event { position: relative; }
+  .tl-event::before {                 /* node sitting on the spine */
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 4px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--blue);
+    box-shadow: 0 0 0 3px var(--bg);
+  }
+  .tl-event::after {                  /* stub merging the event into the spine */
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 7px;
+    width: 15px;
+    height: 1px;
+    background: var(--blue);
+    opacity: 0.45;
+  }
+  .tl-meta {
+    color: var(--blue);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .tl-meta .tl-kind {
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    font-variant: small-caps;
+    text-transform: lowercase;
+  }
+  .tl-title {
+    font-family: var(--serif);
+    color: var(--ink);
+    font-size: 14.5px;
+    line-height: 1.32;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  a.tl-title { display: block; border-bottom: none; }
+  a.tl-title:hover { color: var(--blue-mid); }
+  .tl-where {
+    color: var(--muted);
+    font-size: 10.5px;
+    line-height: 1.45;
+    letter-spacing: 0.02em;
   }
 
   /* contact block */
@@ -351,10 +467,25 @@
   .w3 { animation-delay: 0.45s; }
   .w4 { animation-delay: 0.60s; }
 
+  /* ── reduced motion: show everything immediately ──────── */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .wipe, .slash-rule { animation: none !important; }
+    .reveal { opacity: 1; transform: none; }
+    .wipe, .slash-rule { transform: none; }
+  }
+
   /* ── responsive ───────────────────────────────────────── */
   @media (max-width: 960px) {
-    .grid { grid-template-columns: 1fr; gap: 36px; }
+    .grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "about"
+        "aside"
+        "pubs";
+      gap: 36px;
+    }
     .col-image { max-width: 420px; }
+    .pubs-block { margin-top: 0; }
   }
   @media (max-width: 720px) {
     body { padding: 16px; }
@@ -372,13 +503,13 @@
 </head>
 <body>
 
-<canvas id="noise-bg"></canvas>
+<canvas id="noise-bg" aria-hidden="true"></canvas>
 
 <div class="frame">
 
   <div class="stamp-strip reveal d1">
     <span class="ident">Lorenz Hufe</span>
-    <span class="right">Berlin &nbsp;·&nbsp; Updated April 2026</span>
+    <span class="right">Berlin &nbsp;·&nbsp; Updated June 2026</span>
   </div>
 
   <header class="hero">
@@ -395,110 +526,110 @@
     <div class="col-main reveal d4">
 
       <div class="sec-head">
-        <span class="num">§01</span><span class="name">Summary</span>
-        <span class="tail">— about</span>
+        <span class="name">About</span>
       </div>
 
       <p>
-        Lorenz is an ELLIS PhD candidate at <strong>Fraunhofer Heinrich Hertz
+        I am an ELLIS PhD candidate at <strong>Fraunhofer Heinrich Hertz
         Institute</strong> under Prof. Wojciech Samek, with a secondary affiliation at
-        the <strong>University of Oxford</strong>, where he is co-supervised by
+        the <strong>University of Oxford</strong>, where I am co-supervised by
         Dr. Christian Schröder de Witt and Prof. Philip Torr.
-        His current research is focused on
-        <em><a class="bio-link" href="https://ai-historian.com" target="_blank">AI for history</a></em>
-        — building machine-learning systems that help historians read, connect,
+        My current research is focused on
+        <em><a class="bio-link" href="https://ai-historian.com" target="_blank">AI for history</a></em>:
+        building machine-learning systems that help historians read, connect,
         and reason about historical sources at scale.
       </p>
       <p>
-        Previously he worked on <em>mechanistic interpretability</em> of multimodal
+        Previously I worked on <em>mechanistic interpretability</em> of multimodal
         foundation models, with a focus on typographic understanding.
-        He co-founded
+        I co-founded
         <a href="https://bliss.berlin" target="_blank">Bliss e.V.</a>, a Berlin-based
-        non-profit research collective, and remains a core contributor to the
+        non-profit research collective, and remain a core contributor to the
         <a href="https://github.com/Prisma-Multimodal/ViT-Prisma" target="_blank">ViT-Prisma</a>
         toolkit for vision and video interpretability.
       </p>
-      <div class="pubs-block">
+    </div>
+
+    <!-- ─── PUBLICATIONS (after picture & socials on mobile) ─── -->
+    <div class="pubs-block reveal d6">
         <div class="sec-head">
-          <span class="num">§02</span><span class="name">Publications</span>
-          <span class="tail">— 8 entries · 2022 – 2026</span>
+          <span class="name">Publications</span>
         </div>
         <ol class="pubs">
 
           <li>
-            <span class="idx">01</span>
+            <span class="yr">2026</span>
             <div class="body">
-              <div class="meta-line"><b>2026·04</b><span class="sep">/</span>arXiv preprint<span class="sep">/</span><a href="https://arxiv.org/abs/2604.03553" target="_blank">arXiv:2604.03553</a></div>
+              <div class="meta-line"><a href="https://arxiv.org/abs/2604.03553" target="_blank">arXiv preprint</a></div>
               <a class="title" href="https://arxiv.org/abs/2604.03553" target="_blank">Towards the AI Historian: Agentic Information Extraction from Primary Sources</a>
               <div class="authors"><u>L. Hufe</u>, N. Griesshaber, G. Greif, S. O. Eck, P. Torr</div>
             </div>
           </li>
 
           <li>
-            <span class="idx">02</span>
+            <span class="yr">2026</span>
             <div class="body">
-              <div class="meta-line"><b>2026·04</b><span class="sep">/</span><span class="oral">ICLR 2026</span><span class="sep">/</span><a href="/dyslexify/">project page</a><span class="sep">/</span><a href="https://arxiv.org/abs/2508.20570" target="_blank">arXiv:2508.20570</a></div>
-              <a class="title" href="/dyslexify/">Towards Mechanistic Defenses Against Typographic Attacks in CLIP</a>
-              <div class="authors"><u>L. Hufe</u>, C. Venhoff, M. Dreyer, S. Lapuschkin, W. Samek</div>
+              <div class="meta-line"><span class="oral">ICLR 2026</span><span class="sep">·</span><a href="/dyslexify/">project page</a><span class="sep">·</span><a href="https://arxiv.org/abs/2508.20570" target="_blank">arXiv</a></div>
+              <a class="title" href="/dyslexify/">Dyslexify: A Mechanistic Defense Against Typographic Attacks in CLIP</a>
+              <div class="authors"><u>L. Hufe</u>, C. Venhoff, E. Purelku, M. Dreyer, S. Lapuschkin, W. Samek</div>
             </div>
           </li>
 
           <li>
-            <span class="idx">03</span>
+            <span class="yr">2025</span>
             <div class="body">
-              <div class="meta-line"><b>2025·08</b><span class="sep">/</span>arXiv preprint<span class="sep">/</span><a href="https://arxiv.org/abs/2508.05374" target="_blank">arXiv:2508.05374</a></div>
+              <div class="meta-line"><a href="https://arxiv.org/abs/2508.05374" target="_blank">arXiv preprint</a></div>
               <a class="title" href="https://arxiv.org/abs/2508.05374" target="_blank">The TUB Sign Language Corpus Collection</a>
-              <div class="authors">E. Avramidis, V. Czehmann, F. Deckert, <u>L. Hufe</u>, A. Lipski, Y. A. Q. Villalobos, T. K. Rhee, M. Shi, L. Stölting, F. Nunnari, S. Möller</div>
+              <div class="authors">E. Avramidis, V. Czehmann, F. Deckert, <u>L. Hufe</u>, et al.</div>
             </div>
           </li>
 
           <li>
-            <span class="idx">04</span>
+            <span class="yr">2025</span>
             <div class="body">
-              <div class="meta-line"><b>2025·05</b><span class="sep">/</span>arXiv preprint<span class="sep">/</span><a href="https://arxiv.org/abs/2505.20229" target="_blank">arXiv:2505.20229</a></div>
+              <div class="meta-line"><a href="https://arxiv.org/abs/2505.20229" target="_blank">arXiv preprint</a></div>
               <a class="title" href="https://arxiv.org/abs/2505.20229" target="_blank">From What to How: Attributing CLIP's Latent Components Reveals Unexpected Semantic Reliance</a>
               <div class="authors">M. Dreyer, <u>L. Hufe</u>, J. Berend, T. Wiegand, S. Lapuschkin, W. Samek</div>
             </div>
           </li>
 
           <li>
-            <span class="idx">05</span>
+            <span class="yr">2025</span>
             <div class="body">
-              <div class="meta-line"><b>2025·04</b><span class="sep">/</span><span class="oral">CVPR Workshop · Oral</span><span class="sep">/</span><a href="https://arxiv.org/abs/2504.19475" target="_blank">arXiv:2504.19475</a></div>
+              <div class="meta-line"><span class="oral">CVPR Workshop · Oral</span><span class="sep">·</span><a href="https://arxiv.org/abs/2504.19475" target="_blank">arXiv</a></div>
               <a class="title" href="https://arxiv.org/abs/2504.19475" target="_blank">Prisma: An Open Source Toolkit for Mechanistic Interpretability in Vision and Video</a>
-              <div class="authors">S. Joseph, P. Suresh, <u>L. Hufe</u>, E. Stevinson, R. Graham, Y. Vadi, D. Bzdok, S. Lapuschkin, L. Sharkey, B. A. Richards</div>
+              <div class="authors">S. Joseph, P. Suresh, <u>L. Hufe</u>, et al.</div>
             </div>
           </li>
 
           <li>
-            <span class="idx">06</span>
+            <span class="yr">2025</span>
             <div class="body">
-              <div class="meta-line"><b>2025·04</b><span class="sep">/</span><span class="oral">CVPR Workshop</span><span class="sep">/</span><a href="https://arxiv.org/abs/2504.08729" target="_blank">arXiv:2504.08729</a></div>
+              <div class="meta-line"><span class="oral">CVPR Workshop</span><span class="sep">·</span><a href="https://arxiv.org/abs/2504.08729" target="_blank">arXiv</a></div>
               <a class="title" href="https://arxiv.org/abs/2504.08729" target="_blank">Steering CLIP's Vision Transformer with Sparse Autoencoders</a>
-              <div class="authors">S. Joseph, P. Suresh, E. Goldfarb, <u>L. Hufe</u>, Y. Gandelsman, R. Graham, D. Bzdok, W. Samek, B. A. Richards</div>
+              <div class="authors">S. Joseph, P. Suresh, E. Goldfarb, <u>L. Hufe</u>, et al.</div>
             </div>
           </li>
 
           <li>
-            <span class="idx">07</span>
+            <span class="yr">2025</span>
             <div class="body">
-              <div class="meta-line"><b>2025·04</b><span class="sep">/</span><span class="oral">DMLR</span><span class="sep">/</span><a href="https://bliss-e-v.github.io/SCAM-project-page/" target="_blank">project page</a><span class="sep">/</span><a href="https://arxiv.org/abs/2504.04893" target="_blank">arXiv:2504.04893</a></div>
+              <div class="meta-line"><span class="oral">DMLR</span><span class="sep">·</span><a href="https://bliss-e-v.github.io/SCAM-project-page/" target="_blank">project page</a><span class="sep">·</span><a href="https://arxiv.org/abs/2504.04893" target="_blank">arXiv</a></div>
               <a class="title" href="https://bliss-e-v.github.io/SCAM-project-page/" target="_blank">SCAM: A Real-World Typographic Robustness Evaluation for Multimodal Foundation Models</a>
               <div class="authors">J. Westerhoff, E. Purelku, J. Hackstein, J. Loos, L. Pinetzki, <u>L. Hufe</u></div>
             </div>
           </li>
 
           <li>
-            <span class="idx">08</span>
+            <span class="yr">2022</span>
             <div class="body">
-              <div class="meta-line"><b>2022·12</b><span class="sep">/</span><span class="oral">WMT 2022</span><span class="sep">/</span><a href="https://aclanthology.org/2022.wmt-1.95/" target="_blank">ACL Anthology</a></div>
+              <div class="meta-line"><span class="oral">WMT 2022</span><span class="sep">·</span><a href="https://aclanthology.org/2022.wmt-1.95/" target="_blank">ACL Anthology</a></div>
               <a class="title" href="https://aclanthology.org/2022.wmt-1.95/" target="_blank">Experimental Machine Translation of Swiss German Sign Language via 3D Augmentation of Body Keypoints</a>
               <div class="authors"><u>L. Hufe</u>, E. Avramidis</div>
             </div>
           </li>
 
         </ol>
-      </div>
     </div>
 
     <!-- ─── PORTRAIT / CONTACT COLUMN ─── -->
@@ -507,15 +638,53 @@
 
       <div class="contact-block">
         <div class="sec-head">
-          <span class="num">§03</span><span class="name">Channels</span>
-          <span class="tail">contact</span>
+          <span class="name">Channels</span>
         </div>
         <ul class="contact-list">
-          <li><a href="mailto:lorenz.hufe@bliss.berlin"><span class="k">@</span><span>lorenz.hufe@bliss.berlin</span></a></li>
-          <li><a href="https://github.com/lowlorenz" target="_blank"><span class="k">GH</span><span>lowlorenz</span></a></li>
-          <li><a href="https://scholar.google.com/citations?user=BlI-rmsAAAAJ" target="_blank"><span class="k">GS</span><span>scholar profile</span></a></li>
-          <li><a href="https://linkedin.com/in/lorenz-hufe" target="_blank"><span class="k">LI</span><span>lorenz-hufe</span></a></li>
+          <li><a href="mailto:lorenz.hufe@bliss.berlin"><span class="k">Email</span><span>lorenz.hufe@bliss.berlin</span></a></li>
+          <li><a href="https://github.com/lowlorenz" target="_blank"><span class="k">GitHub</span><span>lowlorenz</span></a></li>
+          <li><a href="https://scholar.google.com/citations?user=BlI-rmsAAAAJ" target="_blank"><span class="k">Google Scholar</span><span>scholar profile</span></a></li>
+          <li><a href="https://linkedin.com/in/lorenz-hufe" target="_blank"><span class="k">LinkedIn</span><span>lorenz-hufe</span></a></li>
         </ul>
+      </div>
+
+      <div class="events-block">
+        <div class="sec-head">
+          <span class="name">Talks</span>
+        </div>
+        <ol class="timeline">
+
+          <li class="tl-event">
+            <div class="tl-meta">Jun 22–23</div>
+            <div class="tl-title">Accelerating Historical Research with AI Co-Historians</div>
+            <div class="tl-where">Computational Economic History Workshop · Vienna</div>
+          </li>
+
+          <li class="tl-event" style="margin-top:22px">
+            <div class="tl-meta">Jun 15</div>
+            <a class="tl-title" href="/dyslexify/">Dyslexify: A Mechanistic Defense Against Typographic Attacks in CLIP</a>
+            <div class="tl-where">Bliss Reading Group · Berlin</div>
+          </li>
+
+          <li class="tl-event" style="margin-top:22px">
+            <div class="tl-meta">Jun 08</div>
+            <div class="tl-title">Understanding Typographic Attacks</div>
+            <div class="tl-where">Palo Alto Networks</div>
+          </li>
+
+          <li class="tl-event" style="margin-top:28px">
+            <div class="tl-meta">May 29</div>
+            <div class="tl-title">Accelerating Historical Research with AI Co-Historians</div>
+            <div class="tl-where">BIFOLD Workshop · “AI to Accelerate Scientific Understanding”</div>
+          </li>
+
+          <li class="tl-event" style="margin-top:40px">
+            <div class="tl-meta">May 13–14</div>
+            <div class="tl-title">AI for Digital Historical Scholarship</div>
+            <div class="tl-where">Aarhus University</div>
+          </li>
+
+        </ol>
       </div>
     </aside>
 
