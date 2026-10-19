@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://hufe.info/abegg/">
+<meta name="description" content="Wilhelm Abegg (1876–1951): a biography in which every claim opens the historical newspaper clipping that supports it.">
+<meta name="author" content="Lorenz Hufe">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Abegg Source Reader">
+<meta property="og:description" content="Wilhelm Abegg (1876–1951): a biography in which every claim opens the historical newspaper clipping that supports it.">
+<meta property="og:url" content="https://hufe.info/abegg/">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EC34MK1LKB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EC34MK1LKB');
+</script>
+<title>Abegg Source Reader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-size: 14px; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* Layout: split reading desk. Prose on the left; on the right, newspaper clippings cut to the passage, pinned like a scrapbook page. */
+:root {
+  --paper: #f2f3f0;
+  --sheet: #fbfbf9;
+  --ink: #1c2227;
+  --muted: #5d676f;
+  --faint: #8a939a;
+  --rule: #d9ddd9;
+  --prussian: #1f4e79;
+  --prussian-soft: #e4ecf3;
+  --mark: #c4841a;
+  --mark-fill: rgba(196, 132, 26, 0.14);
+  --novel: #a23b2c;
+  --partly: #8a6d1f;
+  --known: #4f6b4a;
+  --base: #6b6f78;
+  --clip-shadow: rgba(28, 34, 39, 0.10);
+  --scrim: rgba(12, 16, 20, 0.72);
+  --scan-bg: #e4e6e2;
+  --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #13171b; --sheet: #181d22; --ink: #e4e7e5; --muted: #9ba5ad; --faint: #6f7a83; --rule: #2a3239;
+    --prussian: #8bb6e2; --prussian-soft: #1c2936; --mark: #e2a843; --mark-fill: rgba(226, 168, 67, 0.18);
+    --novel: #e8806f; --partly: #d4b25e; --known: #93b48c; --base: #a3a8b2;
+    --clip-shadow: rgba(0, 0, 0, 0.45); --scrim: rgba(4, 6, 8, 0.82); --scan-bg: #0e1114;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #13171b; --sheet: #181d22; --ink: #e4e7e5; --muted: #9ba5ad; --faint: #6f7a83; --rule: #2a3239;
+  --prussian: #8bb6e2; --prussian-soft: #1c2936; --mark: #e2a843; --mark-fill: rgba(226, 168, 67, 0.18);
+  --novel: #e8806f; --partly: #d4b25e; --known: #93b48c; --base: #a3a8b2;
+  --clip-shadow: rgba(0, 0, 0, 0.45); --scrim: rgba(4, 6, 8, 0.82); --scan-bg: #0e1114;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); }
+* { box-sizing: border-box; }
+a { color: var(--prussian); }
+:focus-visible { outline: 2px solid var(--prussian); outline-offset: 2px; }
+button { font: inherit; color: inherit; }
+
+.desk { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); height: 100%; }
+.bio { overflow-y: auto; padding-block: 40px 64px; padding-inline: clamp(16px, 4vw, 56px); }
+.bio-inner { max-width: 60ch; margin: 0 auto; }
+.evidence { overflow-y: auto; min-width: 0; background: var(--sheet); border-left: 1px solid var(--rule); padding-block: 40px 64px; padding-inline: clamp(16px, 3vw, 40px); }
+.ev-inner { max-width: 640px; margin: 0 auto; display: grid; gap: 28px; }
+
+.eyebrow { font-family: var(--sans); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0; }
+h1 { font-weight: 500; font-size: clamp(32px, 4vw, 44px); line-height: 1.05; margin: 10px 0 6px; text-wrap: balance; letter-spacing: -0.01em; }
+.dates { font-family: var(--sans); font-size: 14px; color: var(--muted); margin: 0; }
+.dek { font-size: 19px; line-height: 1.5; font-style: italic; color: var(--muted); margin: 18px 0 0; }
+
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; margin: 24px 0 4px; padding: 12px 0; border-block: 1px solid var(--rule); font-family: var(--sans); font-size: 13px; color: var(--muted); }
+.switch { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; color: var(--ink); user-select: none; }
+.switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.track { width: 34px; height: 20px; border-radius: 99px; background: var(--rule); position: relative; transition: background .15s; flex: none; }
+.track::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--sheet); transition: transform .15s; }
+.switch input:checked + .track { background: var(--prussian); }
+.switch input:checked + .track::after { transform: translateX(14px); }
+.switch input:focus-visible + .track { outline: 2px solid var(--prussian); outline-offset: 2px; }
+.legend { display: none; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.findings .legend { display: flex; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+
+h2 { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 34px 0 8px; }
+.bio p { font-size: 18px; line-height: 1.7; margin: 0 0 14px; }
+
+.claim { cursor: pointer; border-radius: 2px; text-decoration: underline dotted var(--faint); text-decoration-thickness: 1px; text-underline-offset: 4px; transition: background-color .15s; }
+.claim:hover { background-color: var(--prussian-soft); }
+.findings .claim { text-decoration: underline solid var(--c); text-decoration-thickness: 1.5px; }
+.claim.active, .findings .claim.active { background-color: var(--mark-fill); text-decoration: underline solid var(--mark); text-decoration-thickness: 2px; }
+
+.method { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule); font-family: var(--sans); color: var(--muted); }
+.method p { font-size: 13px; line-height: 1.6; margin: 0 0 10px; }
+
+/* evidence */
+.claim-head { display: grid; gap: 8px; }
+.claim-head h3 { font-size: 24px; font-weight: 500; line-height: 1.25; margin: 0; text-wrap: balance; }
+.coverage { font-family: var(--sans); font-size: 13px; line-height: 1.55; color: var(--muted); margin: 0; display: flex; gap: 8px; align-items: baseline; }
+.coverage .dot { transform: translateY(-1px); }
+.coverage b { font-weight: 600; color: var(--ink); }
+
+.clipping { display: grid; gap: 10px; }
+.cl-source { font-family: var(--sans); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 2px 8px; align-items: baseline; }
+.cl-source b { color: var(--ink); font-weight: 600; }
+.pieces { display: grid; gap: 10px; justify-items: start; }
+.piece { position: relative; overflow: hidden; width: 100%; background: var(--scan-bg); box-shadow: 0 1px 2px var(--clip-shadow), 0 6px 18px var(--clip-shadow); border-radius: 1px; cursor: zoom-in; border: 0; padding: 0; display: block; }
+.piece img { display: block; width: 100%; height: auto; user-select: none; pointer-events: none; }
+.cl-actions { display: flex; flex-wrap: wrap; gap: 6px 16px; font-family: var(--sans); font-size: 13px; }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--prussian); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.quote { font-size: 16px; line-height: 1.6; margin: 2px 0 0; padding-left: 12px; border-left: 2px solid var(--mark); }
+.quote small { display: block; font-family: var(--sans); font-size: 11.5px; color: var(--faint); margin-top: 6px; }
+.rights { font-family: var(--sans); font-size: 12px; color: var(--faint); }
+
+.nosource { font-family: var(--sans); font-size: 14px; line-height: 1.6; color: var(--muted); border: 1px dashed var(--rule); border-radius: 4px; padding: 18px 20px; margin: 0; }
+
+/* full-page overlay */
+.overlay { position: fixed; inset: 0; z-index: 10; background: var(--scrim); display: grid; grid-template-rows: auto 1fr; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.overlay[hidden] { display: none; }
+.ov-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px 16px; background: var(--sheet); border-bottom: 1px solid var(--rule); font-family: var(--sans); font-size: 13px; color: var(--muted); }
+.ov-bar b { color: var(--ink); font-weight: 600; }
+.ov-bar .spacer { flex: 1; }
+.ov-bar button { border: 1px solid var(--rule); background: var(--sheet); border-radius: 4px; padding: 5px 10px; cursor: pointer; font-size: 13px; }
+.ov-bar button:hover { border-color: var(--prussian); }
+.scan { overflow: auto; overscroll-behavior: contain; }
+.scan-page { position: relative; margin: 0 auto; }
+.scan-page img { display: block; width: 100%; height: auto; max-width: none; }
+.box { position: absolute; border: 2px solid var(--mark); background: var(--mark-fill); border-radius: 2px; pointer-events: none; }
+
+@media (max-width: 860px) {
+  html, body { height: auto; }
+  .desk { display: block; height: auto; }
+  .bio { overflow: visible; padding-block: 28px 24px; }
+  .evidence { overflow: visible; border-left: 0; border-top: 1px solid var(--rule); padding-block: 28px 48px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+
+<div class="desk">
+  <article class="bio" id="bio">
+    <div class="bio-inner">
+      <h1>Wilhelm Abegg</h1>
+      <p class="dates">Philipp Friedrich Wilhelm Abegg · Berlin 1876 – Baden-Baden 1951</p>
+
+      <div class="toolbar">
+        <label class="switch" for="findingsToggle">
+          <input type="checkbox" id="findingsToggle">
+          <span class="track" aria-hidden="true"></span>
+          Show what the literature already knows
+        </label>
+        <div class="legend" aria-label="Colour key">
+          <span><i class="dot" style="background:var(--novel)"></i>Not in reference works</span>
+          <span><i class="dot" style="background:var(--partly)"></i>Partly known</span>
+          <span><i class="dot" style="background:var(--known)"></i>Widely known</span>
+          <span><i class="dot" style="background:var(--base)"></i>Baseline</span>
+        </div>
+      </div>
+
+      <h2>Origins and training</h2>
+      <p><span class="claim" data-c="C1">Philipp Friedrich Wilhelm Abegg was born in Berlin on 29 August 1876.</span> <span class="claim" data-c="C2">He attended the Wilhelms-Gymnasium there, studied law, took his doctorate in 1903 and passed the Great State Examination (große Staatsprüfung) in 1904.</span></p>
+
+      <h2>Provincial administration, 1904–1920</h2>
+      <p><span class="claim" data-c="C3">As a Regierungsassessor he served at Waldenburg in Silesia until July 1906, when he was transferred to the regional government in Oppeln.</span> <span class="claim" data-c="C4">In August 1906 he was appointed deputy chairman of the workers' insurance tribunal (Schiedsgericht für Arbeiterversicherung) for the Oppeln district. A further appointment to the post was announced in 1909 and revoked in May 1910.</span> <span class="claim" data-c="C5">In November 1912, by then a Regierungsrat, he was moved from Oppeln to the Royal Police Headquarters (Polizeipräsidium) in Berlin.</span></p>
+
+      <h2>Police reformer and State Secretary</h2>
+      <p><span class="claim" data-c="C6">Called into the Prussian Interior Ministry in August 1920, he headed its police division and directed the reorganisation of the Prussian police.</span> <span class="claim" data-c="C7">On his fiftieth birthday in August 1926 the Berliner Tageblatt called him the "creator of the modern Prussian police". In early 1927 the government told the Prussian Landtag that the reorganisation was essentially complete, that the main credit belonged to Abegg, and that he was owed the thanks of the state government.</span> <span class="claim" data-c="C8">In October 1926 he was appointed State Secretary in the Prussian Interior Ministry. He was a member of the German Democratic Party (DDP).</span></p>
+
+      <h2>A public republican</h2>
+      <p><span class="claim" data-c="C9">On 18 May 1928 he spoke on "Kampf um die Republik" to the Young Democrats (Jungdemokratische Bewegung) at the Lehrervereinshaus on Alexanderplatz, alongside the youth leader Normann Körber.</span> <span class="claim" data-c="C10">That spring he published <i>Die preußische Verwaltung und ihre Reform – Länder und Reich</i> (Sieben-Stäbe-Verlag), which the press cited in the debate on Prussian administrative reform.</span> <span class="claim" data-c="C11">In October 1928 he was elected president of the Reich Association of Mixed Choirs of Germany (Reichsverband der gemischten Chöre Deutschlands). He still held the office in April 1930, when the association's annual meeting closed with a concert of about a thousand singers from sixteen Berlin choirs.</span> <span class="claim" data-c="C12">In June 1929 he spoke publicly on the tasks of women in police work.</span></p>
+
+      <h2>Conflicts, 1930–1932</h2>
+      <p><span class="claim" data-c="C13">In November 1930 a Berlin court acquitted him in a private defamation suit brought by Senatspräsident Grützner. At Interior Minister Grzesinski's farewell in March 1930, Abegg had spoken of "slanderers and base fellows", and Grützner, whose letter to Minister-President Braun had preceded the resignation, took this as aimed at him. The court found that Abegg had acted to protect legitimate interests.</span> <span class="claim" data-c="C14">On 4 June 1932 he met the Communist deputies Ernst Torgler and Wilhelm Kasper. After the Prussian coup the Papen government presented the meeting as evidence of collusion with the KPD. In early November 1932 the Papen administration released Rudolf Diels's protocol of the meeting to the press. Abegg's lawyer Ernst Feder answered with Abegg's own account: he had urged the Communists to stop acts of terror, and Diels himself had proposed the meeting.</span></p>
+
+      <h2>Dismissal and exile</h2>
+      <p><span class="claim" data-c="C15">With the Preußenschlag of 20 July 1932 he was removed from office.</span> <span class="claim" data-c="C16">On 1 August 1932 the Reichsanzeiger announced that he had been placed in provisional retirement (einstweiliger Ruhestand).</span> <span class="claim" data-c="C17">At the end of February 1933 he fled to Switzerland and worked in Zürich as a lawyer in international law until 1949. He had been seeking to regain Swiss citizenship from Berlin since 1930.</span> <span class="claim" data-c="C18">On 29 April 1941 the Reichsanzeiger published a notice, dated 24 April, depriving him and his wife Hildegard, née Hofmeier, of German citizenship.</span> <span class="claim" data-c="C19">After a stroke in 1948 he died in Baden-Baden on 18 October 1951.</span></p>
+
+      <div class="method">
+        <p>Scans: <a href="https://huggingface.co/datasets/ai-historian/german-newspaper-pages" target="_blank" rel="noopener">ai-historian dataset</a> and holding libraries via DDB. Coverage checked 14 Oct 2026 against Wikipedia, NDB, HLS and DBE.</p>
+      </div>
+
+    </div>
+  </article>
+
+  <section class="evidence" id="evidence" aria-live="polite">
+    <div class="ev-inner" id="ev"></div>
+  </section>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Full newspaper page" hidden>
+  <div class="ov-bar">
+    <span id="ovTitle"></span>
+    <span class="spacer"></span>
+    <button type="button" id="ovFit">Whole page</button>
+    <button type="button" id="ovOut" aria-label="Zoom out">−</button>
+    <button type="button" id="ovIn" aria-label="Zoom in">+</button>
+    <a id="ovDdb" target="_blank" rel="noopener">Open at DDB ↗</a>
+    <button type="button" id="ovClose">Close</button>
+  </div>
+  <div class="scan" id="scan"><div class="scan-page" id="sp"></div></div>
+</div>
+
+<script>
+const PAGES = {"1906-07-12_EWXUQGEA6K6GLY3NKFOVMIAAJTNFPHOA_p0001": {"img": "scans/1906-07-12_EWXUQGEA6K6GLY3NKFOVMIAAJTNFPHOA_p0001.jpg", "w": 1688, "h": 2400, "boxes": [[26.475, 77.492, 49.082, 79.042]], "quote": "… Der Regierungsassessor Dr. Abegg aus Waldenburg ist der Regierung in Oppeln zur weiteren dienstlichen Verwendung überwiesen worden.", "paper": "Norddeutsche allgemeine Zeitung", "place": "Berlin", "date": "1906-07-12", "page": 1, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/EWXUQGEA6K6GLY3NKFOVMIAAJTNFPHOA?issuepage=1", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1906-07-12_EWXUQG_0.webp", "w": 422, "h": 71, "nw": 422}]}, "1906-08-01_BCKCBMPZVJLHTXAAFBZ6JNOS5BCD2TEP_p0006": {"img": "scans/1906-08-01_BCKCBMPZVJLHTXAAFBZ6JNOS5BCD2TEP_p0006.jpg", "w": 1701, "h": 2400, "boxes": [[1.822, 79.033, 24.033, 80.575]], "quote": "Der Regierungsassessor Dr. Abegg in Oppeln ist zum stellvertretenden Vorsitzenden des Schiedsgerichts für Arbeiterversicherung Regierungsbezirk Oppeln ernannt worden.", "paper": "Norddeutsche allgemeine Zeitung", "place": "Berlin", "date": "1906-08-01", "page": 6, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/BCKCBMPZVJLHTXAAFBZ6JNOS5BCD2TEP?issuepage=6", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1906-08-01_BCKCBM_0.webp", "w": 418, "h": 71, "nw": 419}]}, "1909-08-13_IX2IGV2QUVTVPW6NSP452HZT4IAAYKVI_p0005": {"img": "scans/1909-08-13_IX2IGV2QUVTVPW6NSP452HZT4IAAYKVI_p0005.jpg", "w": 1694, "h": 2400, "boxes": [[5.885, 32.867, 35.519, 35.746]], "quote": "Ernennungen: Der Regierungsrat Preuner in Sigmaringen zum stellvertretenden Vorsitzenden des Schiedsgerichts für Arbeiterversicherung Regierungsbezirk Sigmaringen und Regierungsassessor Dr. Wilhelm Abegg in Oppeln zum stellvertretenden Vorsitzenden des Schiedsgerichts für Arbeiter= versicherung seines Regierungsbezirks.", "paper": "Berliner Tageblatt und Handels-Zeitung", "place": "Berlin", "date": "1909-08-13", "page": 5, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/IX2IGV2QUVTVPW6NSP452HZT4IAAYKVI?issuepage=5", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1909-08-13_IX2IGV_0.webp", "w": 543, "h": 103, "nw": 543}]}, "1910-05-24_KWE4TR73O5DQZNSUIIG2AVWRFON737WM_p0002": {"img": "scans/1910-05-24_KWE4TR73O5DQZNSUIIG2AVWRFON737WM_p0002.jpg", "w": 1716, "h": 2400, "boxes": [[28.648, 41.1, 50.781, 43.975]], "quote": "… Die Ernennung des Regierungsassessors Dr. Wilhelm Abegg in Oppeln zum stellvertretenden Vorsitzenden des Schiedsgerichts für Arbeiterversicherung Regierungsbezirk Oppeln ist widerrufen.", "paper": "Berliner Börsen-Zeitung", "place": "Berlin", "date": "1910-05-24", "page": 2, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/KWE4TR73O5DQZNSUIIG2AVWRFON737WM?issuepage=2", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1910-05-24_KWE4TR_0.webp", "w": 421, "h": 102, "nw": 421}]}, "1912-11-11_UWRLPRQ5HDVC4KRONYN5DPO4C5RVGYDI_p0002": {"img": "scans/1912-11-11_UWRLPRQ5HDVC4KRONYN5DPO4C5RVGYDI_p0002.jpg", "w": 1691, "h": 2400, "boxes": [[4.701, 29.213, 35.157, 41.229]], "quote": "… der Regierungsrat Dr. Wilhelm Abegg in Oppeln dem Königlichen Polizeipräsidium in Berlin, der R …", "paper": "Deutscher Reichsanzeiger und Preußischer Staatsanzeiger", "place": "Berlin", "date": "1912-11-11", "page": 2, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/UWRLPRQ5HDVC4KRONYN5DPO4C5RVGYDI?issuepage=2", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1912-11-11_UWRLPR_0.webp", "w": 556, "h": 322, "nw": 556}]}, "1926-08-26_UKINDG7QMWAHK2FYRIZ6PZ4HHRXXS7B4_p0006": {"img": "scans/1926-08-26_UKINDG7QMWAHK2FYRIZ6PZ4HHRXXS7B4_p0006.jpg", "w": 1682, "h": 2400, "boxes": [[46.784, 49.025, 72.955, 56.054]], "quote": "* Am 29. August vollendet der verdienstvolle Schöpfer der modernen preußischen Polizei und Leiter der Polizeibehörde im Ministerium des Innern, Ministerialdirektor Dr. Wilhelm Abegg, sein 50. Lebensjahr. In Berlin geboren, besuchte er hier das Wilhelms-Gymnasium, studierte darauf die Rechtswissenschaften und bestand im Jahre 1904 die große Staatsprüfung. Durch langjährige Beschäftigung bei verschiedenen Regierungen und dem Polizeipräsidium Berlin mit der Organisation und den Aufgaben der Polizei aufs innigste vertraut geworden, war Abegg der geeignetste Mann, um nach seiner im August 1920 erfolgten Berufung in das Ministerium des Innern die Neuorganisation der preußischen Polizei durchzuführen.", "paper": "Berliner Tageblatt und Handels-Zeitung", "place": "Berlin", "date": "1926-08-26", "page": 6, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/UKINDG7QMWAHK2FYRIZ6PZ4HHRXXS7B4?issuepage=6", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1926-08-26_UKINDG_0.webp", "w": 480, "h": 202, "nw": 481}]}, "1926-10-14_ZNNUE5TPP7LO4TYWQSMLCEM2VP7CUUDU_p0001": {"img": "scans/1926-10-14_ZNNUE5TPP7LO4TYWQSMLCEM2VP7CUUDU_p0001.jpg", "w": 1734, "h": 2400, "boxes": [[2.324, 58.692, 29.913, 60.175]], "quote": "Der Ministerialdirektor Dr. Abegg ist zum Staatssekretär im Preußischen Ministerium des Jnnern ernannt worden.", "paper": "Deutscher Reichsanzeiger und Preußischer Staatsanzeiger", "place": "Berlin", "date": "1926-10-14", "page": 1, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/ZNNUE5TPP7LO4TYWQSMLCEM2VP7CUUDU?issuepage=1", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1926-10-14_ZNNUE5_0.webp", "w": 520, "h": 69, "nw": 520}]}, "1927-02-01_F54AKK5BUG3ZJB2URDDKR5OYGSHGKAH7_p0001": {"img": "scans/1927-02-01_F54AKK5BUG3ZJB2URDDKR5OYGSHGKAH7_p0001.jpg", "w": 1602, "h": 2400, "boxes": [[64.6, 59.7, 95.568, 98.054]], "quote": "… Die Polizeiorganisation sei heute im großen und ganzen abgeschlossen nach einem über fünf Jahre hindurch währenden Aufbau, an dem ein Hauptverdienst der frühere Leiter der Polizeiabteilung und jetzige Staatssekretär Abegg habe. Dafür gebühre Herrn Staatssekretär Dr. Abegg der Dank der Staatsregierung. …", "paper": "Deutscher Reichsanzeiger und Preußischer Staatsanzeiger", "place": "Berlin", "date": "1927-02-01", "page": 1, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/F54AKK5BUG3ZJB2URDDKR5OYGSHGKAH7?issuepage=1", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1927-02-01_F54AKK_0.webp", "w": 534, "h": 954, "nw": 535}]}, "1928-04-26_RFZBMSA2SK777QTJYTGNMLIJEBQTN7VM_p0005": {"img": "scans/1928-04-26_RFZBMSA2SK777QTJYTGNMLIJEBQTN7VM_p0005.jpg", "w": 1638, "h": 2400, "boxes": [[29.676, 68.246, 43.376, 70.046]], "quote": "Politik — Soziologie — Volkswirtschaft Abegg, Dr. Wilhelm: „Die Preußische Verwaltung und ihre Reform — Länder und Reich“, 52 S. Steif brosch. 2,50 Mark. Sieben-Stäbe-Verlag, Berlin-Zehlendorf.", "paper": "Deutsche allgemeine Zeitung", "place": "Berlin", "date": "1928-04-26", "page": 5, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/RFZBMSA2SK777QTJYTGNMLIJEBQTN7VM?issuepage=5", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1928-04-26_RFZBMS_0.webp", "w": 264, "h": 77, "nw": 264}]}, "1928-05-18_XEKI7WBS3HMDWXEYAPXWT6QHE3FMGQSM_p0003": {"img": "scans/1928-05-18_XEKI7WBS3HMDWXEYAPXWT6QHE3FMGQSM_p0003.jpg", "w": 1652, "h": 2400, "boxes": [[54.528, 61.538, 80.872, 65.129]], "quote": "Am heutigen Freitag, abends 8 Uhr, sprechen im Lehrervereinshaus am Alexanderplatz zu den Mitgliedern der Jungdemokratischen Bewegung Berlins der bekannte Jugendführer Normann Körber über „Die junge Generation und die Republik“ und Staatssekretär Dr. Wilhelm Abegg über den „Kampf um die Republik“.", "paper": "Berliner Tageblatt und Handels-Zeitung", "place": "Berlin", "date": "1928-05-18", "page": 3, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/XEKI7WBS3HMDWXEYAPXWT6QHE3FMGQSM?issuepage=3", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1928-05-18_XEKI7W_0.webp", "w": 475, "h": 120, "nw": 475}]}, "1928-06-11_2RBSTNL4EKPJLQJZRSOURZG6DRTMODSF_p0002": {"img": "scans/1928-06-11_2RBSTNL4EKPJLQJZRSOURZG6DRTMODSF_p0002.jpg", "w": 1671, "h": 2400, "boxes": [[28.594, 46.958, 42.214, 53.558]], "quote": "… Ferner hat der Staatssekretär des Ministeriums des Innern Abegg in seiner soeben erschienenen Schrift „Die Preußische Verwaltung und ihre Reform“ die gleiche Ansicht vertreten.", "paper": "Deutsche allgemeine Zeitung", "place": "Berlin", "date": "1928-06-11", "page": 2, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/2RBSTNL4EKPJLQJZRSOURZG6DRTMODSF?issuepage=2", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1928-06-11_2RBSTN_0.webp", "w": 267, "h": 192, "nw": 268}]}, "1930-04-07_6QIPNV4YZLBW2LPKC3WBZDQRQMMJ3OML_p0003": {"img": "scans/1930-04-07_6QIPNV4YZLBW2LPKC3WBZDQRQMMJ3OML_p0003.jpg", "w": 1649, "h": 2400, "boxes": [[27.271, 13.679, 35.84, 15.612], [21.28, 15.771, 41.552, 23.087]], "quote": "Musik-Chronik. Chor-Konzerte. Der Reichsverband der gemischten Chöre Deutschlands, dessen Präsident Staatssekretär Abegg ist, veranstaltete anläßlich seiner Jahressagung ein Chorkonzert im Großen Schauspielhause. Etwa tausend Sänger und Sängerinnen, die sechzehn Verbands-Chören des Gaues Berlin angehörten, füllten den gewaltigen Bühnenraum. Im Vordergrunde faß das SinfonieOrchester der Schußpolizei Berlin. Gertrud Steinweg (Sopran) und Hilde Ellger (Alt), an Stelle der Schloßhauer-Reynolds, waren die Solistinnen dieses Sonntag-Mittagkonzertes. Dirigent war, wie im Vorjahre, Bruno Kittel, anerkannte Autorität unter den Chormeistern.", "paper": "Berliner Börsen-Zeitung", "place": "Berlin", "date": "1930-04-07", "page": 3, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/6QIPNV4YZLBW2LPKC3WBZDQRQMMJ3OML?issuepage=3", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1930-04-07_6QIPNV_0.webp", "w": 374, "h": 260, "nw": 374}]}, "1930-11-30_TOSMWGKWNBWA7RPHAYUFSYN4GT6TW2ZX_p0004": {"img": "scans/1930-11-30_TOSMWGKWNBWA7RPHAYUFSYN4GT6TW2ZX_p0004.jpg", "w": 1618, "h": 2400, "boxes": [[16.52, 26.767, 35.328, 28.012], [18.702, 28.238, 32.998, 29.5], [15.946, 29.738, 35.735, 32.421], [15.977, 32.575, 35.735, 41.829], [15.865, 42.487, 35.766, 60.583], [36.755, 10.954, 56.638, 14.904]], "quote": "Abegg freigesprochen. Im Privatbeleidigungsprozeß des Senatspräsidenten Grützner [OCR: „Grüner“] gegen den Staatssekretär Dr. Abegg sprach gestern der Einzelrichter beim Amtsgericht Berlin-Mitte, Amtsgerichtsrat Bues, den angeklagten Staatssekretär Dr. Abegg auf Kosten des Privatkägers, Senatspräsidenten Grützner, frei. In der Begründung des Urteils heißt es, es stehe zweifellos fest, daß Senatspräsident Grützner nicht von Sensationsmotiven getrieben worden sei, als er nach reiflicher Ueberlegung den Brief an den Ministerpräsidenten Braun geschrieben habe. Aber man müsse auch dem Staatssekretär Dr. Abegg gerecht werden, dessen Ausführungen durchaus glaubhaft und innerlich wahrscheinlich seien, daß er den Brief nicht gekannt habe. Das Gericht stellte sich auf den Standpunkt, daß dem Staatssekretär Dr. Abegg die Wahrung berechtigter Interessen im weitesten Umfange zur Seite stehe, denn Staatssekretär Dr. Abegg habe die Rede als erster Untergebener und langjähriger Mitarbeiter des Ministers Grzesinski gehalten, und der Inhalt dieser Rede entspreche durchaus dem Treuverhältnis des Beamten, der die gegen Grzesinski erhobenen Angriffe mit gleicher Münze zurückgezahlt habe. In dem Prozeß handelt es sich, wie wir bereits im Abendblatt berichteten, um Aeußerungen, die Dr. Abegg bei der Abschiedsfeier an den damaligen Innenminister Grzesinski gemacht hatte, in der er von „Verleumdern und niedrigen Gesellen“ sprach; Grützner fühlte sich durch diese Ausführungen beleidigt. Im weiteren Verlauf der gestrigen Verhandlung erklärte der herbeigerufene Staatssekretär Dr. Abegg, er habe die inkriminierten Worte im Hinblick auf die Unzahl falscher Bezichtigungen ausgesprochen und damit seiner Ansicht nach der allgemeinen Empfindung des Ministeriums Ausdruck gegeben. — Senatspräsident Grützner: Haben Sie keine Kenntnis vom Inhalt meines Schreibens oder von seiner Existenz gehabt? — Dr. Abegg: Mir ist am Tage vor der Verabschiedung im Landtag vertraulich von der Existenz des Briefes berichtet worden, ich konnte ihn aber trotz aller Bemühungen nicht zum Lesen erhalten. — R.-A. Arras: Hat Ihnen denn der Minister auf dem Weg zur Verabschiedung nicht das Vorgehen des Klägers als Mitursache für seinen Rücktritt bezeichnet? — Dr. Abegg: Ich habe auch nachträglich erfahren, daß die unwiderrufliche Erklärung des Rücktritts bereits am 26. Februar vorlag. Grzesinski selbst hat erst am Nachmittag dieses Tages Kenntnis von der Existenz dieses Briefes erhalten. R.-A. Dr. Arras: Wenn der Gesundheitszustand des Ministers der Anlaß zum Rücktritt war, dann ist Ihre Rede doch nicht zu verstehen. Dr. Abegg: Die menschlichen Handlungen setzen sich doch nicht aus einem Motiv zusammen. Es waren seelische und körperliche Gründe. Privatkläger Grützner: Ich habe von dem Zentrumsführer R.-A. Dr. Brandt aus Essen einen Brief erhalten, darin heißt es, daß die Zentrumsfraktion am 28. Februar die Abstimmung über das kommunistische Mißtrauensvotum gegen den Innenminister freigegeben hatte. Wenn der Minister nicht freiwillig zurückgetreten wäre, hätte es einen großen Eklat gegeben. Dr. Abegg Ich weiß nicht, was diese Sache mit dem Prozeß zu tun hat. Wenn ich von Verleumdungen gesprochen habe, wie kann sich der Privatkläger dadurch beleidigt fühlen, da er nicht verleumdet haben will. Ueber die politischen Erwägungen war ich selbstverständlich unterrichtet. Damit war die Vernehmung von Staatssekretär Dr. Abegg beendet. Nach weiteren Erklärungen Grützners und seines Anwalts kam der Einzelrichter zu obigem Entscheid.", "paper": "Berliner Börsen-Zeitung", "place": "Berlin", "date": "1930-11-30", "page": 4, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/TOSMWGKWNBWA7RPHAYUFSYN4GT6TW2ZX?issuepage=4", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1930-11-30_TOSMWG_0.webp", "w": 361, "h": 128, "nw": 361}, {"src": "clips/1930-11-30_TOSMWG_1.webp", "w": 361, "h": 845, "nw": 361}]}, "1932-08-01_S6S4JV35JXNAB4ZHHAYKUYUJHZLCUECA_p0001": {"img": "scans/1932-08-01_S6S4JV35JXNAB4ZHHAYKUYUJHZLCUECA_p0001.jpg", "w": 1599, "h": 2400, "boxes": [[34.321, 87.479, 64.409, 89.892]], "quote": "Der Staatssekretär im Preußischen Ministerium des Innern, Dr. Wilhelm Abegg, ist in den einstweiligen Ruhestand versetzt worden.", "paper": "Deutscher Reichsanzeiger und Preußischer Staatsanzeiger", "place": "Berlin", "date": "1932-08-01", "page": 1, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/S6S4JV35JXNAB4ZHHAYKUYUJHZLCUECA?issuepage=1", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1932-08-01_S6S4JV_0.webp", "w": 519, "h": 91, "nw": 519}]}, "1941-04-29_J6TZZMDFVKVBJQ25F5W4JSTVCXWK7SYE_p0001": {"img": "scans/1941-04-29_J6TZZMDFVKVBJQ25F5W4JSTVCXWK7SYE_p0001.jpg", "w": 1605, "h": 2400, "boxes": [[1.178, 47.875, 31.134, 54.55], [3.065, 54.692, 31.171, 56.221], [2.66, 56.217, 31.121, 57.621]], "quote": "Auf Grund des § 2 des Gesetzes über den Widerruf von Einbürgerungen und die Aberkennung der deutschen Staatsangehörigkeit vom 14. Juli 1933 (Reichsgesetzbl. I S. 480) in Verbindung mit § 1 der Verordnung über die Aberkennung der Staatsangehörigkeit und den Widerruf des Staatsangehörigkeitserwerbes in der Ostmark vom 11. Juli 1939 (Reichsgesetzbl. I S. 1235) erkläre ich im Einvernehmen mit dem Herrn Reichsminister des Auswärtigen folgende Personen der deutschen Staatsangehörigkeit für verlustig: 1. Abegg, Philipp Wilhelm, geb. am 29. 8. 1876 in Berlin, 2. Abegg, Hildegard, geb. Hofmeier geb. am 27. 8. 1881 in Danzig.", "paper": "Deutscher Reichsanzeiger und Preußischer Staatsanzeiger", "place": "Berlin", "date": "1941-04-29", "page": 1, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/J6TZZMDFVKVBJQ25F5W4JSTVCXWK7SYE?issuepage=1", "license": "Public Domain Mark 1.0", "pd": true, "clips": [{"src": "clips/1941-04-29_J6TZZM_0.webp", "w": 520, "h": 268, "nw": 520}]}, "1926-10-11_VBTKAAL6U37W675LRTJIGKPQQVKLOOTK_p0002": {"paper": "Weißeritz-Zeitung", "place": "Dippoldiswalde", "inst": "SLUB Dresden", "date": "1926-10-11", "page": 2, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/VBTKAAL6U37W675LRTJIGKPQQVKLOOTK?issuepage=2", "license": "In Copyright", "pd": false, "img": "scans/1926-10-11_VBTKAAL6U37W675LRTJIGKPQQVKLOOTK_p0002.jpg", "w": 2200, "h": 3141, "boxes": [[39.442, 22.417, 67.372, 35.222]], "quote": "Beamtenernennungen in Preußen« Dr. Abegg Staatssekretär. — Zörgiebel! Berliner Polizeipräsident. j — Berlin, 11. Oktober. Das preußische Staats-! Ministerium ernannte den bisherigen Ministerialdirek tor Dr. Abegg zum Staatssekretär im Preußischen § Innenministerium. Zu seinem Nachfolger wurde Mi- - ntsterialrat Dr. Klausener bestimmt. Weiterhin! wurde der Polizeipräsident Zörgiebel zum Polizei-! Präsidenten von Berlin und Ministerialrat Baus knecht aus dem preußischen Innenministerium zum j Polizeipräsidenten von Köln ernannt, lieber die Pari tetzugehörigkeit der einzelnen Persönlichkeiten, ist mitzuteilen: Der neue Staatssekretär Abegg ist De- - mokrat, Ministerialdirektor Klausener gehört dem Zeni trum an. Zörgiebel und Bauknecht sind Mitglieder der Sozialdemokratischen Partei.", "clips": [{"src": "clips/1926-10-11_VBTKAA_0.webp", "w": 1100, "h": 735, "nw": 667}]}, "1928-07-24_X2MADJMU5ZD3HWE3FB2JLBUDMYYAEPTL_p0009": {"paper": "Hannoverscher Kurier", "place": "Hannover", "inst": "GWLB Hannover", "date": "1928-07-24", "page": 9, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/X2MADJMU5ZD3HWE3FB2JLBUDMYYAEPTL?issuepage=9", "license": "In Copyright", "pd": false, "img": "scans/1928-07-24_X2MADJMU5ZD3HWE3FB2JLBUDMYYAEPTL_p0009.jpg", "w": 2200, "h": 3353, "boxes": [[32.648, 35.106, 61.168, 42.977], [62.018, 14.61, 90.517, 18.189]], "quote": "Bedeutung nicht zu unterschätzen ist. Wenn Männer, wie der Staatssekretär im preußischen Ministerium des Innern Dr. Wilhelm Abegg in feinem außerordentlich lesenswerten Büchlein „Die preutzische Verwaltung und ihre Reform, Länder und Reich\" (7-Stäbe-Verlag 1928) als ein wesentliches Mittel zur Durchführung einer grundlegenden preußischen Ver waltungsreform die grundsätzliche Neuregelung des Verhält nisses des Staates zur Selbstverwaltung fordert, so zeigt das, … Die Notwendigkeit einer grundlegenden Verwaltungsreform bedarf ja auch eigentlich keiner Begründung mehr. Abegg hat recht: die Verwaltungsreform ist eine Lebensnotwendtgkeit für den preußischen Staat ge", "clips": [{"src": "clips/1928-07-24_X2MADJ_0.webp", "w": 1100, "h": 271, "nw": 680}, {"src": "clips/1928-07-24_X2MADJ_1.webp", "w": 1100, "h": 503, "nw": 680}]}, "1928-10-04_RRYJ23Y7SDR3UYV6DRSV4677DJ5N5MVB_p0007": {"paper": "Riesaer Tageblatt und Anzeiger", "place": "Riesa", "inst": "SLUB Dresden", "date": "1928-10-04", "page": 7, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/RRYJ23Y7SDR3UYV6DRSV4677DJ5N5MVB?issuepage=7", "license": "In Copyright", "pd": false, "img": "scans/1928-10-04_RRYJ23Y7SDR3UYV6DRSV4677DJ5N5MVB_p0007.jpg", "w": 2200, "h": 2956, "boxes": [[62.192, 15.242, 88.272, 24.424]], "quote": "Wechsel t» der Leitung de» Netchsoerbaude» »er «amftchz tt» Wdoa Dentfchlaud«. Anstelle de» au« berufliche« Grün- GEora Ker Waattsekremr l« Preußischen Ministerium de» Innern, Dr. Wilhelm Abegg »nm Präsidenten de» ReichSverbandr» der gemischten Lhöre ietuschließlich ber Frauen, und Strchenchöre) gewählt worbe«. — Ausgabe LeS verbände» ist dis Förderung ««» Unterstützung de« gemischten Lborgrsangwesen», «. a. bnrch Herbeiführung von Erleichterungen auf wirtschaftlichem Gebiet. Die Geschäftsstelle befindet sich i« verlin^chüneberg, velztgerftraß« IS.", "clips": [{"src": "clips/1928-10-04_RRYJ23_0.webp", "w": 1100, "h": 548, "nw": 627}]}, "1929-06-25_HZDHB6EJWMJEGC7Y72ORNJA2ZNOK3KK6_p0005": {"paper": "Hannoverscher Kurier, Morgen-Ausgabe", "place": "Hannover", "inst": "GWLB Hannover", "date": "1929-06-25", "page": 5, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/HZDHB6EJWMJEGC7Y72ORNJA2ZNOK3KK6?issuepage=5", "license": "In Copyright", "pd": false, "img": "scans/1929-06-25_HZDHB6EJWMJEGC7Y72ORNJA2ZNOK3KK6_p0005.jpg", "w": 2200, "h": 3316, "boxes": [[3.766, 57.173, 32.26, 59.139]], "quote": "Staatssekretär Abegg verstand es in einer großen Rede, diese Aufgaben der weiblichen Polizei scharf zu umreißen.", "clips": [{"src": "clips/1929-06-25_HZDHB6_0.webp", "w": 1100, "h": 180, "nw": 680}]}, "1930-11-29_V3F3ZMPFTXSAJ4AVIYKBVYFKLJ3WSAY3_p0011": {"paper": "Kölnische Zeitung", "place": "Köln", "inst": "ULB Bonn", "date": "1930-11-29", "page": 11, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/V3F3ZMPFTXSAJ4AVIYKBVYFKLJ3WSAY3?issuepage=11", "license": "Rights unknown", "pd": false, "img": "scans/1930-11-29_V3F3ZMPFTXSAJ4AVIYKBVYFKLJ3WSAY3_p0011.jpg", "w": 2200, "h": 3116, "boxes": [[34.15, 7.344, 56.466, 10.034], [22.941, 10.088, 45.865, 17.822], [45.615, 32.261, 68.343, 39.441]], "quote": "Grützner gegen Abegg Der Streit um die Abschiedsrede für Grzesinski … Ein Freispruch * Berlin, 29. November. ( Telegr. ) Vor dem Amtsgericht Mitte wurde heute im Beisein zahlreicher Zuhörer über die Privatklage verhandelt, die der Senatspräsident beim Oberverwaltungsgericht, Grützner, gegen den Staatssekretär im preußischen Ministerium des Innern, Or. Abegg, angestrengt hat. Gegenstand der Privatklage bildet die Abschiedsrede, die Staats sekretär Or. Abegg am 1. März an den damals zurückgetretenen Ministe des Innern Grzesinski gehalten hatte; Or. Abegg hatte darit zesagt: „Für die Verleumder und niedrigen Gesellen, deren vergiftet Angriffe Ihren Entschluß reifen ließen, haben wir alle ohne jede Aus nahme das Gefühl empörter Verachtung.“ Grützner fühlte sich durch … Nach der Vernehmung des Staatssekretärs Abegg scheiterte Vergleichsverhandlungen daran, daß Senatspräsiden Grützner vom Staatssekretär Abegg verlangte, daß der Beklagte den Privatkläger sein Bedauern aussprechen sollte. Abegg lehnte die ab, da er von dem Brief keine Kenntnis gehabt habe. Das Gerich verhandelte dann weiter und fällte nach kurzer Beratung das Urteil, nach dem Staatssekretär Abegg auf Kosten des Privat klägers freigesprochen wird. Der Vorsitzende führte in seiner Begründung aus, daß Staatssekretär Abegg zweifellos der Brief nicht gekannt habe, anderseits hätte ihm bei seiner Rede jede beleidigende Absicht gefehlt. Selbst wenn der Beklagte den Inhalt des Briefes gekannt hätte, würde ihm die Wahrung berechtigter Interessen zugestanden.", "clips": [{"src": "clips/1930-11-29_V3F3ZM_0.webp", "w": 1100, "h": 515, "nw": 790}, {"src": "clips/1930-11-29_V3F3ZM_1.webp", "w": 1100, "h": 533, "nw": 553}]}, "1932-07-21_NPM6AFPQEHAZDUNSIQIR3UVFA5JYPPLP_p0001": {"paper": "Riesaer Tageblatt und Anzeiger", "place": "Riesa", "inst": "SLUB Dresden", "date": "1932-07-21", "page": 1, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/NPM6AFPQEHAZDUNSIQIR3UVFA5JYPPLP?issuepage=1", "license": "In Copyright", "pd": false, "img": "scans/1932-07-21_NPM6AFPQEHAZDUNSIQIR3UVFA5JYPPLP_p0001.jpg", "w": 2200, "h": 3034, "boxes": [[7.927, 67.3, 35.113, 74.6]], "quote": "Staatssekretären verhandelt werden. Der Staatssekretär im preußischen Innenministerium Abegg ist auch seines Postens enthoben worden. Dr. Bracht im Amt. Berlin. lFunksprnch.) Der kommissarische preußische Minister des Innern, Dr. Bracht, hat heute die Amtsgefchäfte übernommen. Er hat Herrn Staatssekretär Dr. Abegg mit sofortiger Wirkung seiner Dienstgeschäfte enthoben und beurlaubt.", "clips": [{"src": "clips/1932-07-21_NPM6AF_0.webp", "w": 1100, "h": 446, "nw": 651}]}, "1932-11-04_JRTP7MRN44GGP7DV3SHXQ6NHXPYT4PX2_p0002": {"paper": "Dortmunder Zeitung", "place": "Dortmund", "inst": "ULB Münster", "date": "1932-11-04", "page": 2, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/JRTP7MRN44GGP7DV3SHXQ6NHXPYT4PX2?issuepage=2", "license": "Rights unknown", "pd": false, "img": "scans/1932-11-04_JRTP7MRN44GGP7DV3SHXQ6NHXPYT4PX2_p0002.jpg", "w": 2200, "h": 3022, "boxes": [[31.215, 8.199, 70.794, 11.314], [31.215, 10.725, 51.536, 17.207]], "quote": "Die Vorgeschichte des 20. Juli — Staatssekretär Abeggs Besprechungen mit kommunistischen Abgeordneten … TU Berlin, 3. Nov. Ein Berliner Abendblatt hat dieser Tage unter der Überschrift „Enthüllungen über die Vorgeschichte des 20. Juli! — Was hat Ober regierungsrat Diels in Wirklichkeit ausgesagt?“ Mit teilungen über die Aussagen des Oberregierungsrates Diels zu der Besprechung zwischen dem früheren Staatssekretär Abegg und zwei kommunistischen Ab geordneten gebracht, denen amtlicherseits durch Ver össentlichung des amtlichen Protokolls", "clips": [{"src": "clips/1932-11-04_JRTP7M_0.webp", "w": 1100, "h": 374, "nw": 924}]}, "1932-11-04_RTBQSXQD6WJJHYG57OAG376P53G4C2SJ_p0002": {"paper": "Hamburgischer Correspondent", "place": "Hamburg", "inst": "SUB Hamburg", "date": "1932-11-04", "page": 2, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/RTBQSXQD6WJJHYG57OAG376P53G4C2SJ?issuepage=2", "license": "Copyright not evaluated", "pd": false, "img": "scans/1932-11-04_RTBQSXQD6WJJHYG57OAG376P53G4C2SJ_p0002.jpg", "w": 2200, "h": 3111, "boxes": [[36.854, 66.564, 65.458, 80.074]], "quote": "Ein Berliner Abendblalt hat dieser Tage unter der UeU-cschrist: „Enthüllungen liier die Vorgoschieitte drS 20. Itili! Was lmt Lberrezlierinlgsrat Diels in Wirklichkeit ansgZagt?\" Btitteilnngen liver die 2lnZagen Ns OberregiertlugSrats Diels zu der Bespreckinng zwisckx'n dem friil-ereii Staatssekretär Abegg lind zwei fnninilininlsckk'n Atigeordiieten g'Bracht, deueu amt« lickrerseitS dilrch Veröfsentlichnng des a ni t l i ch e n Proto kolls über die Ltz-knndnngeli Ns OberritziierungSratS Diels enlgegengetreten wird. Das Protokoll l^chrgt zunäcktst, d«lß er, bor Regierungsrat Diels, am 3.Iuli 1932 von Staatssekretär Aw'gg gevelen lvorden sei. diesem die MöAichkeit eitler ^ltiSsprackte mit best fummm« ni silschen Führern Kaspar und Tor gier zu w'rniitlein.", "clips": [{"src": "clips/1932-11-04_RTBQSX_0.webp", "w": 1100, "h": 748, "nw": 682}]}, "1932-11-11_XBKEEZ33R7KJACACX672CQK4W7MAXLBU_p0002": {"paper": "Schwäbischer Merkur", "place": "Stuttgart", "inst": "WLB Stuttgart", "date": "1932-11-11", "page": 2, "ddb": "https://www.deutsche-digitale-bibliothek.de/newspaper/item/XBKEEZ33R7KJACACX672CQK4W7MAXLBU?issuepage=2", "license": "In Copyright", "pd": false, "img": "scans/1932-11-11_XBKEEZ33R7KJACACX672CQK4W7MAXLBU_p0002.jpg", "w": 2200, "h": 3302, "boxes": [[75.205, 28.115, 98.68, 52.412]], "quote": "* Im Schwäbischen Merkur Nr. 260 wurde unter dieser Ueberschrift das amtliche ProiM über.die Aussagen des Oberregierungsrats Ticks zu der zwischen' dem früheren preußischen Staats, sekretär Dr. A b e g g und zwei kommunistischen Abgeordneten stattgehabte Besprechung nach dm Amtlichen Preußischen Pressedienst veröffentlicht. Staatssekretär Dr. Abegg widerspricht dieser Darstellung des Oberregierungsrats Diel? und gibt seinerseits folgende Schilderung: In Anbetracht der damals zu einem erheblichen Ausmaß gestiegenen Aktivität der Kommunisten ei< schien es mir zweckmäßig, den Verstirb zu machen, ob sie sich nicht im Wege gütlicher Einwirkung zu einer anderen Haltung bewegen ließen In diesem Sinn« und zu diesem Ziwecke habe ich die am 4. Juni 1932 bei mir erschienenen kommunistischen Abgeordneten Torgler und Kasper empfangen. Der Verlauf der Unterredung war stets eindeutig und unmißverständlich: er begann mit dem dring lichen Appell meinerseits, Ruhe und Frieden zu halten und von allen Terrorakten", "clips": [{"src": "clips/1932-11-11_XBKEEZ_0.webp", "w": 814, "h": 1215, "nw": 569}]}};
+
+const STATUS = {
+  novel:   { label: "Not in reference works", color: "var(--novel)" },
+  partly:  { label: "Partly known", color: "var(--partly)" },
+  special: { label: "Specialist literature only", color: "var(--partly)" },
+  known:   { label: "Widely known", color: "var(--known)" },
+  base:    { label: "From the baseline biography", color: "var(--base)" },
+};
+
+const CLAIMS = {
+  C1:  { t: "Born in Berlin, 29 August 1876", s: "known", lit: "Standard in every biography. The 1941 Reichsanzeiger notice gives the same date and place.", src: ["1941-04-29_J6TZZMDFVKVBJQ25F5W4JSTVCXWK7SYE_p0001"] },
+  C2:  { t: "Wilhelms-Gymnasium, law, doctorate 1903, state examination 1904", s: "base", lit: "From the baseline biography. The 1926 birthday profile confirms the Wilhelms-Gymnasium and the 1904 examination.", src: ["1926-08-26_UKINDG7QMWAHK2FYRIZ6PZ4HHRXXS7B4_p0006"] },
+  C3:  { t: "Transferred from Waldenburg to Oppeln, July 1906", s: "novel", lit: "Every secondary source found gives Oppeln from 1907 (NDB-online, Reichsbanner-Geschichte, Grahn 1993). This notice dates the transfer to July 1906. The Prussian state handbook for 1905 already lists him at Waldenburg in December 1904, so the NDB dates are off at both ends.", src: ["1906-07-12_EWXUQGEA6K6GLY3NKFOVMIAAJTNFPHOA_p0001"] },
+  C4:  { t: "Deputy chair of the Oppeln workers' insurance tribunal, 1906–1910", s: "novel", lit: "Found in no secondary or other primary source. It appears only in these three newspaper notices. Röder/Strauss and Liang could not be checked.", src: ["1906-08-01_BCKCBMPZVJLHTXAAFBZ6JNOS5BCD2TEP_p0006", "1909-08-13_IX2IGV2QUVTVPW6NSP452HZT4IAAYKVI_p0005", "1910-05-24_KWE4TR73O5DQZNSUIIG2AVWRFON737WM_p0002"] },
+  C5:  { t: "Moved to the Berlin Police Headquarters, November 1912", s: "known", lit: "Wikipedia and NDB give the year 1912. The month is new.", src: ["1912-11-11_UWRLPRQ5HDVC4KRONYN5DPO4C5RVGYDI_p0002"] },
+  C6:  { t: "Head of the police division from August 1920; police reorganisation", s: "known", lit: "The police reform is well documented. The contemporary profiles are not cited in the literature checked.", src: ["1926-08-26_UKINDG7QMWAHK2FYRIZ6PZ4HHRXXS7B4_p0006", "1927-02-01_F54AKK5BUG3ZJB2URDDKR5OYGSHGKAH7_p0001"] },
+  C7:  { t: "Praised as creator of the modern Prussian police, 1926–27", s: "known", lit: "His role is well known. These two contemporary assessments are not cited in the literature checked.", src: ["1926-08-26_UKINDG7QMWAHK2FYRIZ6PZ4HHRXXS7B4_p0006", "1927-02-01_F54AKK5BUG3ZJB2URDDKR5OYGSHGKAH7_p0001"] },
+  C8:  { t: "State Secretary from October 1926; DDP member", s: "known", lit: "NDB gives October 1926 and the DDP membership.", src: ["1926-10-14_ZNNUE5TPP7LO4TYWQSMLCEM2VP7CUUDU_p0001", "1926-10-11_VBTKAAL6U37W675LRTJIGKPQQVKLOOTK_p0002"] },
+  C9:  { t: "Lecture “Kampf um die Republik” to the Young Democrats, May 1928", s: "novel", lit: "Found in no secondary work and never printed. The Berliner Tageblatt reported the lecture again on 20 May 1928. The likeliest unread source is H.-O. Rommel's study of the Jungdemokraten.", src: ["1928-05-18_XEKI7WBS3HMDWXEYAPXWT6QHE3FMGQSM_p0003"] },
+  C10: { t: "1928 booklet on Prussian administrative reform", s: "partly", lit: "Listed in library catalogues and in Wikipedia's list of his writings (51 pp.; the 1928 notice says 52). No discussion of its argument or reception was found.", src: ["1928-04-26_RFZBMSA2SK777QTJYTGNMLIJEBQTN7VM_p0005", "1928-06-11_2RBSTNL4EKPJLQJZRSOURZG6DRTMODSF_p0002", "1928-07-24_X2MADJMU5ZD3HWE3FB2JLBUDMYYAEPTL_p0009"] },
+  C11: { t: "President of the Reich Association of Mixed Choirs, 1928–1930", s: "special", lit: "No biography mentions it. The only secondary mention found is a 2020 blog essay by the musicologist Michael Wittmann on Reznicek, which also calls Abegg a friend of the composer.", src: ["1930-04-07_6QIPNV4YZLBW2LPKC3WBZDQRQMMJ3OML_p0003", "1928-10-04_RRYJ23Y7SDR3UYV6DRSV4677DJ5N5MVB_p0007"] },
+  C12: { t: "Speech on women in police work, June 1929", s: "partly", lit: "The building of Prussia's women's police from 1927 is documented, but Abegg's speech is not.", src: ["1929-06-25_HZDHB6EJWMJEGC7Y72ORNJA2ZNOK3KK6_p0005"] },
+  C13: { t: "Acquitted in Grützner's defamation suit, November 1930", s: "novel", lit: "No secondary work found. The plaintiff was Walther Grützner, Senatspräsident at the Prussian Oberverwaltungsgericht. A copy of the judgment survives in the Grzesinski papers at the IISG, Amsterdam (no. 1335). Grützner withdrew his appeal in January 1931.", src: ["1930-11-30_TOSMWGKWNBWA7RPHAYUFSYN4GT6TW2ZX_p0004", "1930-11-29_V3F3ZMPFTXSAJ4AVIYKBVYFKLJ3WSAY3_p0011"] },
+  C14: { t: "Torgler–Kasper meeting, 4 June 1932, and Abegg's press account", s: "partly", lit: "The meeting is well known (German Wikipedia: “Abegg-Affäre”). Abegg's November 1932 press statement, released through his lawyer Ernst Feder after the government published Diels's protocol, was found in no secondary work. Graf 1983 (pp. 54–64) could not be opened.", src: ["1932-11-11_XBKEEZ33R7KJACACX672CQK4W7MAXLBU_p0002", "1932-11-04_RTBQSXQD6WJJHYG57OAG376P53G4C2SJ_p0002", "1932-11-04_JRTP7MRN44GGP7DV3SHXQ6NHXPYT4PX2_p0002"] },
+  C15: { t: "Removed from office in the Preußenschlag, July 1932", s: "known", lit: "In every biography.", src: ["1932-07-21_NPM6AFPQEHAZDUNSIQIR3UVFA5JYPPLP_p0001"] },
+  C16: { t: "Provisional retirement announced 1 August 1932", s: "partly", lit: "NDB says only that he was dismissed and retired in July 1932. The separate status and its date are not given.", src: ["1932-08-01_S6S4JV35JXNAB4ZHHAYKUYUJHZLCUECA_p0001"] },
+  C17: { t: "Flight to Zürich, 1933; lawyer until 1949", s: "base", lit: "From the baseline biography; not in the newspaper corpus. NDB-online dates his Swiss citizenship to 29 April 1933, but no other source gives that date. The ETH archive says he had pursued regaining it since 1930.", src: [] },
+  C18: { t: "Deprived of German citizenship, notice of 24 April 1941", s: "special", lit: "In the emigration handbook (Röder/Strauss 1980) and Eggers's chapter, but not in Wikipedia, NDB, the DBE or the HLS.", src: ["1941-04-29_J6TZZMDFVKVBJQ25F5W4JSTVCXWK7SYE_p0001"] },
+  C19: { t: "Stroke in 1948; died 18 October 1951", s: "base", lit: "From the baseline biography. The corpus has too little post-war coverage to check it.", src: [] },
+};
+
+
+const fmtDate = iso => {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+// --- coverage switch (remembered per viewer) ---
+const bioEl = document.getElementById("bio"), toggle = document.getElementById("findingsToggle");
+try { toggle.checked = localStorage.getItem("abegg-findings") === "1"; } catch (e) {}
+const applyToggle = () => bioEl.classList.toggle("findings", toggle.checked);
+toggle.addEventListener("change", () => { applyToggle(); try { localStorage.setItem("abegg-findings", toggle.checked ? "1" : "0"); } catch (e) {} });
+applyToggle();
+
+document.querySelectorAll(".claim").forEach(el => {
+  const id = el.dataset.c, c = CLAIMS[id];
+  el.style.setProperty("--c", STATUS[c.s].color);
+  el.setAttribute("role", "button");
+  el.setAttribute("tabindex", "0");
+  el.setAttribute("aria-label", `${c.t}. Show newspaper evidence`);
+  el.addEventListener("click", () => select(id, true));
+  el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(id, true); } });
+});
+
+function pieceHTML(c, label) {
+  return `<button type="button" class="piece" data-open="1" aria-label="${esc(label)}: open full page" style="aspect-ratio:${c.w}/${c.h};max-width:${Math.round(c.nw * 1.5)}px">
+    <img src="${c.src}" alt="" width="${c.w}" height="${c.h}" decoding="async">
+  </button>`;
+}
+
+const ev = document.getElementById("ev");
+let current = null;
+
+function select(id, fromClick) {
+  current = id;
+  document.querySelectorAll(".claim").forEach(el => el.classList.toggle("active", el.dataset.c === id));
+  try { history.replaceState(null, "", "#" + id); } catch (e) {}
+  const c = CLAIMS[id], st = STATUS[c.s];
+  let html = `<div class="claim-head">
+      <h3>${esc(c.t)}</h3>
+      <p class="coverage"><i class="dot" style="background:${st.color}"></i><span><b>${st.label}.</b> ${esc(c.lit)}</span></p>
+    </div>`;
+  if (!c.src.length) {
+    html += `<p class="nosource">No newspaper page supports this sentence. It comes from the baseline biography, and the newspaper corpus is thin after 1933.</p>`;
+  }
+  c.src.forEach((k, i) => {
+    const p = PAGES[k], label = `${p.paper}, ${fmtDate(p.date)}`;
+    html += `<section class="clipping" data-k="${k}">
+      <div class="cl-source"><b>${esc(p.paper)}</b><span>${fmtDate(p.date)} · page ${p.page}</span></div>
+      <div class="pieces">${p.clips.map(c => pieceHTML(c, label)).join("")}</div>
+      <div class="cl-actions">
+        <button type="button" class="linkbtn" data-open="1">See full page</button>
+        <button type="button" class="linkbtn" data-text="1" aria-expanded="false" aria-controls="q${i}">Show text</button>
+        ${p.pd ? "" : `<span class="rights">${esc(p.license)}, ${esc(p.inst)}</span>`}
+      </div>
+      <blockquote class="quote" id="q${i}" lang="de" hidden>${esc(p.quote)}<small>${p.pd ? "Machine OCR (churro-3B), long s normalised." : "Library OCR, unedited. Check against the scan."}</small></blockquote>
+    </section>`;
+  });
+  ev.innerHTML = html;
+  ev.querySelectorAll(".clipping").forEach(sec => {
+    const k = sec.dataset.k;
+    sec.querySelectorAll("[data-open]").forEach(b => b.addEventListener("click", () => openPage(k, b)));
+    const tb = sec.querySelector("[data-text]"), q = sec.querySelector(".quote");
+    tb.addEventListener("click", () => { q.hidden = !q.hidden; tb.textContent = q.hidden ? "Show text" : "Hide text"; tb.setAttribute("aria-expanded", String(!q.hidden)); });
+  });
+  document.getElementById("evidence").scrollTop = 0;
+  if (fromClick && window.matchMedia("(max-width: 860px)").matches) document.getElementById("evidence").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// --- full-page overlay ---
+const overlay = document.getElementById("overlay"), scan = document.getElementById("scan"), sp = document.getElementById("sp");
+let ovPage = null, zoom = 1, returnFocus = null;
+function setZoom(z) { zoom = Math.max(0.3, Math.min(z, 6)); sp.style.width = (scan.clientWidth * zoom) + "px"; }
+function fitWhole() { setZoom(Math.min(1, scan.clientHeight / (scan.clientWidth * ovPage.h / ovPage.w))); scan.scrollTo(0, 0); }
+function zoomBy(f) {
+  const cx = (scan.scrollLeft + scan.clientWidth / 2) / scan.scrollWidth, cy = (scan.scrollTop + scan.clientHeight / 2) / scan.scrollHeight;
+  setZoom(zoom * f);
+  scan.scrollLeft = cx * scan.scrollWidth - scan.clientWidth / 2;
+  scan.scrollTop = cy * scan.scrollHeight - scan.clientHeight / 2;
+}
+function openPage(k, from) {
+  const p = ovPage = PAGES[k];
+  returnFocus = from;
+  document.getElementById("ovTitle").innerHTML = `<b>${esc(p.paper)}</b>, ${fmtDate(p.date)}, page ${p.page}`;
+  document.getElementById("ovDdb").href = p.ddb;
+  sp.innerHTML = `<img src="${p.img}" alt="${esc(p.paper)}, ${fmtDate(p.date)}, page ${p.page}" width="${p.w}" height="${p.h}">` +
+    p.boxes.map(b => `<div class="box" style="left:${b[0]}%;top:${b[1]}%;width:${b[2] - b[0]}%;height:${b[3] - b[1]}%"></div>`).join("");
+  overlay.hidden = false;
+  document.body.style.overflow = "hidden";
+  requestAnimationFrame(() => {
+    // open at a readable zoom, centred on the passage
+    const x0 = Math.min(...p.boxes.map(b => b[0])), x1 = Math.max(...p.boxes.map(b => b[2]));
+    const y0 = Math.min(...p.boxes.map(b => b[1])), y1 = Math.max(...p.boxes.map(b => b[3]));
+    setZoom(Math.max(1, Math.min(0.6 / ((x1 - x0) / 100), (p.w * 1.4) / scan.clientWidth)));
+    const W = scan.scrollWidth, H = W * p.h / p.w;
+    scan.scrollLeft = ((x0 + x1) / 200) * W - scan.clientWidth / 2;
+    scan.scrollTop = ((y0 + y1) / 200) * H - scan.clientHeight / 2;
+    document.getElementById("ovClose").focus();
+  });
+}
+function closePage() { overlay.hidden = true; document.body.style.overflow = ""; returnFocus?.focus(); }
+document.getElementById("ovClose").onclick = closePage;
+document.getElementById("ovFit").onclick = fitWhole;
+document.getElementById("ovIn").onclick = () => zoomBy(1.3);
+document.getElementById("ovOut").onclick = () => zoomBy(1 / 1.3);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !overlay.hidden) closePage(); });
+window.addEventListener("resize", () => { if (!overlay.hidden) setZoom(zoom); });
+
+const start = (location.hash || "").slice(1);
+select(CLAIMS[start] ? start : "C13", false);
+const warm = () => Object.values(PAGES).forEach(p => p.clips.forEach(c => { const i = new Image(); i.decoding = "async"; i.src = c.src; }));
+("requestIdleCallback" in window) ? requestIdleCallback(warm, { timeout: 2000 }) : setTimeout(warm, 800);
+</script>
+
+</body>
+</html>
