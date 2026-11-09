@@ -210,21 +210,7 @@ window.DATA = {
       "pages": []
      }
     }
-   },
-   "audio": [
-    {
-     "name": "George",
-     "src": "audio/abegg-sample-george.mp3"
-    },
-    {
-     "name": "Daniel",
-     "src": "audio/abegg-sample-daniel.mp3"
-    },
-    {
-     "name": "Alice",
-     "src": "audio/abegg-sample-alice.mp3"
-    }
-   ]
+   }
   }
  ],
  "clippings": [
