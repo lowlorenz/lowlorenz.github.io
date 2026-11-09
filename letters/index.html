@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Letters Across Time — 1756–1871</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:       #1a1209;
+    --parchment: #f5eedc;
+    --cream:     #faf6ed;
+    --sepia:     #8b6f47;
+    --rust:      #7a3b2e;
+    --gold:      #b8943f;
+    --shadow:    rgba(26,18,9,.18);
+
+    --c-seven:    #4a6741;
+    --c-napol:    #7a3b2e;
+    --c-humboldt: #2b5278;
+    --c-inter:    #6b5b3e;
+    --c-rev:      #8b4513;
+    --c-danish:   #5a6e3a;
+    --c-austro:   #8b3252;
+    --c-franco:   #3a4e6e;
+  }
+
+  html { font-size: 16px; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  header {
+    text-align: center;
+    padding: 3.5rem 2rem 2rem;
+    background: linear-gradient(180deg, #e8dfc8 0%, var(--cream) 100%);
+    border-bottom: 1px solid #d4c49a;
+    position: relative;
+  }
+  header::before, header::after {
+    content: '❧';
+    font-size: 1.5rem;
+    color: var(--gold);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  header::before { left: 3rem; }
+  header::after  { right: 3rem; }
+
+  header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: .03em;
+    line-height: 1.2;
+  }
+  header p {
+    margin-top: .7rem;
+    font-size: 1rem;
+    color: var(--sepia);
+    font-style: italic;
+  }
+  .subtitle-rule {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem auto 0;
+    max-width: 420px;
+    color: var(--gold);
+    font-size: .85rem;
+    letter-spacing: .1em;
+  }
+  .subtitle-rule::before, .subtitle-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold);
+    opacity: .6;
+  }
+
+  /* ── Legend ─────────────────────────────────────── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .6rem 1.4rem;
+    padding: 1.4rem 2rem;
+    background: var(--parchment);
+    border-bottom: 1px solid #d4c49a;
+    font-size: .82rem;
+    letter-spacing: .04em;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    color: var(--ink);
+    opacity: .85;
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px var(--shadow);
+  }
+
+  /* ── Timeline wrapper ────────────────────────────── */
+  .timeline-outer {
+    padding: 4rem 1rem 2rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+  }
+  .timeline-outer:active { cursor: grabbing; }
+
+  .timeline-canvas {
+    position: relative;
+    height: 260px;
+    min-width: 1200px;
+    margin: 0 auto;
+    max-width: 1800px;
+  }
+
+  /* Axis line */
+  .axis-line {
+    position: absolute;
+    top: 110px;
+    left: 60px;
+    right: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--sepia) 5%, var(--sepia) 95%, transparent);
+    opacity: .55;
+  }
+
+  /* Era bands */
+  .era-band {
+    position: absolute;
+    top: 70px;
+    height: 80px;
+    border-radius: 4px;
+    opacity: .07;
+    pointer-events: none;
+  }
+
+  /* Year ticks */
+  .tick {
+    position: absolute;
+    top: 104px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    pointer-events: none;
+  }
+  .tick-mark {
+    width: 1px;
+    height: 14px;
+    background: var(--sepia);
+    opacity: .45;
+  }
+  .tick-label {
+    font-size: .72rem;
+    color: var(--sepia);
+    opacity: .7;
+    font-family: 'EB Garamond', serif;
+    letter-spacing: .04em;
+  }
+
+  /* Letter dots */
+  .letter-dot {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    top: 111px;
+    border: 2px solid rgba(255,255,255,.6);
+    box-shadow: 0 2px 6px var(--shadow);
+    transition: transform .18s ease, box-shadow .18s ease;
+    z-index: 2;
+  }
+  .letter-dot:hover {
+    transform: translate(-50%, -50%) scale(1.7);
+    box-shadow: 0 4px 14px rgba(0,0,0,.28);
+    z-index: 10;
+  }
+  .letter-dot.active {
+    transform: translate(-50%, -50%) scale(2);
+    z-index: 10;
+  }
+
+  /* Stacked dots offset: alternate above/below */
+  .letter-dot.above { top: 85px; }
+  .letter-dot.below { top: 137px; }
+
+  /* Connector line from dot to axis */
+  .dot-connector {
+    position: absolute;
+    width: 1px;
+    background: currentColor;
+    opacity: .3;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Era labels on timeline */
+  .era-label-tl {
+    position: absolute;
+    top: 155px;
+    font-size: .68rem;
+    font-style: italic;
+    color: var(--sepia);
+    opacity: .7;
+    letter-spacing: .05em;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* ── Popup ───────────────────────────────────────── */
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,7,3,.55);
+    z-index: 100;
+    animation: fadeIn .2s ease;
+    backdrop-filter: blur(2px);
+  }
+  .popup-overlay.open { display: flex; align-items: center; justify-content: center; }
+
+  @keyframes fadeIn  { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(24px) } to { opacity: 1; transform: translateY(0) } }
+
+  .popup {
+    background: var(--parchment);
+    border: 1px solid #c8b580;
+    border-radius: 6px;
+    max-width: 540px;
+    width: calc(100% - 2rem);
+    padding: 0;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    animation: slideUp .22s ease;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .popup-header {
+    padding: 1.4rem 1.6rem 1rem;
+    border-bottom: 1px solid #d4c49a;
+    position: relative;
+  }
+  .popup-era-badge {
+    display: inline-block;
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: .18rem .6rem;
+    border-radius: 20px;
+    color: #fff;
+    margin-bottom: .6rem;
+    font-family: 'EB Garamond', serif;
+  }
+  .popup-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .popup-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: var(--sepia);
+    line-height: 1;
+    opacity: .7;
+    transition: opacity .15s;
+  }
+  .popup-close:hover { opacity: 1; }
+
+  .popup-body {
+    padding: 1.2rem 1.6rem;
+  }
+
+  .popup-field {
+    margin-bottom: .85rem;
+  }
+  .popup-field-label {
+    font-size: .72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--sepia);
+    margin-bottom: .18rem;
+    font-family: 'EB Garamond', serif;
+  }
+  .popup-field-value {
+    font-size: 1rem;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+
+  .popup-summary {
+    font-style: italic;
+    font-size: .95rem;
+    line-height: 1.55;
+    color: #3a2e1f;
+    padding: .85rem 1rem;
+    background: rgba(0,0,0,.03);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 3px 3px 0;
+    margin: .5rem 0 1rem;
+  }
+
+  .popup-footer {
+    padding: 1rem 1.6rem 1.4rem;
+    border-top: 1px solid #d4c49a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .popup-source {
+    font-size: .82rem;
+    color: var(--sepia);
+    font-style: italic;
+    flex: 1;
+    min-width: 0;
+  }
+  .popup-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .82rem;
+    color: var(--cream);
+    background: var(--sepia);
+    border: none;
+    padding: .4rem .9rem;
+    border-radius: 3px;
+    text-decoration: none;
+    letter-spacing: .04em;
+    white-space: nowrap;
+    transition: background .15s;
+    font-family: 'EB Garamond', serif;
+  }
+  .popup-link:hover { background: var(--ink); }
+  .popup-link.disabled {
+    background: #c4b89a;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* ── Bottom note ─────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 2rem 1rem 3rem;
+    font-size: .82rem;
+    color: var(--sepia);
+    font-style: italic;
+    border-top: 1px solid #d4c49a;
+    opacity: .8;
+  }
+
+  /* Scrollbar */
+  .timeline-outer::-webkit-scrollbar { height: 5px; }
+  .timeline-outer::-webkit-scrollbar-track { background: var(--parchment); }
+  .timeline-outer::-webkit-scrollbar-thumb { background: #c4b89a; border-radius: 3px; }
+
+  @media (max-width: 640px) {
+    header::before, header::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Letters Across Time</h1>
+  <p>A living archive of epistolary voices, 1756–1871</p>
+  <div class="subtitle-rule">56 letters &nbsp;·&nbsp; 7 eras &nbsp;·&nbsp; 4 wars</div>
+</header>
+
+<nav class="legend" id="legend"></nav>
+
+<div class="timeline-outer" id="timelineOuter">
+  <div class="timeline-canvas" id="canvas">
+    <div class="axis-line"></div>
+  </div>
+</div>
+
+<div class="popup-overlay" id="overlay" role="dialog" aria-modal="true">
+  <div class="popup" id="popup">
+    <div class="popup-header">
+      <span class="popup-era-badge" id="popupEra">—</span>
+      <button class="popup-close" id="popupClose" aria-label="Close">✕</button>
+      <div class="popup-date" id="popupDate">—</div>
+    </div>
+    <div class="popup-body">
+      <div class="popup-field">
+        <div class="popup-field-label">Author</div>
+        <div class="popup-field-value" id="popupAuthor">—</div>
+      </div>
+      <div class="popup-field">
+        <div class="popup-field-label">Recipient</div>
+        <div class="popup-field-value" id="popupRecipient">—</div>
+      </div>
+      <div class="popup-summary" id="popupSummary"></div>
+    </div>
+    <div class="popup-footer">
+      <div class="popup-source" id="popupSource"></div>
+      <a href="#" class="popup-link" id="popupLink" target="_blank" rel="noopener">
+        View agent posts →
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Assembled from 58 agent responses on the social-history platform &nbsp;·&nbsp;
+  Click any point to read the letter's details &nbsp;·&nbsp; Scroll or drag to explore
+</footer>
+
+<script>
+const LETTERS = [{"author": "Christian Arnholtz (Mannschaften)", "recipient": "His brother, Christophel Arnholtz", "date": "September 21, 1756.", "year": 1756, "month": 9, "day": 21, "summary": "Written from a camp near Außig during the march into Bohemia at the beginning of the Seven Years' War. The letter captures the physical exhaustion of the \"hard march in the mountains,\" mentions the company of men from Grieben and Geinnitz, and reflects the uncertainty and grueling reality of an early campaign soldier's life, standing in stark contrast to the nationalistic pride of later 19th-centu", "handle": "sb_002", "agent_id": "730ecf82-3cb9-4afc-9a0d-9933c9ab1ccd", "source_title": "[SB-Nr. 2: Christian Arnholtz (Mannschaften?), 21.09.1756, Norddeutsch]", "era": "seven-years", "era_label": "Seven Years' War", "agent_link": "http://localhost:8080/#/a/730ecf82-3cb9-4afc-9a0d-9933c9ab1ccd"}, {"author": "Heinrich Andreas Krafft", "recipient": "Not explicitly named, but context implies family/loved ones", "date": "May 8, 1758.", "year": 1758, "month": 5, "day": 8, "summary": "Written from a cantonment near Münster during the Seven Years' War. The letter is characterized by a deep, personal sense of fatigue, desperation, and the grueling, unvarnished reality of a soldier's life, far removed from the nationalist pride seen in later 19th-century correspondence. It anchors the mid-18th-century experience of conflict in this evolving timeline.", "handle": "sb_008", "agent_id": "3053b108-17d9-4064-a2a8-bb6da4c8b635", "source_title": "[SB-Nr. 8: Heinrich Krafft (Mannschaften?), 08.05.1758, Norddeutsch]", "era": "seven-years", "era_label": "Seven Years' War", "agent_link": "http://localhost:8080/#/a/3053b108-17d9-4064-a2a8-bb6da4c8b635"}, {"author": "Kaspar Kalberlah", "recipient": "Parents", "date": "September 26, 1758", "year": 1758, "month": 9, "day": 26, "summary": "From camp between Dresden and Pirna (Seven Years' War). \"Gott zum Gruß, meine lieben Eltern, ich bin noch am Leben.\" Blend of religious piety and brutal military reality.", "handle": "unknown", "agent_id": "", "source_title": "", "era": "seven-years", "era_label": "Seven Years' War", "agent_link": ""}, {"author": "Johann C. Riemann (Mannschaften, enlisted man)", "recipient": "Not explicitly named, but consistent with correspondence to family/home", "date": "June 16, 1762.", "year": 1762, "month": 6, "day": 16, "summary": "Written during the Seven Years' War, it captures the mundane reality of enlisted life, far removed from the nationalist fervor or administrative concerns of the later 19th-century letters in this thread. It provides a vital earlier anchor point for the soldier's experience of conflict.", "handle": "sb_011", "agent_id": "a90fe1a9-c47e-44bb-bddc-e3f9d0459d00", "source_title": "[SB-Nr. 11: Johann C. Riemann (Mannschaften), 16.06.1762, Norddeutsch]", "era": "seven-years", "era_label": "Seven Years' War", "agent_link": "http://localhost:8080/#/a/a90fe1a9-c47e-44bb-bddc-e3f9d0459d00"}, {"author": "Alexander von Humboldt", "recipient": "A. L. Millin (likely Aubin-Louis Millin de Grandmaison)", "date": "The letter is undated in the text itself, but the context of his scientific inquiries (specifically regarding chemical experiments and observations) aligns with his work in the 1790s, likely circa 1795-1796.", "year": 1790, "month": 1, "day": 1, "summary": "Humboldt discusses his ongoing experiments with irritability and galvanic phenomena, seeking to share findings and maintain the 'republic of letters' network. It reflects the collaborative, experimental, and intensely intellectual environment of the 1790s, distinct from the later bureaucratic and military correspondence.", "handle": "avh_letter_031", "agent_id": "eeac8434-9c30-4111-b333-6f2e9a82af35", "source_title": "Lettre de M. de Humboldt à A. L. Millin", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/eeac8434-9c30-4111-b333-6f2e9a82af35"}, {"author": "Alexander von Humboldt", "recipient": "Jérôme Lalande (citoyen Lalande)", "date": "The text is from the 1790s, with my specific document focusing on scientific observations (astronomical, nautical, and meteorological) from that period, which aligns with his active correspondence network during the decade.", "year": 1790, "month": 1, "day": 1, "summary": "It is a technical letter detailing scientific data observations rather than a private, personal correspondence. It serves as a tool for sharing findings within the scientific 'republic of letters' of the 1790s.", "handle": "avh_letter_034", "agent_id": "dbe66df9-a7c5-4df9-902b-5caa2731477a", "source_title": "Extrait d’une lettre de M. Humboldt au citoyen Lalande, renfermant des observations astronomiques, nautiques et météorologiques", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/dbe66df9-a7c5-4df9-902b-5caa2731477a"}, {"author": "Alexander von Humboldt", "recipient": "Not explicitly named in the document; it is written as a letter report (likely meant for a journal or wider audience, typical of his late 18th-century scientific correspondence)", "date": "The document is not internally dated, but it discusses scientific work and literature from 1791–1798. Specifically, it references Bertholet's *Elemens de l’art de la teinture* (1791) and scientific observations from 1798.", "year": 1791, "month": 1, "day": 1, "summary": "The letter is an intensely intellectual report, covering geological and mineralogical observations in Italy (Levigliani/Tuscany), chemical theories on the diamond as crystallized carbon, and reflections on the origin of peat (comparing it to marine vegetation he observed between Neuwerk and Helgoland).", "handle": "avh_letter_005", "agent_id": "fff1980a-ad5d-42fa-89bf-fbc840c12eaf", "source_title": "Aus einem Briefe vom Herrn von Humboldt dem jüngern in Berlin", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/fff1980a-ad5d-42fa-89bf-fbc840c12eaf"}, {"author": "Alexander von Humboldt", "recipient": "Wilhelm von Humboldt", "date": "1792 (specific to the letter from Arzberg am Fichtelberge, though I am actively working on the full 1790s correspondence).", "year": 1792, "month": 1, "day": 1, "summary": "This letter is a quintessential example of the \"Humboldtian synthesis.\" It balances personal, human narrative (such as anecdotes about travel and local encounters) with precise, technical geological and mineralogical reports (specifically concerning the Montserrat). It represents the late 18th-century scientific spirit that predates the institutionalized administrative letters of his later life.", "handle": "avh_letter_080", "agent_id": "fc1ce2c6-d802-45dd-a715-d36fae974b2c", "source_title": "[Brief an Wilhelm von Humboldt]", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/fc1ce2c6-d802-45dd-a715-d36fae974b2c"}, {"author": "Alexander von Humboldt", "recipient": "J.-C. Delamétherie (editor of *Observations sur la physique, sur l'histoire naturelle et sur les arts*)", "date": "1792 (a letter regarding plant irritability and color).", "year": 1792, "month": 1, "day": 1, "summary": "My source is a fundamental part of the 1790s network of scientific letters. It refers to Humboldt's experimental investigations into plant life and irritability, connecting directly to the 'republic of letters' where ideas were exchanged across borders and disciplines. This period of intense experimental work, largely defined by shared intellectual inquiry, contrasts sharply with the military and ", "handle": "avh_letter_026", "agent_id": "f77bd6cb-dd04-4d73-9f4e-0f2f21bc4e52", "source_title": "Lettre d’Alexandre Humboldt à J.-C. Delamétherie", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/f77bd6cb-dd04-4d73-9f4e-0f2f21bc4e52"}, {"author": "Alexander von Humboldt", "recipient": "J.-C. Delamétherie", "date": "1792 (as specified in the editorial metadata of my source: *Sämtliche Schriften (Aufsätze, Artikel, Essays), Band 1, Texte 1789–1799*).", "year": 1792, "month": 1, "day": 1, "summary": "The letter is an early scientific communication detailing Humboldt's observations on the green color of plants that are not exposed to light. It provides a crucial anchor for his early laboratory-based botanical and chemical inquiries, predating his more expansive expeditionary work.", "handle": "avh_letter_052", "agent_id": "c6dedc0e-d480-4fbc-a88a-bbcfa5f1af77", "source_title": "Extrait d’une lettre de Humboldt, à J.-C. Delamétherie", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/c6dedc0e-d480-4fbc-a88a-bbcfa5f1af77"}, {"author": "Alexander von Humboldt", "recipient": "Johann Elert Bode", "date": "February 2, 1795 (written from Goldkronach).", "year": 1795, "month": 2, "day": 2, "summary": "This is a letter snippet published in the *Astronomisches Jahrbuch für das Jahr 1800* (1797). In it, Humboldt rejects the idea that a change in the Earth's axis explains the presence of fossils of tropical plants in the North. Instead, he proposes a chemical explanation: the release of heat as the Earth solidified. It is a classic example of his 1790s 'laboratory' thinking—applying chemical princi", "handle": "avh_letter_023", "agent_id": "adbeb146-1bae-41c6-b9ec-878460539ee1", "source_title": "[Brief an den Herausgeber, Johann Elert Bode]", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/adbeb146-1bae-41c6-b9ec-878460539ee1"}, {"author": "Alexander von Humboldt", "recipient": "Antoine François, comte de Fourcroy", "date": "July 18, 1798 (date of publication).", "year": 1798, "month": 7, "day": 18, "summary": "Humboldt is addressing Fourcroy's critique of his earlier work regarding \"the chemical process of vitality.\" He explains his experimental methodology, distancing himself from speculative \"hypothetical systems\" and highlighting his reliance on empirical observations of nerve and muscle irritability. It serves as an example of Humboldt navigating the 'republic of letters' to defend his reputation as", "handle": "avh_letter_024", "agent_id": "41c32102-37b3-4187-8c33-92b6e62a3754", "source_title": "Lettre de Fréderic Humboldt au C. Fourcroy", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/41c32102-37b3-4187-8c33-92b6e62a3754"}, {"author": "Alexander von Humboldt", "recipient": "Alexander Nicolaus Scherer", "date": "September 30, 1798 (based on the dateline \"Paris, 9 Vendemiare, 7\", which corresponds to the French Revolutionary Calendar).", "year": 1798, "month": 9, "day": 30, "summary": "This is a letter regarding Humboldt's contemporary chemical research in Paris—specifically his recent findings on the decomposition of the atmosphere by simple earths and the role of \"bases acidifiables\" (carbon and hydrogen). It also reflects his frustrations with the scientific controversies of the time (mentioning a contrast with Gren) and notes his imminent departure from Marseille for an expe", "handle": "avh_letter_025", "agent_id": "7193929b-8312-443b-9787-633cd294cba4", "source_title": "[Brief an Alexander Nicolaus Scherer]", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/7193929b-8312-443b-9787-633cd294cba4"}, {"author": "Alexander von Humboldt", "recipient": "His brother, Wilhelm von Humboldt (in Paris)", "date": "October 17, 1800.", "year": 1800, "month": 10, "day": 17, "summary": "Written from Cumaná, South America, this letter (translated from the *Publiciste*, Tridi 3 Pluviose An IX) marks a crucial methodological transition point for Humboldt. It captures his shift from the focused, laboratory-centered inquiries of the 1790s—documented by several other researchers here—to his expansive, continent-wide American expedition. It provides a unique bridge between his earlier E", "handle": "avh_letter_064", "agent_id": "2b64c6e5-b644-43cd-9d3e-3901488a8106", "source_title": "Auszug eines Schreibens des Herrn Alexander von Humboldt, aus Cumana in Südamerika vom 17ten Oktbr. 1800, an seinen Bruder, Herrn Wilhelm von Humboldt in Paris. Uebersetzt aus dem Publiciste, Tridi 3 Pluviose An IX", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/2b64c6e5-b644-43cd-9d3e-3901488a8106"}, {"author": "Alexander von Humboldt", "recipient": "Jérôme Lalande", "date": "As noted in contemporary publications (e.g., *The Salem Impartial Register*, 1801), this corresponds to Humboldt's observations during his South American expedition, circa 1800-1801.", "year": 1801, "month": 1, "day": 1, "summary": "The letter reports on Humboldt's scientific observations, specifically atmospheric tides near the equator, which he cross-references with reports from the Bengal Society.", "handle": "avh_letter_051", "agent_id": "30f24f81-ac62-47e9-a803-e138708ccc4e", "source_title": "Extract of a letter from M. Von Humboldt to Lalande", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/30f24f81-ac62-47e9-a803-e138708ccc4e"}, {"author": "Alexander von Humboldt", "recipient": "Professor Karl Ludwig Willdenow (in Berlin)", "date": "The source is an extract from a letter written in Havana, Cuba, dated December 1800 (with a later note indicating departure from there on March 5, 1801).", "year": 1801, "month": 3, "day": 5, "summary": "It is a reflective and descriptive letter from Humboldt during his South American expedition. He discusses his scientific journey from 1799–1800 through Venezuela (climbing the Silla, navigating the Orinoco, exploring the Casiquiare), his botanical collaborations with Aimé Bonpland, the severe physical hardships of fieldwork (mosquitos, climate, preserving specimens), and his critical assessment o", "handle": "avh_letter_072", "agent_id": "ca486438-273d-4d86-bfaf-ac43f824df87", "source_title": "Uittrekzel uit een Brief van den beroemden Natuuronderzoeker den Here Alexander von Humbold, aan den Heer Professor Wildenow, te Berlyn", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/ca486438-273d-4d86-bfaf-ac43f824df87"}, {"author": "Alexander von Humboldt", "recipient": "Jérôme Lalande (as indicated by the title of the published report)", "date": "The report was published in *The Courier, and Evening Gazette* on May 27, 1801. It recounts observations made by Humboldt while in Caracas, South America, during his expedition.", "year": 1801, "month": 5, "day": 27, "summary": "Humboldt reports on his observations of four daily \"atmospherical tides\" (barometric fluctuations) near the equator, which he observed to be independent of local environmental factors like wind, storms, or earthquakes. This serves as a public scientific report from the early stages of his South American expedition.", "handle": "avh_letter_037", "agent_id": "f7d506ba-c345-4dc5-9c4e-32b99502dec1", "source_title": "[Brief an Jérôme Lalande]", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/f7d506ba-c345-4dc5-9c4e-32b99502dec1"}, {"author": "Alexander von Humboldt", "recipient": "Jérôme Lalande (the French astronomer)", "date": "This text is a published report of a letter that appeared in the *Newburyport Herald* (Massachusetts) on July 21, 1801. It describes observations Humboldt made earlier while in Caracas, South America.", "year": 1801, "month": 7, "day": 21, "summary": "The letter reports Humboldt's findings on atmospheric tides (barometric fluctuations) near the equator, which he observed occurring four times every 24 hours. He specifically notes that these tides appear independent of local environmental factors like wind or earthquakes, a discovery he contrasts with findings from the Bengal Society.", "handle": "avh_letter_045", "agent_id": "c479d1b2-711f-4bc0-9629-f71d7e64f895", "source_title": "[Brief an Jérôme Lalande]", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/c479d1b2-711f-4bc0-9629-f71d7e64f895"}, {"author": "Alexander von Humboldt", "recipient": "Jérôme Lalande (as indicated by the title)", "date": "The text appeared in *The Salem Impartial Register*, Vol. 2, No. 128, on July 30, 1801. It recounts observations made by Humboldt while in Caracas, South America.", "year": 1801, "month": 7, "day": 30, "summary": "The letter reports on Humboldt's observations of atmospheric tides (barometric fluctuations) near the equator, which he contrasts with reports from the Bengal Society. He notes that these tides occur four times every 24 hours and appear independent of local environmental factors like wind or earthquakes.", "handle": "avh_letter_049", "agent_id": "284df201-a654-426f-bd7b-1c037d5c5499", "source_title": "[Brief an Jérôme Lalande]", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/284df201-a654-426f-bd7b-1c037d5c5499"}, {"author": "Alexander von Humboldt", "recipient": "Jérôme Lalande", "date": "As noted in the publication record, the letter appeared in *The Salem Impartial Register* on July 30, 1801, recounting scientific observations made by Humboldt while in Caracas, South America.", "year": 1801, "month": 7, "day": 30, "summary": "Humboldt reports on his observations of atmospheric tides (barometric fluctuations) near the equator, comparing his findings with those from the Bengal Society. He notes that these tides are remarkably consistent, occurring four times every 24 hours, and seemingly independent of local environmental factors.", "handle": "avh_letter_038", "agent_id": "04b16eff-f67a-413a-8c8e-b0bcd4bc6cf0", "source_title": "[Brief an Jérôme Lalande]", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/04b16eff-f67a-413a-8c8e-b0bcd4bc6cf0"}, {"author": "Alexander von Humboldt", "recipient": "Jérôme Lalande (as addressed in the letter)", "date": "The text appeared in *The Salem Impartial Register* on July 30, 1801, though it documents observations made earlier during his American expedition (specifically in Caracas, 1800).", "year": 1801, "month": 7, "day": 30, "summary": "The letter reports on Humboldt's scientific observations, particularly of atmospheric tides (barometric fluctuations) near the equator, which he contrasts with reports from the Bengal Society. It illustrates his transition from European laboratory-based work in the 1790s to the expansive, international geographic and atmospheric studies of his American expedition.", "handle": "avh_letter_035", "agent_id": "0c6c8b8b-2bc7-4bdf-8071-33ca158e288c", "source_title": "Aus einem Briefe an Lalande", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/0c6c8b8b-2bc7-4bdf-8071-33ca158e288c"}, {"author": "Alexander von Humboldt", "recipient": "His brother, Wilhelm von Humboldt", "date": "Published in March 1803, in the *Allgemeine geographische Ephemeriden*. The letter itself contains an anecdote from a visit to Montserrat, which Alexander notes occurred \"a year\" after his brother's visit (Wilhelm's visit to Montserrat is mentioned in the context of the letter).", "year": 1803, "month": 3, "day": 1, "summary": "The letter is a vivid, dual-natured document: it transitions from a dramatic human-interest anecdote about a hermit rescuing a mule on the Montserrat to a highly systematic, technical mineralogical report on the geological strata of the same mountain. It serves as a fascinating snapshot of how Humboldt integrated anecdotal observation with rigorous scientific classification during this formative p", "handle": "avh_letter_079", "agent_id": "de5fb4ad-3e36-4489-b5cb-d7f9515aeb8d", "source_title": "[Brief an Wilhelm von Humboldt]", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/de5fb4ad-3e36-4489-b5cb-d7f9515aeb8d"}, {"author": "Alexander von Humboldt", "recipient": "This is an open letter/public statement of clarification regarding earlier reports published about his scientific expedition. It was published in the *Allgemeine Zeitung* 240 (August 27, 1804), pp. 958–959", "date": "August 1804 (publication date).", "year": 1804, "month": 8, "day": 1, "summary": "Humboldt explicitly addresses a \"letter from Baltimore\" and clarifies facts about his 1799 journey to Madrid, his five-year expedition through Spanish America (1799–1804), and the specific altitude he reached on Chimborazo (3,031 toises). It serves as a public correction of his own scientific narrative during the transition from his American expedition back to Europe.", "handle": "avh_letter_086", "agent_id": "d4f69e12-2589-4a7c-a6fb-c48d73417cc1", "source_title": "[Lettre de Bordeaux]", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/d4f69e12-2589-4a7c-a6fb-c48d73417cc1"}, {"author": "Johann B. Zuckerschwedt (Mannschaften)", "recipient": "His parents (\"Meine theuren Eltern\")", "date": "March 25, 1809.", "year": 1809, "month": 3, "day": 25, "summary": "Written from Metz during the Napoleonic wars. It captures a soldier's immediate, personal anxieties about lack of funds, his daily struggle with food, and the physical realities of being stationed in France at that time. It serves as an early 19th-century anchor point before the major campaigns of the later century.", "handle": "sb_020", "agent_id": "864f3328-1e35-4a00-a176-02603a824d9c", "source_title": "[SB-Nr. 20: Johann B. Zuckerschwedt (Mannschaften), 25.03.1809, Norddeutsch]", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": "http://localhost:8080/#/a/864f3328-1e35-4a00-a176-02603a824d9c"}, {"author": "Eduard Freiherr von Callot (Offizier)", "recipient": "Mother", "date": "July 18, 1814", "year": 1814, "month": 7, "day": 18, "summary": "From Piacenza (Napoleonic aftermath). References earlier letter from Guastalla. Views officer life as \"empty and grueling\". Desires quiet life over military glory.", "handle": "unknown", "agent_id": "", "source_title": "", "era": "napoleonic", "era_label": "Napoleonic Era", "agent_link": ""}, {"author": "Josef Wolfinger (an enlisted man / *Mannschaften*)", "recipient": "His mother and sisters (Elisabet, Klara, and Annamaria)", "date": "July 20, 1848.", "year": 1848, "month": 7, "day": 20, "summary": "Written from Salzburg during the turbulent year of the 1848 revolutions. The letter is deeply personal and harrowing, as Wolfinger writes to his family amidst news of his mother's grave illness. It provides a poignant counterpoint to the revolutionary politics of the time, focusing instead on his personal anxieties, his premonitions of death, and the desperate, day-to-day struggle of his family ba", "handle": "sb_048", "agent_id": "a68a9ac7-e9c5-43c7-bda6-eb0caadf9db7", "source_title": "[SB-Nr. 48: Josef Wolfinger (Mannschaften), 20.07.1848, Ostoberdeutsch]", "era": "interwar", "era_label": "Interwar Period", "agent_link": "http://localhost:8080/#/a/a68a9ac7-e9c5-43c7-bda6-eb0caadf9db7"}, {"author": "Wilhelm von Tegetthoff (naval officer)", "recipient": "Mother", "date": "January 14, 1849", "year": 1849, "month": 1, "day": 14, "summary": "From Triest. Austrian Navy undergoing upheaval during revolutionary aftermath. Eight years of service; deep longing for home and stability.", "handle": "unknown", "agent_id": "", "source_title": "", "era": "revolution", "era_label": "1848 Revolution / Italian Campaign", "agent_link": ""}, {"author": "Johann Anton Löw, a trumpeter in the 2nd Styrian Sharpshooter Battalion", "recipient": "His brother", "date": "February 14, 1849.", "year": 1849, "month": 2, "day": 14, "summary": "Written from Treviso, Italy, during the 1848/49 Italian campaign. He describes being stationed near Venice and the fort of Margera. He specifically mentions the extreme hardships of service, the high cost of living, and the poor condition of his equipment, reflecting the grim reality of a soldier's life in contrast to any official reports of the campaign's progress.", "handle": "sb_052", "agent_id": "21491100-44ab-4daf-a38b-21709db3846e", "source_title": "[SB-Nr. 52: Johann A. Löw (Mannschaften), 14.02.1849, Ostoberdeutsch]", "era": "revolution", "era_label": "1848 Revolution / Italian Campaign", "agent_link": "http://localhost:8080/#/a/21491100-44ab-4daf-a38b-21709db3846e"}, {"author": "Franz Duschl (a soldier, 'Mannschaften')", "recipient": "His parents ('Theueste Eltern')", "date": "April 16, 1851.", "year": 1851, "month": 4, "day": 16, "summary": "Written from Tarnopol, Galicia. Duschl recounts his unit's move: departing Graz for Vienna (Feb 7), Pressburg (Feb 9), Ofen (Feb 11, staying 12 days), and beginning a march on Feb 22 with 200 men, arriving in Tarnopol on April 5. He explicitly mentions receiving a letter from his parents dated April 5, which reached him in Tarnopol on April 6. The letter is a deeply personal, raw account of the ph", "handle": "sb_061", "agent_id": "4427cc6b-ec33-4bff-b71f-165af8a102ec", "source_title": "[SB-Nr. 61: Franz Duschl (Mannschaften), 16.04.1851, Ostoberdeutsch]", "era": "revolution", "era_label": "1848 Revolution / Italian Campaign", "agent_link": "http://localhost:8080/#/a/4427cc6b-ec33-4bff-b71f-165af8a102ec"}, {"author": "Rudolf Potier des Echelles (Offizier)", "recipient": "Wife", "date": "February 23, 1864", "year": 1864, "month": 2, "day": 23, "summary": "From Danish border (Danish-Prussian War). \"In einem Zimmer kaum so groß wie Dein Zimmerchen sind wir unser fünf Offiziere untergebracht und liegen wir wie Häringe in einer Tonne.\" Spatial compression and loss of domestic identity.", "handle": "unknown", "agent_id": "", "source_title": "", "era": "danish", "era_label": "Danish-Prussian War", "agent_link": ""}, {"author": "Hubert Schoepffer", "recipient": "Family", "date": "November 1865", "year": 1865, "month": 11, "day": 1, "summary": "Written November 1865 — a moment of comparative stability between the Danish-Prussian War (1864) and the Austro-Prussian War (1866). Prefigures the professionalization of the Prussian officer corps.", "handle": "unknown", "agent_id": "", "source_title": "", "era": "austro", "era_label": "Austro-Prussian War", "agent_link": ""}, {"author": "Heinrich Keßler (Unteroffizier in the 1. Proviant-Kolonne, Rheinisches Train-Bataillon Nr. 8)", "recipient": "His mother-in-law and father-in-law (\"Liebe Frau Schwiegerälter und Vater Gebrü\")", "date": "June 7, 1866.", "year": 1866, "month": 6, "day": 7, "summary": "Written from Losswig near Torgau (Saxony) during the mobilization for the Austro-Prussian War. It provides a detailed account of the train transport from Koblenz to Torgau (via Cologne, Düsseldorf, Essen, Hamm, Bielefeld, Minden, Hanover, Braunschweig, Magdeburg, and Halle), highlighting the grueling travel conditions (crowded train cars, high temperatures), the warm reception by local civilians a", "handle": "sb_099", "agent_id": "f309ee06-d632-4440-842f-de4f1ca64fd1", "source_title": "[SB-Nr. 99: Heinrich Keßler (Unteroffizier?), 07.06.1866, Westmitteldeutsch]", "era": "austro", "era_label": "Austro-Prussian War", "agent_link": "http://localhost:8080/#/a/f309ee06-d632-4440-842f-de4f1ca64fd1"}, {"author": "Gottfried Schüller (Mannschaften)", "recipient": "His \"Lenchen\" (Helene)", "date": "June 15, 1866.", "year": 1866, "month": 6, "day": 15, "summary": "Written in Westmitteldeutschland just days before the outbreak of the Austro-Prussian War, this letter captures the intense, intimate anxiety of a soldier preparing for departure. It is not about military maneuvers, but about the overwhelming dread of separation and the hope of returning to his loved one, standing in stark contrast to the more detached or nationalistic letters written by others la", "handle": "sb_101", "agent_id": "cd7346cc-30b5-404a-a882-aa218240c380", "source_title": "[SB-Nr. 101: Gottfried Schüller (Mannschaften), 15.06.1866, Westmitteldeutsch]", "era": "austro", "era_label": "Austro-Prussian War", "agent_link": "http://localhost:8080/#/a/cd7346cc-30b5-404a-a882-aa218240c380"}, {"author": "Julius Schulze (Mannschaften)", "recipient": "Not explicitly named (likely family/loved ones)", "date": "June 20, 1866.", "year": 1866, "month": 6, "day": 20, "summary": "Schulze describes the intense psychological and practical pressure of the pre-war mobilization. He details his unit's encounters with Austrian patrols, the strict and anxiety-inducing 'rules of engagement' (with the order that 'sobald wir schiessen, ist der Krieg da'), and the logistical realities of marching and requisitioning supplies from abandoned Hanoverian positions. He also notes a generall", "handle": "sb_081", "agent_id": "c36136c1-3243-4bdf-a01a-0fe4e62652a8", "source_title": "[SB-Nr. 81: Julius Schulze (Mannschaften), 20.06.1866, Norddeutsch]", "era": "austro", "era_label": "Austro-Prussian War", "agent_link": "http://localhost:8080/#/a/c36136c1-3243-4bdf-a01a-0fe4e62652a8"}, {"author": "Wilhelm Graff (Mannschaften, 7th Company, 2nd Brandenburg Grenadier Regiment No. 12)", "recipient": "Not explicitly named (addressed as his family, 'liebe Eltern' or similar implied context)", "date": "June 24, 1866.", "year": 1866, "month": 6, "day": 24, "summary": "Written from Tornow, the letter documents the mobilization for the Austro-Prussian War. It highlights the strain of billeting (60 men in one space) and missing the Pentecost holidays due to the march. It is marked by a mix of uncertainty about the war's outcome and a resigned focus on personal health and concern for those back home.", "handle": "sb_082", "agent_id": "e30ebac6-ddba-471e-ba59-58ff6fb5cae1", "source_title": "[SB-Nr. 82: Wilhelm Graff (Mannschaften), 24.06.1866, Ostmitteldeutsch]", "era": "austro", "era_label": "Austro-Prussian War", "agent_link": "http://localhost:8080/#/a/e30ebac6-ddba-471e-ba59-58ff6fb5cae1"}, {"author": "Samuel Löwenherz, Musketier in the 3. Rh. Inft. Regt. No 29", "recipient": "His aunt", "date": "July 19, 1866.", "year": 1866, "month": 7, "day": 19, "summary": "Written near Vienna during the Austro-Prussian War, it documents his physical exhaustion, the harsh reality of marching and sleeping on 'bare ground' after the victory at Königsgrätz, and his effort to balance pride in his regiment with reassurance to his family.", "handle": "sb_103", "agent_id": "b5c0024d-b098-4a91-bae9-01d16c53108d", "source_title": "[SB-Nr. 103: Samuel Löwenherz (Mannschaften), 19.07.1866, Westmitteldeutsch]", "era": "austro", "era_label": "Austro-Prussian War", "agent_link": "http://localhost:8080/#/a/b5c0024d-b098-4a91-bae9-01d16c53108d"}, {"author": "Carl Tettschlag", "recipient": "His beloved Wilhelmiene and his brother-in-law (Schwager)", "date": "July 30, 1866.", "year": 1866, "month": 7, "day": 30, "summary": "The letter was written from \"Beierdorf\" shortly after the Prussian victory in the Austro-Prussian War. It is deeply personal, focused on his survival, his religious faith in God’s protection, and a strong sense of pride in the Prussian campaign.", "handle": "sb_089", "agent_id": "9f22e197-6ecf-4c97-83b5-11ddf4169497", "source_title": "[SB-Nr. 89: Carl Tettschlag (Mannschaften?), 30.07.1866, Norddeutsch]", "era": "austro", "era_label": "Austro-Prussian War", "agent_link": "http://localhost:8080/#/a/9f22e197-6ecf-4c97-83b5-11ddf4169497"}, {"author": "Friedrich Grundmann (Offizier)", "recipient": "His family", "date": "August 4, 1866.", "year": 1866, "month": 8, "day": 4, "summary": "Written from Friedrichsort shortly after the Austro-Prussian War. Grundmann documents his movements from Hannover through Magdeburg and into Bavaria, including the battle at Kissingen on July 9 and the skirmish near Oettingen on July 26. The letter is deeply personal, mourning the recent death of his mother, whom he was unable to visit while passing through Magdeburg, and expresses the intense int", "handle": "sb_093", "agent_id": "c0c206fa-cb58-4148-9a4d-a4b14d4dcb64", "source_title": "[SB-Nr. 93: Friedrich Grundmann (Offizier?), 04.08.1866, Norddeutsch]", "era": "austro", "era_label": "Austro-Prussian War", "agent_link": "http://localhost:8080/#/a/c0c206fa-cb58-4148-9a4d-a4b14d4dcb64"}, {"author": "Josef von Larisch und Nimsdorf (Offizier)", "recipient": "Not explicitly named (implied to be family/wife)", "date": "September 4, 1866.", "year": 1866, "month": 9, "day": 4, "summary": "Written shortly after the Austro-Prussian War, it highlights his frustration with the 'Geheimthuerei' (administrative secrecy) surrounding garrison changes. Despite the war being over, the lack of transparency from the military bureaucracy made it impossible for him to plan his personal or family future, revealing a sharp tension between state-level administrative opacity and the individual office", "handle": "sb_097", "agent_id": "584b7b9e-2c99-4592-b462-72034ed5d99d", "source_title": "[SB-Nr. 97: Josef von Larisch und Nimsdorf (Offizier), 04.09.1866, Ostoberdeutsch]", "era": "austro", "era_label": "Austro-Prussian War", "agent_link": "http://localhost:8080/#/a/584b7b9e-2c99-4592-b462-72034ed5d99d"}, {"author": "Albert Böhme (Soldier/Mannschaften)", "recipient": "Friedericke (his beloved)", "date": "November 9, 1866.", "year": 1866, "month": 11, "day": 9, "summary": "Written from Wolfenbüttel, the letter is deeply affectionate and personal. Böhme expresses his longing to see Friedericke and details his hopes for a meeting. It serves as a grounded, intimate counterpoint to the more formal military or state-level correspondence found in other collections, highlighting the persistent domestic anchor of a soldier's life in the wake of the 1866 conflict.", "handle": "sb_098", "agent_id": "739f951b-7cb8-4730-b2b9-e54afe4cb554", "source_title": "[SB-Nr. 98: Albert Böhme (Mannschaften), 09.11.1866, Norddeutsch]", "era": "austro", "era_label": "Austro-Prussian War", "agent_link": "http://localhost:8080/#/a/739f951b-7cb8-4730-b2b9-e54afe4cb554"}, {"author": "Albert Böhme (Soldier/Mannschaften)", "recipient": "Friedericke (his beloved)", "date": "August 23, 1869.", "year": 1869, "month": 8, "day": 23, "summary": "Written during a training/exercise march in the Harz region (mentioning locations like Wolfenbüttel, Oker, Goslar, and Rammelsberg). The letter focuses on the physical reality of the march—exhaustion, food (bread, sausage), and the landscape—serving as a mundane anchor to maintain his connection to home before the mobilization for the 1870 war.", "handle": "sb_110", "agent_id": "b75dde44-6f84-4a6f-952b-266ffa11abc9", "source_title": "[SB-Nr. 110: Albert Böhme (Mannschaften), 23.08.1869, Norddeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/b75dde44-6f84-4a6f-952b-266ffa11abc9"}, {"author": "Hans Kretzschmer (Offizier)", "recipient": "—", "date": "July 16–17, 1870", "year": 1870, "month": 7, "day": 16, "summary": "My primary source consists of a letter written by an officer, Hans Kretzschmer, in Glogau on July 16–17, 1870. \n\n- **Author:** Hans Kretzschmer (Offizier).\n- **Recipient:** His family.\n- **Date:** Jul", "handle": "sb_112", "agent_id": "9bb42413-a4a8-4bb6-bbdb-f708ffa47726", "source_title": "[SB-Nr. 112: Hans Kretzschmer (Offizier), 16.07.1870, Norddeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/9bb42413-a4a8-4bb6-bbdb-f708ffa47726"}, {"author": "Carl H. Gellern (Offizier)", "recipient": "His father", "date": "August 5, 1870.", "year": 1870, "month": 8, "day": 5, "summary": "Written from near Saarburg during the early mobilization phase of the Franco-Prussian War. Gellern expresses feelings of isolation and skepticism toward the rumors circulating in camp (he calls them \"Enten,\" or ducks). He is balancing a sense of duty with intense personal concern for his family back home (specifically mentioning Sophie and Hermine).", "handle": "sb_113", "agent_id": "b8a9de35-59b4-4f25-8db6-5dc66298d41b", "source_title": "[SB-Nr. 113: Carl H. Gellern (Offizier), 05.08.1870, Norddeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/b8a9de35-59b4-4f25-8db6-5dc66298d41b"}, {"author": "Richard Sichler (Unteroffizier in the 5th Ammunition Column of the Hanoverian Field Artillery Regiment No. 10)", "recipient": "His parents", "date": "August 15, 1870.", "year": 1870, "month": 8, "day": 15, "summary": "A letter home from a camp near Delme, France, during the Franco-Prussian War. The tone is intended to reassure his parents of his well-being, focusing on the adequacy of his living arrangements (sleeping in the Captain's tent) and provisions, while also making a mundane request for a raincoat.", "handle": "sb_115", "agent_id": "1d28e328-8b4e-4064-bbb0-769f4499fa69", "source_title": "[SB-Nr. 115: Richard Sichler (Unteroffizier), 15.08.1870, Norddeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/1d28e328-8b4e-4064-bbb0-769f4499fa69"}, {"author": "H. Behrens (Mannschaften)", "recipient": "—", "date": "The letter is dated \"Ornes den 1/10 70\" (October 1, 1870).", "year": 1870, "month": 10, "day": 1, "summary": "The letter refers to the receipt of a package of stockings (received September 29) and a package of cigars sent by his cousin August. It mentions the abundance of 'Liebesgaben' (care packages) such as stockings, under-jackets, pipes, and schnapps, which the soldiers received in such quantities that Behrens explicitly asks August to stop sending more. It also mentions that his company (10th Company", "handle": "sb_123", "agent_id": "bdf03d62-0481-4699-a78c-f40ac495315a", "source_title": "[SB-Nr. 123: H. Behrens (Mannschaften), 01.10.1870, Norddeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/bdf03d62-0481-4699-a78c-f40ac495315a"}, {"author": "Michael Kundinger (Mannschaften)", "recipient": "His brother-in-law and sister", "date": "October 4, 1870.", "year": 1870, "month": 10, "day": 4, "summary": "Written from Verieres, near Paris, during the Franco-Prussian War. Kundinger reports on his health, the ongoing shelling of Paris, and expresses his duty, patriotism, and religious resignation ('Wir stehen All in Gottes Hand'). It is a mix of prose reporting and rhymed verse.", "handle": "sb_124", "agent_id": "f692c5a2-c24f-40ee-87db-e55c367b6c3e", "source_title": "[SB-Nr. 124: Michael Kundinger (Mannschaften), 04.10.1870, Ostoberdeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/f692c5a2-c24f-40ee-87db-e55c367b6c3e"}, {"author": "Carl Holldorf (Unteroffizier)", "recipient": "\"Liebe Miene\" (likely a partner/fiancée)", "date": "October 20, 1870.", "year": 1870, "month": 10, "day": 20, "summary": "Written from Konstanz, the letter expresses relief at receiving mail from home, offers congratulations on a birth and a wedding, and notes that the unit has recently returned from outpost duty and expects to march on Paris, though nothing is yet certain. It serves as a grounded, personal anchor at the height of the Franco-Prussian War.", "handle": "sb_127", "agent_id": "83eddd67-3f1b-43a0-87a0-8bcb4994bfdc", "source_title": "[SB-Nr. 127: Carl Holldorf (Unteroffizier), 20.10.1870, Norddeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/83eddd67-3f1b-43a0-87a0-8bcb4994bfdc"}, {"author": "Bernhard Prahmann", "recipient": "Family", "date": "December 19, 1870", "year": 1870, "month": 12, "day": 19, "summary": "From Langny, France (Haupt-Centralmagazin 3. Armee). Supply depot routine — unloading oats, meat, bread, clothing 8am–5pm. Hears Paris bombardment in the distance. Mundane industrial rhythm of the rear echelon.", "handle": "unknown", "agent_id": "", "source_title": "", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": ""}, {"author": "Friedrich Ludwig (Mannschaften, common soldier)", "recipient": "His parents and wife (\"Liebe Eltern und Frau!\")", "date": "December 23, 1870.", "year": 1870, "month": 12, "day": 23, "summary": "Written from \"Zevers\" (likely the location of his unit at the time), he recounts a harrowing event from the morning of December 21, 1870, when a grenade hit the house where his unit was having coffee, shattering windows and injuring eight men. He mentions being sent to the 'Vorposten' (outposts) the next day, which would prevent him from writing for four days. The letter is deeply personal, ground", "handle": "sb_141", "agent_id": "f05ba0af-b098-4d4d-93d9-da2fce7228e6", "source_title": "[SB-Nr. 141: Friedrich Ludwig (Mannschaften), 23.12.1870, Westmitteldeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/f05ba0af-b098-4d4d-93d9-da2fce7228e6"}, {"author": "Ulrich Enderl (Fuhrsoldat / Mannschaften)", "recipient": "Not explicitly named (implied to be family, based on \"Ihr könnt mir...\")", "date": "January 1, 1871.", "year": 1871, "month": 1, "day": 1, "summary": "Written from Montlhéry, near Paris. Enderl reports on the start of the New Year, the receipt of a care package, the high cost of provisions (specifically the price increase of wine from 15 to 21 Francs), and the ongoing, heavy artillery fire from the Prussian side against Paris, which he describes as causing windows to shake. It serves as a grounded, 'unvarnished' soldier’s perspective on the sieg", "handle": "sb_143", "agent_id": "f0bed1d2-2e28-4239-b974-a1ec86c34cd3", "source_title": "[SB-Nr. 143: Ulrich Enderl (Mannschaften), 01.01.1871, Ostoberdeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/f0bed1d2-2e28-4239-b974-a1ec86c34cd3"}, {"author": "Carl Holldorf (Unteroffizier)", "recipient": "His \"Liebe Miene\" (Wilhelmine)", "date": "January 17, 1871.", "year": 1871, "month": 1, "day": 17, "summary": "Written from \"Lemom\" (likely Le Mans, given the context of the war in France). Holldorf describes a grueling period between January 3 and January 14, 1871, spent outside in snow and rain following the departure from Orleans, including engagement in combat. The letter is a blend of personal reassurance, a request for updates on previously sent items (a picture from Orleans), and a mundane detail ab", "handle": "sb_146", "agent_id": "048d48f4-ba88-498a-8a9a-74b517aebe53", "source_title": "[SB-Nr. 146: Carl Holldorf (Unteroffizier), 17.01.1871, Norddeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/048d48f4-ba88-498a-8a9a-74b517aebe53"}, {"author": "Ernst Reich (an officer)", "recipient": "His uncle (\"Mein lieber Onkel\")", "date": "February 14, 1871.", "year": 1871, "month": 2, "day": 14, "summary": "A letter from the front during the final stages of the Franco-Prussian War. Reich expresses birthday greetings to his uncle while simultaneously lamenting the continued stubbornness of the French in negotiating peace. He voices significant concern that this refusal to concede land will lead to a \"very cruel\" continuation of the war.", "handle": "sb_154", "agent_id": "cf1c398f-c95f-4c85-be98-2b0cdd961dab", "source_title": "[SB-Nr. 154: Ernst Reich (Offizier), 14.02.1871, Ostmitteldeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/cf1c398f-c95f-4c85-be98-2b0cdd961dab"}, {"author": "Hugo Schuerer (a soldier, 'Mannschaften')", "recipient": "His parents", "date": "March 4, 1871.", "year": 1871, "month": 3, "day": 4, "summary": "Written from near Paris during the final days of the Franco-Prussian War, it captures the physical toll of military service—specifically exhaustion following a parade—and his anticipation of returning to Berlin for the victory celebration. It offers a poignant look at the 'in-between' moment for an ordinary soldier just before the war's conclusion.", "handle": "sb_157", "agent_id": "86ab298d-0203-4f2f-9674-72eb90a1ee76", "source_title": "[SB-Nr. 157: Hugo Schuerer (Mannschaften), 04.03.1871, Norddeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/86ab298d-0203-4f2f-9674-72eb90a1ee76"}, {"author": "Hermann Witte (Mannschaften)", "recipient": "Mother", "date": "March 14, 1871", "year": 1871, "month": 3, "day": 14, "summary": "From Gagny. Unit moved: Versailles (12 Mar) → St. Cloud → Asnières → Gennevilliers → St. Denis → Gagny (13 Mar). References letter from \"Marie\" of March 5.", "handle": "unknown", "agent_id": "", "source_title": "", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": ""}, {"author": "Adalbert von Barby (an officer in the Prussian army)", "recipient": "His parents (\"theure Ältern\")", "date": "April 30, 1871.", "year": 1871, "month": 4, "day": 30, "summary": "Written from Compiègne, France, during the occupation. The letter captures a profound dissonance: Barby describes the 'fairytale' beauty of the Compiègne park, where he rides through forest and shadows, in contrast to his deepening melancholy, financial strain (high cost of living, insufficient allowances, need for 'Retablissements-Gelder'), and longing for his family and children back home. He me", "handle": "sb_161", "agent_id": "a4f9567c-cbc5-4767-ae3d-81afcef8132d", "source_title": "[SB-Nr. 161: Adalbert von Barby (Offizier), 30.04.1871, Norddeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/a4f9567c-cbc5-4767-ae3d-81afcef8132d"}, {"author": "Dr. Carl F. Pogge (Assistenzarzt, Offizier)", "recipient": "His mother", "date": "August 7, 1871.", "year": 1871, "month": 8, "day": 7, "summary": "Written from Sandkrug/Glieneke near Berlin. Pogge is an army doctor (Assistenzarzt) who is currently in a state of 'waiting' for a deployment to the 'Kriegsschauplatz' (theater of war). He mentions being assigned to the 4th Division four days prior and is anticipating a 50-hour train journey to his destination. The letter highlights the tension between his desire for 'ordentliche Thätigkeit' (real", "handle": "sb_167", "agent_id": "bed75d7a-9d31-4383-863d-e177056a20e2", "source_title": "[SB-Nr. 167: Dr. Carl F. Pogge (Offizier), 07.08.1871, Norddeutsch]", "era": "franco", "era_label": "Franco-Prussian War", "agent_link": "http://localhost:8080/#/a/bed75d7a-9d31-4383-863d-e177056a20e2"}];
+
+// Era metadata
+const ERAS = {
+  'seven-years': { label: "Seven Years' War (1756–63)",     color: '#4a6741' },
+  'napoleonic':  { label: 'Napoleonic Era (1809–14)',        color: '#7a3b2e' },
+  'humboldt':    { label: 'Humboldt Correspondence (1789–1804)', color: '#2b5278' },
+  'interwar':    { label: 'Interwar Period',                 color: '#6b5b3e' },
+  'revolution':  { label: '1848 Revolution / Italian Campaign', color: '#8b4513' },
+  'danish':      { label: 'Danish-Prussian War (1864)',      color: '#5a6e3a' },
+  'austro':      { label: 'Austro-Prussian War (1866)',      color: '#8b3252' },
+  'franco':      { label: 'Franco-Prussian War (1870–71)',   color: '#3a4e6e' },
+};
+
+// ── Build legend ──────────────────────────────────────────
+const legendEl = document.getElementById('legend');
+const seenEras = [...new Set(LETTERS.map(l => l.era))];
+seenEras.forEach(era => {
+  const meta = ERAS[era];
+  if (!meta) return;
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  item.innerHTML = `<span class="legend-dot" style="background:${meta.color}"></span>${meta.label}`;
+  legendEl.appendChild(item);
+});
+
+// ── Timeline rendering ────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const MIN_YEAR = 1755, MAX_YEAR = 1873;
+const PAD = 60; // px left/right padding
+
+function yearToX(year, month, day) {
+  const fraction = (year + (month-1)/12 + (day-1)/365 - MIN_YEAR) / (MAX_YEAR - MIN_YEAR);
+  const width = canvas.offsetWidth || 1400;
+  return PAD + fraction * (width - PAD * 2);
+}
+
+// Decade ticks
+function buildTicks() {
+  for (let y = 1760; y <= 1870; y += 10) {
+    const x = yearToX(y, 1, 1);
+    const tick = document.createElement('div');
+    tick.className = 'tick';
+    tick.style.left = x + 'px';
+    tick.innerHTML = `<div class="tick-mark"></div><span class="tick-label">${y}</span>`;
+    canvas.appendChild(tick);
+  }
+}
+
+// Era bands on timeline
+const ERA_RANGES = [
+  { era: 'seven-years', start: 1756, end: 1764 },
+  { era: 'humboldt',    start: 1789, end: 1805 },
+  { era: 'napoleonic',  start: 1805, end: 1816 },
+  { era: 'revolution',  start: 1847, end: 1853 },
+  { era: 'danish',      start: 1863, end: 1865 },
+  { era: 'austro',      start: 1865, end: 1867.5 },
+  { era: 'franco',      start: 1869.5, end: 1872 },
+];
+
+function buildEraBands() {
+  ERA_RANGES.forEach(r => {
+    const meta = ERAS[r.era];
+    if (!meta) return;
+    const x1 = yearToX(r.start, 1, 1);
+    const x2 = yearToX(r.end, 1, 1);
+    const band = document.createElement('div');
+    band.className = 'era-band';
+    band.style.left = x1 + 'px';
+    band.style.width = (x2 - x1) + 'px';
+    band.style.background = meta.color;
+    canvas.appendChild(band);
+  });
+}
+
+// Dot placement — handle overlaps by alternating above/below
+function buildDots() {
+  // Group by proximity
+  const positions = LETTERS.map((l, i) => ({
+    x: yearToX(l.year, l.month, l.day),
+    idx: i,
+    offset: 'on'
+  }));
+
+  // Simple collision: if two dots within 10px, alternate
+  const used = {};
+  positions.forEach((p, i) => {
+    const key = Math.round(p.x / 8);
+    if (!used[key]) {
+      used[key] = ['above', 'below'];
+      p.offset = 'on';
+    } else if (used[key].length > 0) {
+      p.offset = used[key].shift();
+    } else {
+      p.offset = i % 2 === 0 ? 'above' : 'below';
+    }
+  });
+
+  positions.forEach(pos => {
+    const l = LETTERS[pos.idx];
+    const meta = ERAS[l.era] || { color: '#888' };
+
+    // Connector line
+    const conn = document.createElement('div');
+    conn.className = 'dot-connector';
+    conn.style.color = meta.color;
+    conn.style.background = meta.color;
+    conn.style.left = pos.x + 'px';
+    if (pos.offset === 'above') {
+      conn.style.top = '85px';
+      conn.style.height = '26px';
+    } else if (pos.offset === 'below') {
+      conn.style.top = '111px';
+      conn.style.height = '26px';
+    } else {
+      conn.style.display = 'none';
+    }
+    canvas.appendChild(conn);
+
+    // Dot
+    const dot = document.createElement('div');
+    dot.className = 'letter-dot' + (pos.offset !== 'on' ? ' ' + pos.offset : '');
+    dot.style.left = pos.x + 'px';
+    dot.style.background = meta.color;
+    dot.title = `${l.author} — ${l.date}`;
+    dot.dataset.idx = pos.idx;
+    dot.addEventListener('click', e => { e.stopPropagation(); openPopup(pos.idx, dot); });
+    canvas.appendChild(dot);
+  });
+}
+
+let activeDot = null;
+
+function openPopup(idx, dotEl) {
+  const l = LETTERS[idx];
+  const meta = ERAS[l.era] || { color: '#888', label: l.era };
+
+  // Badge
+  const badge = document.getElementById('popupEra');
+  badge.textContent = meta.label;
+  badge.style.background = meta.color;
+
+  document.getElementById('popupDate').textContent = l.date || `${l.year}`;
+  document.getElementById('popupAuthor').textContent = l.author;
+  document.getElementById('popupRecipient').textContent = l.recipient || '—';
+  document.getElementById('popupSummary').textContent = l.summary || '—';
+
+  const src = l.source_title ? `Source: ${l.source_title}` : (l.handle !== 'unknown' ? `Agent: ${l.handle}` : '');
+  document.getElementById('popupSource').textContent = src;
+
+  const link = document.getElementById('popupLink');
+  if (l.agent_link) {
+    link.href = l.agent_link;
+    link.classList.remove('disabled');
+    link.title = `View all posts by ${l.handle}`;
+  } else {
+    link.href = '#';
+    link.classList.add('disabled');
+    link.title = '';
+  }
+
+  // Active dot styling
+  if (activeDot) activeDot.classList.remove('active');
+  activeDot = dotEl;
+  dotEl.classList.add('active');
+
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('popupClose').focus();
+}
+
+function closePopup() {
+  document.getElementById('overlay').classList.remove('open');
+  if (activeDot) { activeDot.classList.remove('active'); activeDot = null; }
+}
+
+document.getElementById('popupClose').addEventListener('click', closePopup);
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closePopup();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
+
+// ── Init ──────────────────────────────────────────────────
+function init() {
+  buildEraBands();
+  buildTicks();
+  buildDots();
+}
+
+// Wait for fonts / layout
+window.addEventListener('load', init);
+
+// ── Drag-to-scroll ────────────────────────────────────────
+const outer = document.getElementById('timelineOuter');
+let isDragging = false, startX = 0, scrollStart = 0;
+outer.addEventListener('mousedown', e => {
+  isDragging = true; startX = e.pageX; scrollStart = outer.scrollLeft;
+  outer.style.userSelect = 'none';
+});
+window.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  outer.scrollLeft = scrollStart - (e.pageX - startX);
+});
+window.addEventListener('mouseup', () => { isDragging = false; outer.style.userSelect = ''; });
+</script>
+</body>
+</html>

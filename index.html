@@ -1,44 +1,886 @@
-<!DOCTYPE html>
-<html>
-<header>
-<link rel="stylesheet" type="text/css" href="index.css" />
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lorenz Hufe</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="canonical" href="https://hufe.info/">
 
-<script>
-function PlaySound() {
-    var path = "https://www.myinstants.com/media/sounds/league-of-legends-original-sounds-welcome-to-summoners-rift.mp3"
-    var snd = new Audio(path);
-    snd.play();
+<meta name="description" content="ELLIS PhD candidate at Fraunhofer Heinrich Hertz Institute and the University of Oxford, working on AI for history: machine-learning systems that help historians read, connect, and reason about historical sources at scale.">
+<meta name="author" content="Lorenz Hufe">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lorenz Hufe">
+<meta property="og:description" content="ELLIS PhD candidate at Fraunhofer HHI and the University of Oxford, working on AI for history: machine-learning systems that help historians read, connect, and reason about historical sources at scale.">
+<meta property="og:url" content="https://hufe.info/">
+<meta property="og:image" content="https://hufe.info/profile.jpg">
+<meta property="og:image:width" content="640">
+<meta property="og:image:height" content="640">
+<meta property="og:site_name" content="Lorenz Hufe">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lorenz Hufe">
+<meta name="twitter:description" content="ELLIS PhD candidate at Fraunhofer HHI and Oxford, working on AI for history.">
+<meta name="twitter:image" content="https://hufe.info/profile.jpg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Lorenz Hufe",
+  "url": "https://hufe.info/",
+  "image": "https://hufe.info/profile.jpg",
+  "jobTitle": "ELLIS PhD Candidate",
+  "affiliation": [
+    { "@type": "Organization", "name": "Fraunhofer Heinrich Hertz Institute" },
+    { "@type": "Organization", "name": "University of Oxford" }
+  ],
+  "email": "mailto:lorenz.hufe@bliss.berlin",
+  "sameAs": [
+    "https://github.com/lowlorenz",
+    "https://scholar.google.com/citations?user=BlI-rmsAAAAJ",
+    "https://linkedin.com/in/lorenz-hufe"
+  ]
 }
 </script>
 
-</header>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EC34MK1LKB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EC34MK1LKB');
+</script>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --blue:      #002147;            /* Oxford blue — dominant accent */
+    --blue-mid:  #337ab7;            /* secondary blue */
+    --blue-soft: rgba(0, 33, 71, 0.08);
+    --bg:        #ffffff;            /* white */
+    --bg-alt:    #fafaf7;            /* warm off-white */
+    --ink:       #2C2C2C;            /* body text */
+    --ink-soft:  #4a4a4a;
+    --muted:     #565656;            /* secondary text (darkened for readability) */
+    --faint:     #9a9a9a;
+    --border:    #ecece6;            /* warm off-white border */
+    --mono:      'IBM Plex Mono', ui-monospace, 'Courier New', monospace;
+    --serif:     'Spectral', Georgia, 'Times New Roman', serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "liga" 0;
+  }
+
+  ::selection { background: var(--blue-soft); color: var(--ink); }
+
+  a {
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: color .12s, border-color .12s;
+  }
+  a:hover { color: var(--blue-mid); border-color: var(--blue-mid); }
+  a:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 36px 36px 64px;
+    overflow-x: hidden;
+  }
+
+  /* ── dithered perlin noise drift background ─────────────── */
+  #noise-bg {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 600ms ease;
+  }
+  #noise-bg.loaded { opacity: 0.18; }
+
+  /* ── outer frame ──────────────────────────────────────────── */
+  .frame {
+    border: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    padding: 28px 32px 36px;
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    background: var(--bg);
+  }
+
+  /* ── header strip top ─────────────────────────────────────── */
+  .stamp-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stamp-strip .ident { color: var(--ink); }
+  .stamp-strip .right { color: var(--muted); }
+
+  /* ── hero header ──────────────────────────────────────────── */
+  .hero {
+    padding: 18px 0 26px;
+    position: relative;
+  }
+
+  .hero-title {
+    font-family: 'Bricolage Grotesque', var(--serif);
+    font-weight: 800;
+    font-size: clamp(48px, 11.2vw, 168px);
+    line-height: 0.9;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+  .hero-title .accent {
+    color: var(--blue);
+    display: inline-block;
+  }
+  .hero-title .comma { color: var(--ink); }
+  .hero-title .l2 { display: block; padding-left: 0.0em; }
+
+  .hero-meta {
+    font-size: 13px;
+    line-height: 1.85;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+  }
+  .hero-meta.below-photo {
+    margin-top: 8px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .hero-meta .row { display: flex; }
+  .hero-meta .row .key {
+    color: var(--blue);
+    flex: 0 0 100px;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    letter-spacing: 0.08em;
+  }
+  .hero-meta .row .val { color: var(--ink); }
+
+  /* horizontal blue rule slicing through the headline */
+  .slash-rule {
+    height: 2px;
+    background: var(--blue);
+    margin: 22px 0 0;
+    transform-origin: left center;
+    animation: ruleWipe 0.55s cubic-bezier(.7,0,.2,1) 0.05s both;
+  }
+
+  @keyframes ruleWipe {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  /* ── main grid ────────────────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      "about aside"
+      "pubs  aside";
+    column-gap: 48px;
+    align-items: start;
+    margin-top: 44px;
+  }
+  .col-main   { grid-area: about; }
+  .col-image  { grid-area: aside; }
+  .pubs-block { grid-area: pubs; }
+
+  /* section heading style */
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .sec-head .num {
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+  }
+  .sec-head .name {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .sec-head .tail {
+    flex: 1;
+    text-align: right;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* main column */
+  .col-main { min-width: 0; }
+  .col-main p {
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.68;
+    margin-bottom: 15px;
+    color: var(--ink-soft);
+  }
+  .col-main p strong { color: var(--ink); font-weight: 600; }
+  .col-main p em {
+    color: var(--ink);
+    font-style: normal;
+    border-bottom: 1px dashed var(--faint);
+  }
+  .col-main a.bio-link {
+    color: var(--blue);
+    border-bottom: none;
+    font-weight: 500;
+  }
+  .col-main a.bio-link:hover {
+    color: var(--blue-mid);
+  }
+  .col-main em a.bio-link { color: var(--blue); }
+  /* publications */
+  .pubs-block { margin-top: 56px; }
+  .pubs { list-style: none; margin-top: 8px; }
+  .pubs li {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    gap: 22px;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .pubs .yr {
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 600;
+    padding-top: 3px;
+    letter-spacing: 0.02em;
+  }
+  .pubs .body { min-width: 0; }
+  .pubs .meta-line {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .pubs .meta-line .sep { color: var(--faint); margin: 0 8px; }
+  .pubs .meta-line .oral { color: var(--blue); font-weight: 600; }
+  .pubs .meta-line a { color: var(--muted); border-bottom: none; }
+  .pubs .meta-line a:hover { color: var(--blue-mid); }
+  .pubs .body a.title {
+    font-family: var(--serif);
+    color: var(--ink);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.32;
+    border-bottom: none;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .pubs .body a.title:hover { color: var(--blue); }
+  .pubs .authors {
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.65;
+  }
+  .pubs .authors u { color: var(--ink); text-decoration: none; }
+
+  /* portrait */
+  .col-image .portrait {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    padding: 6px;
+    background: var(--bg-alt);
+    border-radius: 14px;
+    margin-bottom: 20px;
+  }
+
+  /* events — distorted timeline (node spacing ∝ real date gaps) */
+  .events-block { margin-top: 36px; }
+  .timeline {
+    list-style: none;
+    position: relative;
+    margin-top: 16px;
+    padding-left: 26px;
+  }
+  .timeline::before {                 /* the spine */
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    bottom: 8px;
+    width: 1.5px;
+    background: var(--blue);
+    opacity: 0.85;
+  }
+  .tl-event { position: relative; }
+  .tl-event::before {                 /* node sitting on the spine */
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 4px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--blue);
+    box-shadow: 0 0 0 3px var(--bg);
+  }
+  .tl-event::after {                  /* stub merging the event into the spine */
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 7px;
+    width: 15px;
+    height: 1px;
+    background: var(--blue);
+    opacity: 0.45;
+  }
+  .tl-meta {
+    color: var(--blue);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .tl-meta .tl-kind {
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    font-variant: small-caps;
+    text-transform: lowercase;
+  }
+  .tl-title {
+    font-family: var(--serif);
+    color: var(--ink);
+    font-size: 14.5px;
+    line-height: 1.32;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  a.tl-title { display: block; border-bottom: none; }
+  a.tl-title:hover { color: var(--blue-mid); }
+  .tl-where {
+    color: var(--muted);
+    font-size: 10.5px;
+    line-height: 1.45;
+    letter-spacing: 0.02em;
+  }
+
+  /* contact block */
+  .contact-block { margin-top: 0; }
+  .contact-list { list-style: none; }
+  .contact-list li {
+    border-bottom: 1px solid var(--border);
+  }
+  .contact-list a {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border: none;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .contact-list a:hover { color: var(--blue-mid); }
+  .contact-list a .k { color: var(--blue); font-weight: 600; }
+
+  /* footer */
+  .doc-footer {
+    margin-top: 56px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── load animation ─────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: reveal 0.6s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  @keyframes reveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .d1 { animation-delay: 0.10s; }
+  .d2 { animation-delay: 0.18s; }
+  .d3 { animation-delay: 0.26s; }
+  .d4 { animation-delay: 0.34s; }
+  .d5 { animation-delay: 0.42s; }
+  .d6 { animation-delay: 0.50s; }
+  .d7 { animation-delay: 0.58s; }
+
+  /* additional rule wipes */
+  .wipe {
+    transform-origin: left center;
+    animation: ruleWipe 0.55s cubic-bezier(.7,0,.2,1) both;
+  }
+  .w1 { animation-delay: 0.15s; }
+  .w2 { animation-delay: 0.30s; }
+  .w3 { animation-delay: 0.45s; }
+  .w4 { animation-delay: 0.60s; }
+
+  /* ── reduced motion: show everything immediately ──────── */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .wipe, .slash-rule { animation: none !important; }
+    .reveal { opacity: 1; transform: none; }
+    .wipe, .slash-rule { transform: none; }
+  }
+
+  /* ── responsive ───────────────────────────────────────── */
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "about"
+        "aside"
+        "pubs";
+      gap: 36px;
+    }
+    .col-image { max-width: 420px; }
+    .pubs-block { margin-top: 0; }
+  }
+  @media (max-width: 720px) {
+    body { padding: 16px; }
+    .frame { padding: 18px 18px 24px; }
+    .stamp-strip { flex-direction: column; gap: 6px; align-items: flex-start; font-size: 11px; }
+    .hero { padding: 14px 0 22px; }
+    .grid { grid-template-columns: 1fr; gap: 28px; margin-top: 28px; }
+    .col-image { max-width: none; }
+    .pubs li { grid-template-columns: 24px 1fr; gap: 10px; }
+    .sec-head { flex-wrap: wrap; }
+    .sec-head .tail { display: none; }
+    .doc-footer { flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="offset-4 col-4"><p>
-            <p>
-                Aaraf, what are you gonna do today?
-            </p>
-        </div>
+
+<canvas id="noise-bg" aria-hidden="true"></canvas>
+
+<div class="frame">
+
+  <div class="stamp-strip reveal d1">
+    <span class="ident">Lorenz Hufe</span>
+    <span class="right">Berlin &nbsp;·&nbsp; Updated June 2026</span>
+  </div>
+
+  <header class="hero">
+    <h1 class="hero-title reveal d2">
+      Lorenz<span class="l2">Hufe<span class="accent">.</span></span>
+    </h1>
+  </header>
+
+  <div class="slash-rule wipe w1"></div>
+
+  <div class="grid">
+
+    <!-- ─── MAIN COLUMN ─── -->
+    <div class="col-main reveal d4">
+
+      <div class="sec-head">
+        <span class="name">About</span>
+      </div>
+
+      <p>
+        I am an ELLIS PhD candidate at <strong>Fraunhofer Heinrich Hertz
+        Institute</strong> under Prof. Wojciech Samek, with a secondary affiliation at
+        the <strong>University of Oxford</strong>, where I am co-supervised by
+        Dr. Christian Schröder de Witt and Prof. Philip Torr.
+        My current research is focused on
+        <em><a class="bio-link" href="https://ai-historian.com" target="_blank">AI for history</a></em>:
+        building machine-learning systems that help historians read, connect,
+        and reason about historical sources at scale.
+      </p>
+      <p>
+        Previously I worked on <em>mechanistic interpretability</em> of multimodal
+        foundation models, with a focus on typographic understanding.
+        I co-founded
+        <a href="https://bliss.berlin" target="_blank">Bliss e.V.</a>, a Berlin-based
+        non-profit research collective, and remain a core contributor to the
+        <a href="https://github.com/Prisma-Multimodal/ViT-Prisma" target="_blank">ViT-Prisma</a>
+        toolkit for vision and video interpretability.
+      </p>
     </div>
-    <div class="row">
-        <div class="col-4">
-            <button class="btn btn-primary" onclick="PlaySound()">Revise</button>
+
+    <!-- ─── PUBLICATIONS (after picture & socials on mobile) ─── -->
+    <div class="pubs-block reveal d6">
+        <div class="sec-head">
+          <span class="name">Publications</span>
         </div>
-        <div class="col-4">
-            <button class="btn btn-primary" onclick="PlaySound()">Study</button>
-        </div>
-        <div class="col-4">
-            <button class="btn btn-primary" onclick="PlaySound()">Play League</button>
-        </div>
+        <ol class="pubs">
+
+          <li>
+            <span class="yr">2026</span>
+            <div class="body">
+              <div class="meta-line"><a href="https://arxiv.org/abs/2604.03553" target="_blank">arXiv preprint</a></div>
+              <a class="title" href="https://arxiv.org/abs/2604.03553" target="_blank">Towards the AI Historian: Agentic Information Extraction from Primary Sources</a>
+              <div class="authors"><u>L. Hufe</u>, N. Griesshaber, G. Greif, S. O. Eck, P. Torr</div>
+            </div>
+          </li>
+
+          <li>
+            <span class="yr">2026</span>
+            <div class="body">
+              <div class="meta-line"><span class="oral">ICLR 2026</span><span class="sep">·</span><a href="/dyslexify/">project page</a><span class="sep">·</span><a href="https://arxiv.org/abs/2508.20570" target="_blank">arXiv</a></div>
+              <a class="title" href="/dyslexify/">Dyslexify: A Mechanistic Defense Against Typographic Attacks in CLIP</a>
+              <div class="authors"><u>L. Hufe</u>, C. Venhoff, E. Purelku, M. Dreyer, S. Lapuschkin, W. Samek</div>
+            </div>
+          </li>
+
+          <li>
+            <span class="yr">2025</span>
+            <div class="body">
+              <div class="meta-line"><a href="https://arxiv.org/abs/2508.05374" target="_blank">arXiv preprint</a></div>
+              <a class="title" href="https://arxiv.org/abs/2508.05374" target="_blank">The TUB Sign Language Corpus Collection</a>
+              <div class="authors">E. Avramidis, V. Czehmann, F. Deckert, <u>L. Hufe</u>, et al.</div>
+            </div>
+          </li>
+
+          <li>
+            <span class="yr">2025</span>
+            <div class="body">
+              <div class="meta-line"><a href="https://arxiv.org/abs/2505.20229" target="_blank">arXiv preprint</a></div>
+              <a class="title" href="https://arxiv.org/abs/2505.20229" target="_blank">From What to How: Attributing CLIP's Latent Components Reveals Unexpected Semantic Reliance</a>
+              <div class="authors">M. Dreyer, <u>L. Hufe</u>, J. Berend, T. Wiegand, S. Lapuschkin, W. Samek</div>
+            </div>
+          </li>
+
+          <li>
+            <span class="yr">2025</span>
+            <div class="body">
+              <div class="meta-line"><span class="oral">CVPR Workshop · Oral</span><span class="sep">·</span><a href="https://arxiv.org/abs/2504.19475" target="_blank">arXiv</a></div>
+              <a class="title" href="https://arxiv.org/abs/2504.19475" target="_blank">Prisma: An Open Source Toolkit for Mechanistic Interpretability in Vision and Video</a>
+              <div class="authors">S. Joseph, P. Suresh, <u>L. Hufe</u>, et al.</div>
+            </div>
+          </li>
+
+          <li>
+            <span class="yr">2025</span>
+            <div class="body">
+              <div class="meta-line"><span class="oral">CVPR Workshop</span><span class="sep">·</span><a href="https://arxiv.org/abs/2504.08729" target="_blank">arXiv</a></div>
+              <a class="title" href="https://arxiv.org/abs/2504.08729" target="_blank">Steering CLIP's Vision Transformer with Sparse Autoencoders</a>
+              <div class="authors">S. Joseph, P. Suresh, E. Goldfarb, <u>L. Hufe</u>, et al.</div>
+            </div>
+          </li>
+
+          <li>
+            <span class="yr">2025</span>
+            <div class="body">
+              <div class="meta-line"><span class="oral">DMLR</span><span class="sep">·</span><a href="https://bliss-e-v.github.io/SCAM-project-page/" target="_blank">project page</a><span class="sep">·</span><a href="https://arxiv.org/abs/2504.04893" target="_blank">arXiv</a></div>
+              <a class="title" href="https://bliss-e-v.github.io/SCAM-project-page/" target="_blank">SCAM: A Real-World Typographic Robustness Evaluation for Multimodal Foundation Models</a>
+              <div class="authors">J. Westerhoff, E. Purelku, J. Hackstein, J. Loos, L. Pinetzki, <u>L. Hufe</u></div>
+            </div>
+          </li>
+
+          <li>
+            <span class="yr">2022</span>
+            <div class="body">
+              <div class="meta-line"><span class="oral">WMT 2022</span><span class="sep">·</span><a href="https://aclanthology.org/2022.wmt-1.95/" target="_blank">ACL Anthology</a></div>
+              <a class="title" href="https://aclanthology.org/2022.wmt-1.95/" target="_blank">Experimental Machine Translation of Swiss German Sign Language via 3D Augmentation of Body Keypoints</a>
+              <div class="authors"><u>L. Hufe</u>, E. Avramidis</div>
+            </div>
+          </li>
+
+        </ol>
     </div>
+
+    <!-- ─── PORTRAIT / CONTACT COLUMN ─── -->
+    <aside class="col-image reveal d5">
+      <img class="portrait" src="profile.jpg" alt="Lorenz Hufe">
+
+      <div class="contact-block">
+        <div class="sec-head">
+          <span class="name">Channels</span>
+        </div>
+        <ul class="contact-list">
+          <li><a href="mailto:lorenz.hufe@bliss.berlin"><span class="k">Email</span><span>lorenz.hufe@bliss.berlin</span></a></li>
+          <li><a href="https://github.com/lowlorenz" target="_blank"><span class="k">GitHub</span><span>lowlorenz</span></a></li>
+          <li><a href="https://scholar.google.com/citations?user=BlI-rmsAAAAJ" target="_blank"><span class="k">Google Scholar</span><span>scholar profile</span></a></li>
+          <li><a href="https://linkedin.com/in/lorenz-hufe" target="_blank"><span class="k">LinkedIn</span><span>lorenz-hufe</span></a></li>
+        </ul>
+      </div>
+
+      <div class="events-block">
+        <div class="sec-head">
+          <span class="name">Talks</span>
+        </div>
+        <ol class="timeline">
+
+          <li class="tl-event">
+            <div class="tl-meta">Jun 22–23</div>
+            <div class="tl-title">Accelerating Historical Research with AI Co-Historians</div>
+            <div class="tl-where">Computational Economic History Workshop · Vienna</div>
+          </li>
+
+          <li class="tl-event" style="margin-top:22px">
+            <div class="tl-meta">Jun 15</div>
+            <a class="tl-title" href="/dyslexify/">Dyslexify: A Mechanistic Defense Against Typographic Attacks in CLIP</a>
+            <div class="tl-where">Bliss Reading Group · Berlin</div>
+          </li>
+
+          <li class="tl-event" style="margin-top:22px">
+            <div class="tl-meta">Jun 08</div>
+            <div class="tl-title">Understanding Typographic Attacks</div>
+            <div class="tl-where">Palo Alto Networks</div>
+          </li>
+
+          <li class="tl-event" style="margin-top:28px">
+            <div class="tl-meta">May 29</div>
+            <div class="tl-title">Accelerating Historical Research with AI Co-Historians</div>
+            <div class="tl-where">BIFOLD Workshop · “AI to Accelerate Scientific Understanding”</div>
+          </li>
+
+          <li class="tl-event" style="margin-top:40px">
+            <div class="tl-meta">May 13–14</div>
+            <div class="tl-title">AI for Digital Historical Scholarship</div>
+            <div class="tl-where">Aarhus University</div>
+          </li>
+
+        </ol>
+      </div>
+    </aside>
+
+  </div>
+
+  <footer class="doc-footer reveal d7">
+    <span>Lorenz Hufe</span>
+    <span>lorenz.hufe@bliss.berlin</span>
+    <span>Berlin · 2026</span>
+  </footer>
+
 </div>
 
-<audio id="audiofile" preload="auto">
-    <source src="./welcome-to-summoners-rift.mp3" />
-</audio>
-</body>
+<script>
+/* ───────────────────────────────────────────────────────────────
+ *  Dithered Perlin-noise drift background.
+ *  WebGL1 fullscreen quad, 2-octave simplex noise, Bayer 8x8
+ *  ordered dither LUT as an 8x8 LUMINANCE texture. 1-bit output
+ *  mapped to warm-white / Oxford-navy. Paused when tab hidden.
+ *  Single static frame when prefers-reduced-motion is set.
+ * ─────────────────────────────────────────────────────────────── */
+(function(){
+  const canvas = document.getElementById('noise-bg');
+  if (!canvas) return;
 
+  const gl = canvas.getContext('webgl', { antialias: false, depth: false, stencil: false, preserveDrawingBuffer: false })
+          || canvas.getContext('experimental-webgl');
+  if (!gl) return; // silent fallback
+
+  const reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const VS = `
+    attribute vec2 aPos;
+    void main() { gl_Position = vec4(aPos, 0.0, 1.0); }
+  `;
+
+  const FS = `
+    precision highp float;
+    uniform float uTime;
+    uniform vec2  uRes;
+    uniform sampler2D uBayer;
+
+    vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+    float snoise(vec2 v) {
+      const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+                         -0.577350269189626, 0.024390243902439);
+      vec2 i  = floor(v + dot(v, C.yy));
+      vec2 x0 = v -   i + dot(i, C.xx);
+      vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+      vec4 x12 = x0.xyxy + C.xxzz;
+      x12.xy -= i1;
+      i = mod(i, 289.0);
+      vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0))
+                        + i.x + vec3(0.0, i1.x, 1.0));
+      vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy),
+                              dot(x12.zw, x12.zw)), 0.0);
+      m = m*m; m = m*m;
+      vec3 x = 2.0 * fract(p * C.www) - 1.0;
+      vec3 h = abs(x) - 0.5;
+      vec3 ox = floor(x + 0.5);
+      vec3 a0 = x - ox;
+      m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+      vec3 g;
+      g.x  = a0.x  * x0.x  + h.x  * x0.y;
+      g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+      return 130.0 * dot(m, g);
+    }
+
+    void main() {
+      vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / min(uRes.x, uRes.y);
+      float n = 0.5 + 0.5 * snoise(uv * 0.9 + vec2(uTime * 0.015, uTime * 0.010));
+      n += 0.18 * (0.5 + 0.5 * snoise(uv * 2.2 + vec2(-uTime * 0.008, uTime * 0.012)));
+      n = clamp(n * 0.75, 0.0, 1.0);
+      float threshold = texture2D(uBayer, mod(gl_FragCoord.xy, 8.0) / 8.0).r;
+      float v = step(threshold, n);
+      vec3 paper = vec3(0.984, 0.980, 0.965);
+      vec3 navy  = vec3(0.000, 0.129, 0.278);
+      gl_FragColor = vec4(mix(paper, navy, v), 1.0);
+    }
+  `;
+
+  function compile(type, src) {
+    const sh = gl.createShader(type);
+    gl.shaderSource(sh, src);
+    gl.compileShader(sh);
+    if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+      gl.deleteShader(sh);
+      return null;
+    }
+    return sh;
+  }
+
+  const vs = compile(gl.VERTEX_SHADER, VS);
+  const fs = compile(gl.FRAGMENT_SHADER, FS);
+  if (!vs || !fs) return;
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+  gl.useProgram(prog);
+
+  // fullscreen quad
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1, -1,  1, -1, -1,  1,
+    -1,  1,  1, -1,  1,  1,
+  ]), gl.STATIC_DRAW);
+  const aPos = gl.getAttribLocation(prog, 'aPos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  // Bayer 8x8 LUT as LUMINANCE texture
+  const bayerTable = new Uint8Array([
+     0, 32,  8, 40,  2, 34, 10, 42,
+    48, 16, 56, 24, 50, 18, 58, 26,
+    12, 44,  4, 36, 14, 46,  6, 38,
+    60, 28, 52, 20, 62, 30, 54, 22,
+     3, 35, 11, 43,  1, 33,  9, 41,
+    51, 19, 59, 27, 49, 17, 57, 25,
+    15, 47,  7, 39, 13, 45,  5, 37,
+    63, 31, 55, 23, 61, 29, 53, 21,
+  ]);
+  // scale 0..63 into 0..255
+  const bayerScaled = new Uint8Array(64);
+  for (let i = 0; i < 64; i++) bayerScaled[i] = Math.round((bayerTable[i] + 0.5) * 255 / 64);
+
+  const tex = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, 8, 8, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, bayerScaled);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+
+  const uTime  = gl.getUniformLocation(prog, 'uTime');
+  const uRes   = gl.getUniformLocation(prog, 'uRes');
+  const uBayer = gl.getUniformLocation(prog, 'uBayer');
+  gl.uniform1i(uBayer, 0);
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(1, Math.floor(window.innerWidth  * dpr));
+    const h = Math.max(1, Math.floor(window.innerHeight * dpr));
+    canvas.width = w;
+    canvas.height = h;
+    gl.viewport(0, 0, w, h);
+    gl.uniform2f(uRes, w, h);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let start = performance.now();
+  let rafId = null;
+  let rendered = false;
+
+  function frame(now) {
+    const t = (now - start) / 1000;
+    gl.uniform1f(uTime, t);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    if (!rendered) {
+      rendered = true;
+      canvas.classList.add('loaded');
+    }
+    if (!reduceMotion && !document.hidden) {
+      rafId = requestAnimationFrame(frame);
+    } else {
+      rafId = null;
+    }
+  }
+
+  function startLoop() {
+    if (rafId == null) rafId = requestAnimationFrame(frame);
+  }
+  function stopLoop() {
+    if (rafId != null) { cancelAnimationFrame(rafId); rafId = null; }
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopLoop();
+    else if (!reduceMotion) startLoop();
+  });
+
+  if (reduceMotion) {
+    // single static frame
+    requestAnimationFrame(frame);
+  } else {
+    startLoop();
+  }
+})();
+</script>
+
+</body>
 </html>

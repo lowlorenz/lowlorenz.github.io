@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#800080;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#9932CC;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8A2BE2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="starGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="16" cy="16" r="15" fill="url(#bgGradient)" stroke="#FFD700" stroke-width="2"/>
+  
+  <!-- Central star/asterisk -->
+  <g transform="translate(16, 16)">
+    <!-- Star points -->
+    <polygon points="0,-8 2,-2 8,0 2,2 0,8 -2,2 -8,0 -2,-2" fill="url(#starGradient)" stroke="#800080" stroke-width="0.5"/>
+    
+    <!-- Inner circle -->
+    <circle cx="0" cy="0" r="3" fill="#FFD700" opacity="0.8"/>
+    
+    <!-- Small decorative dots -->
+    <circle cx="0" cy="-12" r="1.5" fill="#FFD700"/>
+    <circle cx="8.5" cy="-8.5" r="1" fill="#FFA500"/>
+    <circle cx="12" cy="0" r="1.5" fill="#FFD700"/>
+    <circle cx="8.5" cy="8.5" r="1" fill="#FFA500"/>
+    <circle cx="0" cy="12" r="1.5" fill="#FFD700"/>
+    <circle cx="-8.5" cy="8.5" r="1" fill="#FFA500"/>
+    <circle cx="-12" cy="0" r="1.5" fill="#FFD700"/>
+    <circle cx="-8.5" cy="-8.5" r="1" fill="#FFA500"/>
+  </g>
+</svg> 

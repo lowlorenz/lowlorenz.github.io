@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Wilhelm Abegg</title>
+<meta name="description" content="Wilhelm Abegg (1876–1951): his life told from the newspaper record, every sentence linked to the clipping that supports it.">
+<meta name="author" content="Lorenz Hufe">
+<link rel="canonical" href="https://hufe.info/abegg/">
+<meta property="og:url" content="https://hufe.info/abegg/">
+<meta property="og:title" content="Wilhelm Abegg">
+<meta property="og:description" content="Wilhelm Abegg (1876–1951): his life told from the newspaper record, every sentence linked to the clipping that supports it.">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EC34MK1LKB"></script>
+<script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-EC34MK1LKB');</script>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300&family=Spectral+SC:wght@400&display=swap" rel="stylesheet">
+<style>
+/* Layout: two levels. Above, a round dark room: each person's newspaper record hangs on one section of the wall,
+   their name floating in a space left free among the clippings (left/right turns to the next person).
+   Below, the biography: the text on the left, the clipping for the passage being read in the margin. */
+:root {
+  --bg: #070707;
+  --ink: #ecebe6;
+  --soft: #b4b3ad;
+  --muted: #77766f;
+  --faint: #34342f;
+  --rule: #1b1b19;
+  --paper: #1c1c1a;
+  --paper-hi: #2d2d2a;
+  --serif: "Spectral", Georgia, "Times New Roman", serif;
+  --caps: "Spectral SC", "Spectral", Georgia, serif;
+  color-scheme: dark;
+}
+@view-transition { navigation: auto; }            /* the browser crossfades between the levels */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: var(--serif); font-weight: 300; -webkit-font-smoothing: antialiased; overflow: hidden; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+a { color: inherit; }
+:focus-visible { outline: 1px solid var(--soft); outline-offset: 4px; }
+.label { font-family: var(--caps); font-size: 14px; letter-spacing: .12em; color: var(--muted); font-weight: 400; }
+
+/* ---------- levels ---------- */
+.room { position: fixed; inset: 0; transition: opacity .7s ease, transform .9s cubic-bezier(.2, .7, .2, 1); }
+body.level-bio .room { opacity: 0; transform: translateY(-7%); pointer-events: none; }
+.bio { position: fixed; inset: 0; z-index: 10; overflow-y: auto; background: var(--bg); outline: none;
+  opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .6s ease, visibility 0s linear .6s; }
+body.level-bio .bio { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .8s ease .15s, visibility 0s; }
+
+/* ---------- the room ---------- */
+.space { position: fixed; inset: 0; overflow: hidden; perspective: var(--persp, 1400px); touch-action: none; user-select: none;
+  background: radial-gradient(ellipse 70% 60% at 50% 48%, #111110 0%, var(--bg) 72%); }
+.space.dragging { cursor: grabbing; }
+.world, .cluster { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; }
+.world { left: 50%; top: 50%; will-change: transform; }
+.clip { position: absolute; display: block; backface-visibility: hidden; background: #0e0e0d;
+  transform: rotateY(var(--a)) rotateX(var(--b)) translateZ(calc(var(--z) + var(--lift, 0px)));
+  transition: transform .6s cubic-bezier(.2, .7, .2, 1), background-color .4s ease; }
+.clip img { display: block; width: 100%; height: 100%; pointer-events: none; user-select: none; -webkit-user-drag: none;
+  opacity: .62; transition: opacity .5s ease; }
+.clip::after { content: ""; position: absolute; inset: 0; border: 1px solid rgba(236, 235, 230, .06); pointer-events: none; }
+.clip:hover, .clip:focus-visible { --lift: 70px; }
+.clip:hover img, .clip:focus-visible img { opacity: 1; }
+.clip:focus-visible { outline-offset: 6px; }
+.clip.mock, .ph, .mthumb { background-color: var(--paper); }
+.clip.mock::before, .ph::before { content: ""; position: absolute; inset: 10% 8%; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(236, 235, 230, .09) 0 1.5px, transparent 1.5px 6px); }
+.clip.mock:hover, .clip.mock:focus-visible { background-color: var(--paper-hi); }
+.name3d { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; transform-style: preserve-3d; }
+.name3d .inner { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: .4em;
+  white-space: nowrap; text-align: center; color: var(--ink); opacity: .3; transition: opacity .8s ease; backface-visibility: hidden;
+  text-shadow: 0 0 2px rgba(0, 0, 0, .9), 0 0 14px rgba(0, 0, 0, .85), 0 0 40px rgba(0, 0, 0, .9); }
+.name3d .nm { font-size: var(--fs); font-weight: 300; line-height: 1; letter-spacing: .01em; }
+.name3d .yr { font-family: var(--caps); font-size: calc(var(--fs) * .3); letter-spacing: .18em; color: var(--ink); font-variant-numeric: oldstyle-nums; }
+.name3d.current .inner { opacity: .86; }
+.name3d.current.lit .inner { opacity: 1; }
+.edges { position: fixed; inset: 0; z-index: 4; pointer-events: none;
+  background: linear-gradient(var(--bg) 0, rgba(7, 7, 7, 0) 120px, rgba(7, 7, 7, 0) calc(100% - 190px), var(--bg) 100%); }
+.vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse 72% 68% at 50% 50%, transparent 42%, rgba(7, 7, 7, .94) 100%); }
+.bar { position: fixed; left: 0; right: 0; z-index: 5; display: flex; justify-content: space-between; align-items: baseline; gap: 8px 24px; flex-wrap: wrap;
+  padding: 22px clamp(16px, 4vw, 56px); font-family: var(--caps); font-size: 14px; letter-spacing: .14em; color: var(--muted); pointer-events: none; }
+.bar.top { top: 0; } .bar.bottom { bottom: 0; }
+.bar .title { color: var(--soft); }
+.caption { position: fixed; left: 50%; bottom: 66px; z-index: 5; transform: translateX(-50%); white-space: nowrap; pointer-events: none;
+  font-family: var(--caps); font-size: 14.5px; letter-spacing: .12em; color: var(--ink); opacity: 0; transition: opacity .35s ease;
+  text-shadow: 0 0 3px #000, 0 0 14px #000, 0 0 28px #000; }
+.caption.on { opacity: 1; }
+.ticks { position: fixed; left: 50%; bottom: 100px; z-index: 6; transform: translateX(-50%); display: flex; gap: 6px; }
+.ticks[hidden] { display: none; }
+.ticks button { width: 30px; height: 18px; display: grid; align-items: center; }
+.ticks button::before { content: ""; height: 1px; background: var(--faint); transition: background .4s ease, height .4s ease; }
+.ticks button:hover::before { background: var(--muted); }
+.ticks button[aria-current="true"]::before { height: 2px; background: var(--ink); }
+.down { position: fixed; left: 50%; bottom: 128px; z-index: 6; transform: translateX(-50%); display: grid; justify-items: center; gap: 4px;
+  font-family: var(--caps); font-size: 14px; letter-spacing: .14em; color: var(--soft); }
+.down::after { content: ""; width: 8px; height: 8px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg); }
+.down:hover { color: var(--ink); }
+.space.focusing .clip, .space.focusing .clip:hover { --lift: 0px; }
+.space.focusing .clip img { opacity: .16; }
+.space.focusing .clip.mock { opacity: .3; }
+.space.focusing .clip.focus img, .space.focusing .clip.focus.mock { opacity: 1; }
+.space.focusing .clip.focus { cursor: grab; }
+.space.focusing .name3d .inner, .space.focusing .name3d.current.lit .inner { opacity: .08; }
+.up-cue { position: fixed; left: 50%; top: 18px; z-index: 6; transform: translateX(-50%); display: grid; justify-items: center; gap: 4px;
+  font-family: var(--caps); font-size: 14px; letter-spacing: .14em; color: var(--soft); }
+.up-cue::before { content: ""; width: 8px; height: 8px; border-left: 1px solid currentColor; border-top: 1px solid currentColor; transform: rotate(45deg); margin-top: 4px; }
+.up-cue:hover { color: var(--ink); }
+body.leaving .room { opacity: 0; transform: translateY(6%); transition: opacity .45s ease, transform .6s ease; }
+
+/* ---------- the biography ---------- */
+.bio-bar { position: sticky; top: 0; z-index: 3; display: flex; justify-content: space-between; align-items: baseline; gap: 8px 24px; flex-wrap: wrap;
+  padding: 20px clamp(16px, 4vw, 56px) 26px; background: linear-gradient(var(--bg) 68%, rgba(7, 7, 7, 0));
+  font-family: var(--caps); font-size: 14px; letter-spacing: .14em; color: var(--muted); }
+.bio-bar button, .bio-foot button { color: var(--soft); }
+.bio-bar button:hover, .bio-foot button:hover { color: var(--ink); }
+.bio-bar .people { display: flex; gap: 8px 24px; flex-wrap: wrap; }
+.bio-inner { max-width: 1500px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 56px) 110px;
+  display: grid; grid-template-columns: minmax(0, 40rem) minmax(min(42vw, 560px), 1fr); column-gap: clamp(32px, 4.5vw, 80px); }
+.bio-head { grid-column: 1 / -1; display: grid; gap: 18px; padding: 26px 0 38px; border-bottom: 1px solid var(--rule); }
+.bio-head h1 { font-size: clamp(46px, 5.6vw, 80px); font-weight: 300; line-height: 1; letter-spacing: -.005em; }
+.full { font-family: var(--caps); font-size: 14px; letter-spacing: .1em; color: var(--muted); margin-top: 12px; }
+.life { display: grid; grid-template-columns: max-content 1fr; gap: 4px 20px; font-size: 16.5px; color: var(--soft); font-variant-numeric: oldstyle-nums; }
+.life dt { font-family: var(--caps); font-size: 14px; letter-spacing: .1em; color: var(--muted); padding-top: 1px; }
+.record { display: grid; gap: 12px; }
+.strip { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 8px; }
+.strip .yr { align-self: flex-end; font-family: var(--caps); font-size: 13px; letter-spacing: .1em; color: var(--muted);
+  font-variant-numeric: oldstyle-nums; padding: 0 2px 2px 10px; }
+.strip .keep { display: inline-flex; align-items: flex-end; gap: 8px; }
+.strip .keep:first-child .yr { padding-left: 0; }
+.strip button { display: block; border: 1px solid transparent; transition: border-color .4s ease; }
+.strip button:disabled { cursor: default; }
+.strip img, .strip .ph { display: block; opacity: .72; transition: opacity .4s ease; }
+.strip button:not(:disabled):hover img, .strip button.on img { opacity: 1; }
+.strip button.on { border-color: var(--muted); }
+.strip.landing button { visibility: hidden; }
+.flyers { position: fixed; inset: 0; z-index: 25; pointer-events: none; }
+.flyer { position: absolute; display: block; transform-origin: 0 0; will-change: transform; opacity: .72; }
+.text { min-width: 0; max-width: 40rem; padding-bottom: 30vh; }
+.text h2 { font-family: var(--caps); font-size: 14px; font-weight: 400; letter-spacing: .14em; color: var(--muted); margin: 52px 0 16px; }
+.text p { font-size: 19.5px; line-height: 1.78; color: var(--soft); }
+.text p + p { margin-top: 1em; }
+.text .placeholder { font-style: italic; color: var(--muted); margin-top: 52px; }
+.claim { cursor: pointer; border-radius: 2px; text-decoration: underline dotted var(--faint); text-decoration-thickness: 1px; text-underline-offset: 5px;
+  transition: color .35s ease, background-color .35s ease; }
+.claim:hover { color: var(--ink); }
+.claim.active { color: var(--ink); background-color: rgba(236, 235, 230, .055); text-decoration: underline solid var(--muted); text-decoration-thickness: 1px; }
+.margin { position: sticky; top: 84px; align-self: start; max-height: calc(100vh - 104px); overflow-y: auto; padding: 52px 6px 16px 0;
+  display: grid; gap: 18px; scrollbar-width: thin; scrollbar-color: var(--faint) transparent; transition: opacity .25s ease; }
+.margin.fading { opacity: 0; }
+.m-title { font-size: 20px; font-weight: 300; line-height: 1.35; color: var(--ink); }
+.m-page { display: grid; gap: 10px; }
+.m-src { font-family: var(--caps); font-size: 13.5px; letter-spacing: .1em; color: var(--muted); }
+.m-src b { font-weight: 400; color: var(--soft); }
+.m-page img { display: block; width: min(100%, calc(var(--nw, 9999) * 1.35px)); height: auto; opacity: .88; border: 1px solid var(--faint); cursor: zoom-in; transition: opacity .3s ease, border-color .3s ease; }
+.m-page img:hover { opacity: 1; }
+.m-page.focus img { border-color: var(--soft); }
+.m-actions { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; color: var(--muted); }
+.m-actions a, .m-actions button { color: var(--soft); text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 3px; }
+.m-quote { font-size: 15px; line-height: 1.6; color: var(--soft); border-left: 1px solid var(--muted); padding-left: 12px; }
+.m-quote[hidden] { display: none; }
+.m-quote small { display: block; margin-top: 6px; font-size: 13px; font-style: italic; color: var(--muted); }
+.m-none, .m-intro { font-size: 15.5px; line-height: 1.6; font-style: italic; color: var(--muted); }
+.m-cov { font-size: 14px; line-height: 1.55; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 12px; }
+.m-cov b { font-family: var(--caps); font-weight: 400; letter-spacing: .08em; color: var(--soft); }
+.ph-stack { display: flex; flex-wrap: wrap; gap: 10px; }
+.ph { position: relative; display: block; }
+.bio-foot { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; gap: 12px 24px; flex-wrap: wrap;
+  padding-top: 18px; border-top: 1px solid var(--rule); font-family: var(--caps); font-size: 14px; letter-spacing: .12em; color: var(--muted); }
+.bio-foot .people { display: flex; gap: 8px 24px; flex-wrap: wrap; }
+.bio-foot a { color: var(--soft); text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 3px; }
+
+/* a clipping at full size */
+.zoom { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 56px 16px; background: rgba(5, 5, 5, .95); cursor: zoom-out; }
+.zoom[hidden] { display: none; }
+.zoom img { max-width: min(100%, 1100px); max-height: 100%; border: 1px solid var(--faint); }
+
+@media (max-width: 900px) {
+  .bar.bottom .hint { display: none; }
+  .bio-inner { grid-template-columns: minmax(0, 1fr); padding-bottom: 46vh; }
+  .margin { position: fixed; left: 0; right: 0; top: auto; bottom: 0; z-index: 4; max-height: 40vh; padding: 14px 16px 18px;
+    background: var(--bg); border-top: 1px solid var(--rule); }
+  .text { padding-bottom: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .room, .bio, .clip, .clip img, .caption, .name3d .inner, .margin { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="room" id="room">
+  <div class="space" id="space"><div class="world" id="world"></div></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="edges" aria-hidden="true"></div>
+  <header class="bar top"><a class="title" href="/" style="pointer-events:auto;text-decoration:none">Lorenz Hufe</a><span>Biographies from the newspaper record</span></header>
+  <button class="down" id="down" type="button">Biography</button>
+  <nav class="ticks" id="ticks" aria-label="People"></nav>
+  <footer class="bar bottom"><span class="hint">Click a clipping to zoom in · ↓ the biography · drag to look around</span></footer>
+  <p class="caption" id="caption" aria-hidden="true"></p>
+</div>
+
+<section class="bio" id="bio" tabindex="-1" aria-label="Biography">
+  <div class="bio-bar">
+    <button type="button" id="up">↑ The room</button>
+    <span class="people"><button type="button" id="prevTop"></button><button type="button" id="nextTop"></button></span>
+  </div>
+  <div class="bio-inner">
+    <header class="bio-head">
+      <div>
+        <p class="label">Biography</p>
+        <h1 id="bName"></h1>
+        <p class="full" id="bFull"></p>
+      </div>
+      <dl class="life" id="bLife"></dl>
+      <div class="record">
+        <p class="label" id="bRecord"></p>
+        <div class="strip" id="bStrip"></div>
+      </div>
+    </header>
+    <article class="text" id="bText"></article>
+    <aside class="margin" id="bMargin" aria-live="polite"></aside>
+    <footer class="bio-foot">
+      <span class="people"><button type="button" id="prevFoot"></button><button type="button" id="nextFoot"></button></span>
+      <span id="bFootNote"></span>
+    </footer>
+  </div>
+</section>
+
+<div class="flyers" id="flyers" aria-hidden="true"></div>
+<div class="zoom" id="zoom" hidden><img id="zoomImg" alt=""></div>
+
+<script src="data.js"></script>
+<script>
+const fmt = iso => new Date(iso + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const mod = (a, n) => ((a % n) + n) % n;
+const $ = id => document.getElementById(id);
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const STATUS = { novel: "Not in reference works", partly: "Partly known", special: "Specialist literature only",
+                 known: "Widely known", base: "From the baseline biography" };
+
+// ---------- the biography shown on this page ----------
+const yearsOf = p => (p.born.match(/\d{4}/) || ["18xx"])[0] + "–" + (p.died.match(/\d{4}/) || ["19xx"])[0];
+const PAGES = window.DATA.pages;
+const PEOPLE = window.DATA.people.map(p => ({ ...p, mock: false }));
+const CLIPS = window.DATA.clippings.map(c => ({ ...c, mock: false }));
+const realAspects = CLIPS.map(c => c.w / c.h);
+CLIPS.forEach(c => { c.k = rnd(); });          // fixed mixed order within each person's wall
+const collator = new Intl.Collator("de", { sensitivity: "base" });
+PEOPLE.sort((a, b) => collator.compare(a.last, b.last) || collator.compare(a.first, b.first));
+const N = PEOPLE.length, byId = Object.fromEntries(PEOPLE.map(p => [p.id, p]));
+const RING = N >= 6, SECTOR = RING ? 360 / N : 60;     // degrees of wall per person
+const real = PEOPLE.filter(p => !p.mock).length;
+const nameOf = p => `${p.first} ${p.last}`;
+
+// ---------- the room: layout ----------
+const space = $("space"), world = $("world"), caption = $("caption");
+const GAP = 26, FLOAT = 80;
+let S = 1, R = 1400, tiles = [], names = [], clusters = [], limPitch = 6;
+
+function packRects(items, G) {   // as close to the centre as possible, wider than tall
+  const placed = [];
+  const free = (x, y, w, h) => !placed.some(r => x < r.x + r.w + G - .5 && x + w > r.x - G + .5 && y < r.y + r.h + G - .5 && y + h > r.y - G + .5);
+  for (const it of items) {
+    if (!placed.length) { it.x = -it.w / 2; it.y = -it.h / 2; placed.push(it); continue; }
+    let best = null;
+    for (const r of placed) {
+      const ys = [r.y, r.y + r.h - it.h, r.y + (r.h - it.h) / 2], xs = [r.x, r.x + r.w - it.w, r.x + (r.w - it.w) / 2];
+      const cands = [];
+      ys.forEach(y => cands.push([r.x + r.w + G, y], [r.x - G - it.w, y]));
+      xs.forEach(x => cands.push([x, r.y + r.h + G], [x, r.y - G - it.h]));
+      for (const [x, y] of cands) {
+        if (!free(x, y, it.w, it.h)) continue;
+        const cost = Math.hypot((x + it.w / 2) / 2.2, y + it.h / 2);
+        if (!best || cost < best.cost) best = { x, y, cost };
+      }
+    }
+    it.x = best.x; it.y = best.y; placed.push(it);
+  }
+  return items;
+}
+// one person's wall: an empty space for the name in the middle, the clippings packed around it, shrunk until it fits its section
+function personWall(p, slotSize, maxW, maxH) {
+  const mine = CLIPS.map((c, i) => [c, i]).filter(([c]) => c.person === p.id).sort((a, b) => a[0].k - b[0].k);
+  let pageW = 720 * S, out;
+  for (let pass = 0; pass < 8; pass++) {
+    const slot = { slot: true, w: slotSize.w, h: slotSize.h };
+    const items = [slot, ...mine.map(([c, i]) => { const w = c.frac * pageW; return { i, w, h: w * c.h / c.w }; })];
+    packRects(items, GAP * S * Math.max(.6, pageW / (720 * S)));
+    const x0 = Math.min(...items.map(r => r.x)), y0 = Math.min(...items.map(r => r.y));
+    const x1 = Math.max(...items.map(r => r.x + r.w)), y1 = Math.max(...items.map(r => r.y + r.h));
+    out = { items: items.slice(1), slot, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, w: x1 - x0, h: y1 - y0 };
+    const f = Math.min(maxW / out.w, maxH / out.h);
+    if (f >= .98) break;
+    pageW *= Math.max(.5, f * .97);
+  }
+  return out;
+}
+
+const toA = x => -(x / R) * 180 / Math.PI, toB = y => (y / R) * 180 / Math.PI;
+const sectorYaw = k => -k * SECTOR;          // person k hangs at this angle; the view faces them at yaw = k * SECTOR
+function build() {
+  S = Math.max(.5, Math.min(1.1, Math.min(innerWidth / 1440, innerHeight / 860)));
+  R = 1400 * S;
+  space.style.setProperty("--persp", R + "px");
+  world.innerHTML = ""; tiles = []; names = []; clusters = [];
+  const maxW = .9 * R * SECTOR * Math.PI / 180, maxH = Math.max(260, innerHeight - 260);
+  let maxHalfB = 0;
+  PEOPLE.forEach((p, k) => {
+    const cl = document.createElement("div"); cl.className = "cluster"; world.appendChild(cl); clusters[k] = cl;
+    const nm = document.createElement("div");
+    nm.className = "name3d"; nm.setAttribute("aria-hidden", "true");
+    nm.style.setProperty("--fs", Math.round(62 * S) + "px");
+    nm.innerHTML = `<div class="inner"><span class="nm">${esc(nameOf(p))}</span><span class="yr">${yearsOf(p)}</span></div>`;
+    cl.appendChild(nm); names[k] = nm;
+    const inner = nm.firstElementChild, grow = R / (R - FLOAT * S);
+    const slotSize = { w: inner.offsetWidth * grow * 1.18 + 2 * GAP * S, h: inner.offsetHeight * grow * 1.18 + 2 * GAP * S };
+    const wall = personWall(p, slotSize, maxW, maxH);
+    maxHalfB = Math.max(maxHalfB, toB(wall.h / 2));
+    for (const it of wall.items) {
+      const c = CLIPS[it.i];
+      const a = sectorYaw(k) + toA(it.x + it.w / 2 - wall.cx), b = toB(it.y + it.h / 2 - wall.cy);
+      const el = document.createElement("button");
+      el.type = "button"; el.className = "clip" + (c.mock ? " mock" : "");
+      el.style.cssText = `width:${it.w}px;height:${it.h}px;left:${-it.w / 2}px;top:${-it.h / 2}px;--a:${a}deg;--b:${b}deg;--z:${-(R + (rnd() - .5) * 70 * S)}px`;
+      if (!c.mock) el.innerHTML = `<img src="${c.src}" alt="" draggable="false">`;
+      el.setAttribute("aria-label", c.mock ? `Placeholder clipping. Profile of ${nameOf(p)}. Zoom in.` : `${c.paper}, ${fmt(c.date)}. From the life of ${nameOf(p)}. Zoom in.`);
+      el._i = it.i; el._a = a; el._b = b;
+      el.addEventListener("click", () => { if (!suppressClick && level === "room") focusClip(it.i); });
+      el.addEventListener("pointerenter", () => { if (focusI !== null) return; caption.textContent = c.mock ? "Placeholder clipping" : `${c.paper} · ${fmt(c.date)}`; caption.classList.add("on"); nm.classList.add("lit"); });
+      el.addEventListener("pointerleave", () => { if (focusI !== null) return; caption.classList.remove("on"); nm.classList.remove("lit"); });
+      el.addEventListener("focus", () => { nm.classList.add("lit"); if (el.matches(":focus-visible")) lookAt(el); });
+      el.addEventListener("blur", () => nm.classList.remove("lit"));
+      cl.appendChild(el); tiles[it.i] = el;
+    }
+    const sx = wall.slot.x + wall.slot.w / 2 - wall.cx, sy = wall.slot.y + wall.slot.h / 2 - wall.cy;
+    nm.style.transform = `rotateY(${sectorYaw(k) + toA(sx)}deg) rotateX(${toB(sy)}deg) translateZ(${-(R - FLOAT * S)}px)`;
+  });
+  const halfView = Math.atan((innerHeight / 2) / R) * 180 / Math.PI;
+  limPitch = Math.max(3, maxHalfB - halfView * .7);
+  buildTicks();
+}
+
+// ---------- the room: camera ----------
+const view = { yaw: 0, pitch: 0, dist: reduceMotion ? 0 : -260 }, target = { yaw: 0, pitch: 0, dist: 0 };
+const par = { x: 0, y: 0 }, parT = { x: 0, y: 0 };
+let current = -1;
+const nearestK = yaw => RING ? mod(Math.round(yaw / SECTOR), N) : Math.max(0, Math.min(N - 1, Math.round(yaw / SECTOR)));
+function clampT() {
+  const lp = focusI !== null ? 45 : limPitch;
+  target.pitch = Math.max(-lp, Math.min(lp, target.pitch));
+  if (!RING) target.yaw = Math.max(-SECTOR * .4, Math.min((N - 1) * SECTOR + SECTOR * .4, target.yaw));
+}
+function nearestTurn(deg) { let d = deg; while (d - target.yaw > 180) d -= 360; while (d - target.yaw < -180) d += 360; return d; }
+function goTo(k) { target.yaw = RING ? nearestTurn(k * SECTOR) : k * SECTOR; target.pitch = 0; clampT(); }
+function step(dir) { if (N < 2) return;            // only one person on this page
+  target.yaw = Math.round(target.yaw / SECTOR) * SECTOR + dir * SECTOR; target.pitch = 0; clampT(); }
+function lookAt(el) { target.yaw = RING ? nearestTurn(-el._a) : -el._a; target.pitch = -el._b; clampT(); }
+let lastTf = "";
+function frame() {
+  const k = reduceMotion ? 1 : .055;
+  view.yaw += (target.yaw - view.yaw) * k; view.pitch += (target.pitch - view.pitch) * k; view.dist += (target.dist - view.dist) * k;
+  par.x += (parT.x - par.x) * .04; par.y += (parT.y - par.y) * .04;
+  if (level !== "bio") {                            // the room is out of sight while a biography is open
+    const tf = `translateZ(${(R + view.dist).toFixed(1)}px) rotateX(${(view.pitch + par.y).toFixed(3)}deg) rotateY(${(view.yaw + par.x).toFixed(3)}deg)`;
+    if (tf !== lastTf) { world.style.transform = tf; lastTf = tf; }   // once settled, nothing is written at all
+    clusters.forEach((cl, i) => {                   // only the walls in front of the viewer are drawn
+      const d = ((view.yaw - i * SECTOR) % 360 + 540) % 360 - 180, vis = Math.abs(d) > 105 ? "hidden" : "visible";
+      if (cl._vis !== vis) { cl.style.visibility = vis; cl._vis = vis; }
+    });
+  }
+  const now = nearestK(view.yaw);
+  if (now !== current) {
+    current = now;
+    names.forEach((n, i) => n.classList.toggle("current", i === now));
+    document.querySelectorAll("#ticks button").forEach((b, i) => b.setAttribute("aria-current", String(i === now)));
+  }
+  requestAnimationFrame(frame);
+}
+function buildTicks() {
+  $("ticks").hidden = N < 2;
+  $("ticks").innerHTML = PEOPLE.map((p, i) => `<button type="button" title="${esc(nameOf(p))}" aria-label="${esc(nameOf(p))}" aria-current="${i === current}"></button>`).join("");
+  $("ticks").querySelectorAll("button").forEach((b, i) => b.addEventListener("click", () => goTo(i)));
+  names.forEach((n, i) => n.classList.toggle("current", i === current));
+}
+
+// ---------- zooming into a clipping ----------
+let focusI = null;
+const depthOf = el => -parseFloat(el.style.getPropertyValue("--z"));       // a clipping's distance from the centre of the room
+const focusDepth = () => focusI !== null && tiles[focusI] ? depthOf(tiles[focusI]) : R;
+function focusClip(i) {
+  const el = tiles[i], c = CLIPS[i];
+  if (focusI !== null && tiles[focusI]) tiles[focusI].classList.remove("focus");
+  focusI = i; el.classList.add("focus"); space.classList.add("focusing");
+  parT.x = parT.y = 0;
+  lookAt(el);
+  // move in until the clipping fills most of the screen, but never past ~2x the scan's own resolution
+  const zt = depthOf(el), w = el.offsetWidth, h = el.offsetHeight;
+  let gap = Math.max(w * R / (.66 * innerWidth), h * R / (.74 * innerHeight));
+  if (!c.mock) gap = Math.max(gap, w * R / (c.w * 2));
+  target.dist = Math.min(zt - 60 * S, Math.max(0, zt - gap));
+  caption.textContent = c.mock ? "Placeholder clipping · Esc to step back" : `${c.paper} · ${fmt(c.date)} · ↓ read it in the biography · Esc to step back`;
+  caption.classList.add("on");
+  $("down").textContent = c.mock ? "Biography" : "Read it in the biography";
+}
+function unfocus(keepDistance) {
+  if (focusI !== null && tiles[focusI]) tiles[focusI].classList.remove("focus");
+  const was = focusI; focusI = null; space.classList.remove("focusing");
+  $("down").textContent = "Biography";
+  if (was !== null) caption.classList.remove("on");
+  if (!keepDistance) { target.dist = 0; goTo(current); }
+}
+function zoomBy(factor) {                       // factor > 1 moves closer
+  const zt = focusDepth(), c = focusI !== null ? CLIPS[focusI] : null;
+  const closest = c && !c.mock ? Math.max(70 * S, tiles[focusI].offsetWidth * R / (c.w * 2.2)) : 70 * S;   // never past ~2.2x the scan (beyond that it is only blur)
+  const gap = Math.max(closest, Math.min(zt + 260 * S, (zt - target.dist) / factor));
+  target.dist = zt - gap;
+  if (focusI !== null && target.dist <= 0) unfocus(true);   // zoomed all the way out: back to the whole wall
+}
+space.addEventListener("click", e => { if (!suppressClick && !e.target.closest(".clip") && focusI !== null) unfocus(); });
+
+let drag = null, suppressClick = false;
+space.addEventListener("pointerdown", e => {
+  if (e.button !== 0) return;
+  drag = { x: e.clientX, y: e.clientY, yaw: target.yaw, pitch: target.pitch, moved: 0 }; suppressClick = false;
+});
+addEventListener("pointermove", e => {
+  // the gentle tilt with the mouse: off while zoomed into a clipping, weaker the closer the camera is
+  const near = focusI !== null ? 0 : Math.max(0, Math.min(1, (R - view.dist) / R));
+  if (!reduceMotion) { parT.x = (e.clientX / innerWidth - .5) * 4 * near; parT.y = -(e.clientY / innerHeight - .5) * 3 * near; }
+  if (!drag) return;
+  const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  drag.moved = Math.max(drag.moved, Math.hypot(dx, dy));
+  if (drag.moved > 5) { suppressClick = true; space.classList.add("dragging"); caption.classList.remove("on"); }
+  const zt = focusDepth(), gapNow = Math.max(40, zt - view.dist);
+  const k = focusI !== null ? (180 / Math.PI) * gapNow / (zt * R) : .07 * Math.min(1.3, gapNow / R);
+  target.yaw = drag.yaw - dx * k; target.pitch = drag.pitch + dy * k; clampT();
+});
+const endDrag = () => { drag = null; space.classList.remove("dragging"); };
+addEventListener("pointerup", endDrag);
+addEventListener("pointercancel", endDrag);
+$("down").addEventListener("click", () => focusI !== null ? openFromClip(focusI) : goDown(current));
+// ---------- up to the level above: the map of all lives ----------
+function goMap() {}                              // this page has no level above
+addEventListener("pageshow", () => document.body.classList.remove("leaving"));
+
+// ---------- moving between the two levels ----------
+const bio = $("bio");
+let level = "room", bioK = -1, lockUntil = 0;
+function goDown(k, opts = {}) {
+  const fly = !reduceMotion && level === "room";
+  const starts = new Map();                         // where each of this person's clippings hangs on the wall right now
+  if (fly) tiles.forEach((el, i) => { if (el && CLIPS[i].person === PEOPLE[k].id) starts.set(i, el.getBoundingClientRect()); });
+  if (k !== bioK) renderBio(k);
+  level = "bio"; document.body.classList.add("level-bio");
+  caption.classList.remove("on");
+  lockUntil = performance.now() + (fly ? 1500 : 900);   // no scrolling while the clippings are in the air
+  bio.scrollTop = 0;
+  activate(firstClaim(), null, false);
+  bio.focus({ preventScroll: true });
+  if (fly) gather(starts, () => { if (opts.claim) glideTo(opts.claim, opts.key); });
+  else if (opts.claim) jumpTo(opts.claim, opts.key);
+}
+// each clipping flies from its place on the wall to its place in the record row (FLIP: start at the end, animate from the start)
+function gather(starts, done) {
+  const strip = $("bStrip"), layer = $("flyers");
+  strip.classList.add("landing"); layer.innerHTML = "";
+  let pending = 0;
+  const finish = () => { strip.classList.remove("landing"); layer.innerHTML = ""; done && done(); };
+  [...strip.querySelectorAll("[data-i]")].forEach((btn, n) => {
+    const i = +btn.dataset.i, from = starts.get(i);
+    if (!from || from.width < 2) return;
+    const to = btn.firstElementChild.getBoundingClientRect(), c = CLIPS[i];
+    const el = document.createElement(c.mock ? "span" : "img");
+    el.className = "flyer" + (c.mock ? " ph" : "");
+    if (!c.mock) el.src = c.src;
+    el.style.cssText += `left:${to.left}px;top:${to.top}px;width:${to.width}px;height:${to.height}px`;
+    layer.appendChild(el);
+    const a = el.animate([
+      { transform: `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})` },
+      { transform: "none" }
+    ], { duration: 1150, delay: n * 22, easing: "cubic-bezier(.5, 0, .15, 1)", fill: "both" });
+    pending++;
+    a.onfinish = () => { if (--pending === 0) finish(); };
+  });
+  if (!pending) finish();
+}
+// move to the sentence a clipping supports: glide there, then hold it in the margin until the reader scrolls on
+let gliding = false;
+function glideTo(cid, key) {
+  const span = $("bText").querySelector(`.claim[data-c="${cid}"]`);
+  if (!span) return;
+  const to = Math.max(0, span.offsetTop - innerHeight * .34), from = bio.scrollTop, t0 = performance.now(), dur = 900;
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  gliding = true;
+  requestAnimationFrame(function glide(now) {
+    const t = Math.min(1, (now - t0) / dur);
+    bio.scrollTop = from + (to - from) * ease(t);
+    if (t < 1) requestAnimationFrame(glide); else { gliding = false; activate(cid, key, true); }
+  });
+}
+function jumpTo(cid, key) {
+  const span = $("bText").querySelector(`.claim[data-c="${cid}"]`);
+  if (span) bio.scrollTop = Math.max(0, span.offsetTop - innerHeight * .34);
+  activate(cid, key, true);
+}
+const claimFor = (p, key) => p.bio ? Object.keys(p.bio.claims).find(id => p.bio.claims[id].pages.includes(key)) : null;
+// the record row: every clipping of this person, in the order they were printed
+function buildStrip(p) {
+  const mine = CLIPS.map((c, i) => [c, i]).filter(([c]) => c.person === p.id);
+  if (!p.mock) mine.sort((a, b) => a[0].date.localeCompare(b[0].date) || a[0].page - b[0].page || a[1] - b[1]);
+  let html = "", lastYear = null;
+  for (const [c, i] of mine) {
+    const asp = c.w / c.h, h = Math.min(54, 250 / asp), w = h * asp;
+    const thumb = c.mock
+      ? `<button type="button" data-i="${i}" disabled aria-label="Placeholder clipping"><span class="ph" style="width:${w}px;height:${h}px"></span></button>`
+      : `<button type="button" data-i="${i}" data-key="${c.key}" aria-label="${esc(c.paper)}, ${fmt(c.date)}" title="${esc(c.paper)} · ${fmt(c.date)}"><img src="${c.src}" alt="" style="width:${w}px;height:${h}px"></button>`;
+    const y = c.mock ? null : c.date.slice(0, 4);
+    if (y && y !== lastYear) { html += `<span class="keep"><span class="yr">${y}</span>${thumb}</span>`; lastYear = y; }   // a year never wraps away from its first clipping
+    else html += thumb;
+  }
+  $("bStrip").innerHTML = html;
+  $("bStrip").querySelectorAll("button[data-key]").forEach(b => b.addEventListener("click", () => {
+    const cid = claimFor(p, b.dataset.key);
+    if (cid) (reduceMotion ? jumpTo : glideTo)(cid, b.dataset.key);
+  }));
+  const years = mine.filter(([c]) => !c.mock).map(([c]) => c.date.slice(0, 4));
+  $("bRecord").textContent = p.mock ? `In the newspaper record · ${mine.length} placeholder clippings`
+    : `In the newspaper record · ${mine.length} clippings, ${years[0]}–${years[years.length - 1]}`;
+}
+function goUp() {
+  if (focusI !== null) unfocus(true);
+  target.dist = 0;
+  level = "room"; document.body.classList.remove("level-bio");
+  lockUntil = performance.now() + 900;
+  goTo(bioK);
+  document.activeElement?.blur?.();
+}
+function switchBio(dir) {
+  step(dir);
+  const k = nearestK(target.yaw);
+  renderBio(k);
+  bio.scrollTop = 0;
+  activate(firstClaim(), null, false);
+}
+function openFromClip(i) {
+  const c = CLIPS[i], p = byId[c.person], k = PEOPLE.indexOf(p);
+  goTo(k);
+  const cid = !p.mock ? claimFor(p, c.key) : null;
+  goDown(k, cid ? { claim: cid, key: c.key } : {});
+}
+
+// wheel: in the room, sideways = next person, downwards = the biography; in the biography, scrolling up past the top = back to the room
+let hSum = 0, vSum = 0, upSum = 0, lastWheel = 0;
+addEventListener("wheel", e => {
+  const now = performance.now();
+  if (now - lastWheel > 220) { hSum = 0; vSum = 0; upSum = 0; }
+  lastWheel = now;
+  const dx = e.deltaMode === 1 ? e.deltaX * 30 : e.deltaX, dy = e.deltaMode === 1 ? e.deltaY * 30 : e.deltaY;
+  if (!$("zoom").hidden) return;
+  if (level === "room") {
+    e.preventDefault();
+    if (e.ctrlKey) { zoomBy(Math.min(1.35, Math.max(.74, Math.exp(-dy * .006)))); return; }   // pinch on a trackpad, or Ctrl + scroll
+    if (focusI !== null) { if (Math.abs(dy) >= Math.abs(dx)) zoomBy(Math.exp(-dy * .0025)); return; }
+    if (now < lockUntil) return;
+    if (Math.abs(dx) > Math.abs(dy)) hSum += dx; else vSum += dy;
+    if (Math.abs(hSum) >= 60) { step(Math.sign(hSum)); hSum = vSum = 0; lockUntil = now + 850; }
+    else if (vSum >= 60) { vSum = hSum = 0; goDown(current); }
+    else if (vSum <= -60) { vSum = hSum = 0; goMap(); }
+    return;
+  }
+  if (now < lockUntil) { e.preventDefault(); return; }
+  if (Math.abs(dx) > Math.abs(dy) * 1.5) {
+    e.preventDefault(); hSum += dx;
+    if (Math.abs(hSum) >= 80) { switchBio(Math.sign(hSum)); hSum = 0; lockUntil = now + 850; }
+    return;
+  }
+  if (bio.scrollTop <= 0 && dy < 0) { upSum -= dy; if (upSum >= 140) { upSum = 0; goUp(); } }
+  else if (dy > 0) upSum = 0;
+}, { passive: false });
+
+addEventListener("keydown", e => {
+  if (!$("zoom").hidden) { if (e.key === "Escape") closeZoom(); return; }
+  const t = e.target;
+  if (level === "room") {
+    if (e.key === "+" || e.key === "=") { e.preventDefault(); zoomBy(1.25); return; }
+    if (e.key === "-") { e.preventDefault(); zoomBy(.8); return; }
+    if (focusI !== null) {
+      if (e.key === "Escape" || e.key === "ArrowUp") { e.preventDefault(); unfocus(); return; }
+      if (e.key === "ArrowDown" || e.key === "Enter") { e.preventDefault(); openFromClip(focusI); return; }
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") unfocus();
+    }
+    if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
+    else if (e.key === "ArrowDown" || e.key === "PageDown") { e.preventDefault(); goDown(current); }
+    else if (e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); goMap(); }
+    return;
+  }
+  if (t.closest && t.closest(".track")) return;      // the arrow keys move within the recording there
+  if (e.key === "ArrowRight") { e.preventDefault(); switchBio(1); }
+  else if (e.key === "ArrowLeft") { e.preventDefault(); switchBio(-1); }
+  else if (e.key === "Escape") { e.preventDefault(); goUp(); }
+  else if ((e.key === "ArrowUp" || e.key === "PageUp") && bio.scrollTop <= 2) { e.preventDefault(); goUp(); }
+});
+
+// ---------- the biography ----------
+let activeC = null, pinnedAt = null;
+const firstClaim = () => $("bText").querySelector(".claim")?.dataset.c || null;
+function renderBio(k) {
+  bioK = k;
+  const p = PEOPLE[k], prev = PEOPLE[mod(k - 1, N)], next = PEOPLE[mod(k + 1, N)];
+  const hasPrev = RING || k > 0, hasNext = RING || k < N - 1;
+  [["prevTop", "prevFoot"], ["nextTop", "nextFoot"]].forEach(([a, b], n) => {
+    const who = n ? next : prev, show = n ? hasNext : hasPrev;
+    [a, b].forEach(id => { $(id).hidden = !show; $(id).textContent = n ? `${nameOf(who)} →` : `← ${nameOf(who)}`; });
+  });
+  $("bName").textContent = nameOf(p);
+  $("bFull").textContent = p.mock ? "Placeholder profile" : p.full;
+  $("bLife").innerHTML = `<dt>born</dt><dd>${esc(p.born)}</dd><dt>died</dt><dd>${esc(p.died)}</dd>`;
+  activeC = null; pinnedAt = null;
+  if (p.mock || !p.bio) {
+    $("bText").innerHTML = `<p class="placeholder">This biography is still being written. It will be told from the newspaper record, each sentence linked to the clipping that supports it.</p>`;
+    $("bMargin").innerHTML = `<p class="m-intro">This placeholder profile's clippings are shown above.</p>`;
+    $("bFootNote").textContent = "";
+  } else {
+    $("bText").innerHTML = p.bio.sections.map(s => `<h2>${esc(s.h)}</h2>` + s.paras.map(x => `<p>${x}</p>`).join("")).join("");
+    $("bText").querySelectorAll(".claim").forEach(span => {
+      span.setAttribute("role", "button"); span.tabIndex = 0;
+      span.addEventListener("click", () => activate(span.dataset.c, null, true));
+      span.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(span.dataset.c, null, true); } });
+    });
+    $("bFootNote").innerHTML = `<a href="${p.href}">Research version, with coverage notes</a>`;
+  }
+  buildStrip(p);
+}
+function activate(cid, focusKey, pin) {
+  const p = PEOPLE[bioK];
+  if (!cid || !p || !p.bio) return;
+  if (pin) pinnedAt = bio.scrollTop;
+  if (cid === activeC && !focusKey) return;
+  activeC = cid;
+  $("bText").querySelectorAll(".claim").forEach(s => s.classList.toggle("active", s.dataset.c === cid));
+  const keys = new Set(p.bio.claims[cid].pages);
+  $("bStrip").querySelectorAll("button[data-key]").forEach(b => b.classList.toggle("on", keys.has(b.dataset.key)));
+  const m = $("bMargin");
+  m.classList.add("fading");
+  setTimeout(() => { fillMargin(p, cid, focusKey); m.classList.remove("fading"); }, reduceMotion ? 0 : 200);
+}
+function fillMargin(p, cid, focusKey) {
+  const cl = p.bio.claims[cid], m = $("bMargin");
+  const pages = cl.pages.map(key => [key, PAGES[key]]);
+  m.innerHTML = `<p class="label">In the newspaper record</p><h3 class="m-title">${esc(cl.t)}</h3>` +
+    (pages.length ? pages.map(([key, pg]) => `
+      <figure class="m-page${key === focusKey ? " focus" : ""}" data-key="${key}">
+        <p class="m-src"><b>${esc(pg.paper)}</b> · ${fmt(pg.date)} · page ${pg.page}</p>
+        ${pg.clips.map(c => `<img src="${c.src}" alt="${esc(pg.paper)}, ${fmt(pg.date)}" width="${c.w}" height="${c.h}" style="--nw:${c.w}" loading="lazy">`).join("")}
+        <div class="m-actions"><button type="button" data-t>Transcription</button><a href="${pg.ddb}" target="_blank" rel="noopener">Full page at DDB</a><span>${esc(pg.rights)}${pg.inst ? ", " + esc(pg.inst) : ""}</span></div>
+        <blockquote class="m-quote" lang="de" hidden>${esc(pg.quote)}<small>${pg.pd ? "Machine transcription. Check it against the scan." : "Library OCR, unedited. Check it against the scan."}</small></blockquote>
+      </figure>`).join("")
+    : `<p class="m-none">No newspaper page supports this sentence. It comes from the baseline biography.</p>`) +
+    `<p class="m-cov"><b>${STATUS[cl.s] || ""}.</b> ${esc(cl.lit)}</p>`;
+  m.querySelectorAll(".m-page img").forEach(img => img.addEventListener("click", () => openZoom(img.src, img.alt)));
+  m.querySelectorAll("[data-t]").forEach(b => b.addEventListener("click", () => {
+    const q = b.closest(".m-page").querySelector(".m-quote"); q.hidden = !q.hidden; b.textContent = q.hidden ? "Transcription" : "Hide transcription";
+  }));
+  m.scrollTop = 0;
+  const f = focusKey && m.querySelector(`[data-key="${focusKey}"]`);   // scroll the margin only, never the page
+  if (f) m.scrollTop = Math.max(0, f.offsetTop - 8);
+}
+// as you read, the margin follows the passage at the reading line (a clicked sentence holds until you scroll on)
+let spyQueued = false;
+bio.addEventListener("scroll", () => { if (!spyQueued) { spyQueued = true; requestAnimationFrame(spy); } });
+function spy() {
+  spyQueued = false;
+  if (level !== "bio" || gliding) return;
+  if (pinnedAt !== null && Math.abs(bio.scrollTop - pinnedAt) < 180) return;
+  pinnedAt = null;
+  const line = innerHeight * .36;
+  let best = null, bd = Infinity;
+  $("bText").querySelectorAll(".claim").forEach(s => {
+    for (const r of s.getClientRects()) {
+      const d = r.top <= line && r.bottom >= line ? 0 : Math.min(Math.abs(r.top - line), Math.abs(r.bottom - line));
+      if (d <= bd) { bd = d; best = s; }             // on a shared line, the sentence that begins later wins
+    }
+  });
+  if (best) activate(best.dataset.c, null, false);
+}
+$("up").addEventListener("click", goUp);
+["prevTop", "prevFoot"].forEach(id => $(id).addEventListener("click", () => switchBio(-1)));
+["nextTop", "nextFoot"].forEach(id => $(id).addEventListener("click", () => switchBio(1)));
+
+function openZoom(src, alt) { $("zoomImg").src = src; $("zoomImg").alt = alt; $("zoom").hidden = false; }
+function closeZoom() { $("zoom").hidden = true; }
+$("zoom").addEventListener("click", closeZoom);
+
+// build once the web font is in, so the measured names are right (fall back after 1.5 s)
+const startK = PEOPLE.findIndex(p => "#" + p.id === location.hash);
+if (startK >= 0) { target.yaw = view.yaw = startK * SECTOR; view.dist = 0; }
+// after a few seconds in the room, move down to the biography by itself, once, unless the visitor has started doing something
+const AUTO_DOWN_MS = 2000;
+let autoTimer = null;
+const cancelAuto = () => { clearTimeout(autoTimer); autoTimer = null; };
+["pointerdown", "keydown"].forEach(ev => addEventListener(ev, cancelAuto, true));
+addEventListener("wheel", cancelAuto, { capture: true, passive: true });
+Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1500))]).then(() => {
+  build(); clampT();
+  autoTimer = setTimeout(() => { autoTimer = null; if (level === "room" && focusI === null) goDown(current); }, AUTO_DOWN_MS);
+});
+addEventListener("resize", () => { build(); clampT(); });
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
