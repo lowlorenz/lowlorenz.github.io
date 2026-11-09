@@ -52,6 +52,8 @@
   .note { font-size: 0.85rem; color: var(--dark); line-height: 1.7; max-width: 32rem; }
   .note code { font-size: 0.85em; color: var(--blue); }
   .note b { font-weight: 600; }
+  .note ol { text-align: left; margin: 0.5rem 0 0 1.25rem; padding: 0; }
+  .note li { margin: 0.2rem 0; }
   .hidden { display: none; }
 
   /* all installers */
@@ -137,8 +139,8 @@
     "linux-appimage": { label: "Linux (AppImage, other distributions)", match: /\.AppImage$/i },
   };
   const NOTES = {
-    mac: "macOS may say the app is from an unidentified developer: open System Settings › Privacy & Security, click <b>Open Anyway</b> next to Chronos, then launch it again.",
-    win: "Windows SmartScreen may warn on first launch: choose <b>More info › Run anyway</b>.",
+    mac: "<b>First launch takes one extra step</b>, because the app is not yet signed by Apple.<ol><li>Open the .dmg and drag Chronos into Applications.</li><li>Open Chronos once. macOS will refuse.</li><li>Open <b>System Settings › Privacy &amp; Security</b>, scroll down to the Security section and click <b>Open Anyway</b> next to Chronos.</li><li>Open Chronos again. You only need to do this once.</li></ol>",
+    win: "Windows SmartScreen may warn on first launch, because the installer is not yet signed: click <b>More info</b>, then <b>Run anyway</b>.",
     linux: "Install with <code>sudo apt install ./chronos_*.deb</code>. Not on Debian or Ubuntu? Use the AppImage from the list below (needs <code>libfuse2</code>).",
   };
 
